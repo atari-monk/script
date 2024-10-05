@@ -30,5 +30,19 @@
     "ScriptFile": "log_project.py",
     "Title": "Log Project",
     "Order": 5
+  },
+  {
+    "Command": "log_step",
+    "ScriptFolder": "C:\\atari-monk\\code\\script\\src",
+    "ScriptFile": "log_step.py",
+    "Title": "Log Step",
+    "Order": 6
+  },
+  {
+    "Command": "log_goal",
+    "ScriptFolder": "C:\\atari-monk\\code\\script\\src",
+    "ScriptFile": "log_goal.py",
+    "Title": "Log Goal",
+    "Order": 7
   }
 ]
