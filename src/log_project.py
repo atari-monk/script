@@ -4,7 +4,7 @@ import subprocess  # Import subprocess module
 from datetime import datetime
 
 # Constants
-CONVERS_SCRIPT_PATH = "convert.py"
+CONVERS_SCRIPT_PATH = "log_project_convert.py"
 DATA_FOLDER = "./../data"
 DATABASE_FOLDER = "C:/atari-monk/code/apollo/content/Database"
 LOG_FILE_NAME = "log_project.txt"

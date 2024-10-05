@@ -1,8 +1,2 @@
-mouseInfoLog.txt
-pomodoro/pomodoro_log.txt
 __pycache__
-execution.log
-build
-node_modules
-mp3/downloads
-py/log_project/state.json
+data/state.json
