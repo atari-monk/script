@@ -5,6 +5,7 @@ from datetime import datetime
 
 # Constants
 CONVERS_SCRIPT_PATH = "convert.py"
+DATA_FOLDER = "./../data"
 DATABASE_FOLDER = "C:/atari-monk/code/apollo/content/Database"
 LOG_FILE_NAME = "log_project.txt"
 PROJECT_LIST_NAME = "projects.json"
@@ -13,8 +14,8 @@ DATE_FORMAT = "%Y-%m-%d %H:%M"
 
 # Combine folder and file names
 LOG_FILE_PATH = os.path.join(DATABASE_FOLDER, LOG_FILE_NAME)
-PROJECT_LIST_PATH = PROJECT_LIST_NAME
-STATE_FILE_PATH = STATE_FILE_NAME
+PROJECT_LIST_PATH = os.path.join(DATA_FOLDER, PROJECT_LIST_NAME)
+STATE_FILE_PATH = os.path.join(DATA_FOLDER, STATE_FILE_NAME)
 
 # Initialize the log file if it doesn't exist
 def initialize_log_file():

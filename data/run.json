@@ -1,0 +1,34 @@
+[
+  {
+    "Command": "help",
+    "Title": "Prints Available Commands",
+    "Order": 1
+  },
+  {
+    "Command": "cli",
+    "ScriptFolder": "C:\\atari-monk\\code\\script\\src",
+    "ScriptFile": "run.ps1",
+    "Title": "Cli To Run Scripts",
+    "Order": 2
+  },
+  {
+    "Command": "text_to_speech",
+    "ScriptFolder": "C:\\atari-monk\\code\\script\\src",
+    "ScriptFile": "text_to_speech.ps1",
+    "Title": "Text To Speech",
+    "Order": 3
+  },
+  {
+    "Command": "runtools",
+    "Commands": ["text_to_speech"],
+    "Title": "Run Group",
+    "Order": 4
+  },
+  {
+    "Command": "log_project",
+    "ScriptFolder": "C:\\atari-monk\\code\\script\\src",
+    "ScriptFile": "log_project.py",
+    "Title": "Log Project",
+    "Order": 5
+  }
+]

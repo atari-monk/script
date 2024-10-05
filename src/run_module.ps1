@@ -1,5 +1,7 @@
+$dataFilePath = "./../data/run.json"
+
 $scriptAssociations = @{}
-$jsonData = Get-Content -Raw -Path "data.json" | ConvertFrom-Json
+$jsonData = Get-Content -Raw -Path $dataFilePath | ConvertFrom-Json
 $jsonData | ForEach-Object {
     $scriptAssociations[$_.Command] = $_
 }

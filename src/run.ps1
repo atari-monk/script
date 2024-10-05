@@ -1,4 +1,4 @@
-. ".\shared\loader.ps1"
+. ".\run_module.ps1"
 
 $host.ui.RawUI.WindowTitle = 'Atari Monk Cli'
 
