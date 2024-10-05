@@ -3,7 +3,7 @@ import datetime
 
 # Constants
 DATABASE_FOLDER = "C:/atari-monk/code/apollo/content/Database"
-LOG_FILE_NAME = "log_goals.txt"
+LOG_FILE_NAME = "log_goal.txt"
 LOG_FILE_PAHT = os.path.join(DATABASE_FOLDER, LOG_FILE_NAME)
 WELCOME_MESSAGE = "Welcome to the Goal Logger!"
 EXIT_COMMAND = 'exit'
