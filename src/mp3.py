@@ -1,7 +1,7 @@
 import os
 import yt_dlp
 
-def download_youtube_as_mp3(video_url, output_folder="C:\Users\ASUS\Downloads\mp3"):
+def download_youtube_as_mp3(video_url, output_folder=r"C:\Users\ASUS\Downloads\mp3"):
     try:
         # Create output folder if it doesn't exist
         if not os.path.exists(output_folder):
