@@ -4,9 +4,7 @@ import os
 
 # List of JSON file paths for different projects
 project_files = [
-    './../data/morpheus_schedule.json',
-    #'./../data/project2_schedule.json',
-    #'./../data/project3_schedule.json'
+    './../data/morpheus_time_logger.json',
 ]
 
 # Function to calculate total active time for a specific day
