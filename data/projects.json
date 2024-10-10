@@ -7,6 +7,10 @@
     "description": "Script.",
     "repository": "script"
   },
+  "Apollo": {
+    "description": "Apollo Markdown Page.",
+    "repository": "apollo"
+  },
   "Diy": {
     "description": "Diy.",
     "repository": ""

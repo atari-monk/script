@@ -33,7 +33,7 @@ def load_project_list():
     """Load the project list from the JSON file."""
     if os.path.exists(PROJECT_LIST_PATH):
         with open(PROJECT_LIST_PATH, 'r') as file:
-            return json.load(file)
+            return json.load(file)  # Return the project list directly
     else:
         print(f"Error: {PROJECT_LIST_PATH} not found.")
         return {}
@@ -42,11 +42,18 @@ def load_project_list():
 def validate_project_name(project_list):
     """Prompt the user to input a valid project name from the JSON project list."""
     while True:
-        project_name = input("Enter the project name: ").strip()
-        if project_name in project_list:
-            return project_name
-        else:
-            print(f"Invalid project name. Please choose from: {', '.join(project_list.keys())}")
+        print("Available projects:")
+        for idx, project_name in enumerate(project_list.keys(), start=1):
+            print(f"{idx}: {project_name}")
+
+        try:
+            choice = int(input("Choose the project number: "))  # Get user input
+            if 1 <= choice <= len(project_list):
+                return list(project_list.keys())[choice - 1]  # Return the selected project name
+            else:
+                print(f"Invalid choice. Please enter a number between 1 and {len(project_list)}.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
 # Load or initialize internal state (whether a project is starting or ending)
 def load_state():
@@ -80,7 +87,7 @@ def log_project_entry(project_name, action):
     
     # Run the convert.py script after logging
     try:
-        subprocess.run(["python",CONVERS_SCRIPT_PATH], check=True)  # Update the path to convert.py as needed
+        subprocess.run(["python", CONVERS_SCRIPT_PATH], check=True)  # Update the path to convert.py as needed
         print("Successfully ran convert.py.")
     except subprocess.CalledProcessError as e:
         print(f"Error running convert.py: {e}")
