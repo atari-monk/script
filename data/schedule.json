@@ -46,5 +46,9 @@
         "minutes": 49
       }
     }
-  ]
+  ],
+  "monthly_total_active_time": {
+    "hours": 11,
+    "minutes": 43
+  }
 }
