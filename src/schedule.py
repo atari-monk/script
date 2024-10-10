@@ -16,13 +16,15 @@ def calculate_total_active_time(day):
     
     return total_active_minutes
 
-# Initialize total active time for the month
+# Initialize total active time for the month and year
 monthly_active_minutes = 0
+yearly_active_minutes = 0
 
 # Iterate through the days and calculate total active time for each
 for day in data['days']:
     total_active_minutes = calculate_total_active_time(day)
     monthly_active_minutes += total_active_minutes  # Accumulate for the month
+    yearly_active_minutes += total_active_minutes  # Accumulate for the year
 
     total_active_hours = total_active_minutes // 60
     remaining_minutes = total_active_minutes % 60
@@ -35,10 +37,19 @@ for day in data['days']:
 monthly_active_hours = monthly_active_minutes // 60
 monthly_remaining_minutes = monthly_active_minutes % 60
 
-# Add monthly total to the data
+# Calculate total active time for the year
+yearly_active_hours = yearly_active_minutes // 60
+yearly_remaining_minutes = yearly_active_minutes % 60
+
+# Add monthly and yearly totals to the data
 data['monthly_total_active_time'] = {
     "hours": int(monthly_active_hours),
     "minutes": int(monthly_remaining_minutes)
+}
+
+data['yearly_total_active_time'] = {
+    "hours": int(yearly_active_hours),
+    "minutes": int(yearly_remaining_minutes)
 }
 
 # Write the updated data back to the JSON file with 2 spaces indentation

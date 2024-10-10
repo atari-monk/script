@@ -50,5 +50,9 @@
   "monthly_total_active_time": {
     "hours": 11,
     "minutes": 43
+  },
+  "yearly_total_active_time": {
+    "hours": 11,
+    "minutes": 43
   }
 }
