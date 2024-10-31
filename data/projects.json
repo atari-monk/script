@@ -3,6 +3,14 @@
     "description": "Typescript 2D Engine/Game Project.",
     "repository": "ts-engine-nx"
   },
+  "Titan": {
+    "description": "C++ engine.",
+    "repository": ""
+  },
+  "Warehouse": {
+    "description": "Unity",
+    "repository": "https://github.com/atari-monk/warehouse_dash"
+  },
   "Script": {
     "description": "Script.",
     "repository": "script"
