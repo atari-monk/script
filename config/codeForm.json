@@ -1,0 +1,12 @@
+{
+  "font": {
+    "font_family": "Arial",
+    "font_size": 16
+  },
+  "paths": {
+    "data_file": {
+      "storage1": "../data/code_descriptions.json",
+      "storage2": "C:/atari-monk/code/apollo/content/Database"
+    }
+  }
+}

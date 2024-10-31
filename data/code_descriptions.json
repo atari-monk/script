@@ -1,0 +1,18 @@
+[
+  {
+    "name": "CanvasScaler",
+    "description": "The `CanvasScaler` class manages the scaling of a 2D canvas when the window is resized. It extends the `System` class and uses the `CanvasScale` component to adjust the canvas dimensions and scaling factors based on a predefined original size (1920x1080). Upon starting an entity with `CanvasScale`, it resizes the canvas and sets up a listener for window resize events. When the window is resized, it updates the canvas size and recalculates the scale factors, publishing a 'resizeCanvas' event to notify other systems of the changes, ensuring the canvas maintains proper proportions.",
+    "tags": [
+      "Scaling",
+      "Canvas"
+    ]
+  },
+  {
+    "name": "ContentScalerTester",
+    "description": "The `ContentScalerTester` class is a system that tests and visualizes how content scales on a 2D canvas when the window is resized. It extends the base `System` class and maintains a state object to manage properties like the canvas size, background color, border, and a square shape that adjusts its size based on the canvas dimensions.\n\nIn the constructor, it initializes necessary components and subscribes to the `resizeCanvas` event to trigger updates when the window size changes. The class contains methods to render the canvas content, including the background, border, square, and a point at the square's center. \n\nWhen the canvas is resized, it updates the uniform scale factor, recalculates the square's size and position, and logs the state if the square size changes significantly. The logging provides details about the initial and current canvas dimensions, scale factors, and the square's position and size, aiding in understanding how the content scales in response to resizing.\n\nNote: I dont use uniform scale in most scenes, but both, x and y.",
+    "tags": [
+      "Scaling",
+      "Canvas"
+    ]
+  }
+]

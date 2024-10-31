@@ -1,0 +1,58 @@
+[
+  {
+    "path": "feature\\engine\\renderer\\canvas_scaling",
+    "name": "canvas_scaling",
+    "description": "Scene for testing feature of canvas content resizing.\nUses background, border, square, point to test their scaling.\nManual calculations, as this was exploratory. \nIn practice most scenes use canvas transforms, as build in functions are convienient for frequent use.",
+    "image": "-",
+    "entities": [
+      {
+        "name": "canvas",
+        "components": [
+          "canvasScale"
+        ],
+        "systems": [
+          "canvasScaler",
+          "contentScalerTester"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "feature\\engine\\renderer\\collision_box_fill",
+    "name": "collision_box_fill",
+    "description": "Scene to test rendering rect that is filled with color.",
+    "image": "-",
+    "entities": [
+      {
+        "name": "options",
+        "components": [
+          "rendererOptions",
+          "keyMap"
+        ],
+        "systems": [
+          "keyboardMapping"
+        ]
+      },
+      {
+        "name": "canvas",
+        "components": [
+          "canvasScale"
+        ],
+        "systems": [
+          "canvasScaler"
+        ]
+      },
+      {
+        "name": "field",
+        "components": [
+          "transform",
+          "boxCollider"
+        ],
+        "systems": [
+          "collisionBoxRenderer",
+          "drawTransformPosition"
+        ]
+      }
+    ]
+  }
+]
