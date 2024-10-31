@@ -14,5 +14,13 @@
       "Scaling",
       "Canvas"
     ]
+  },
+  {
+    "name": "BoxGenerator",
+    "description": "BoxGenerator Class\n\nUsed for spawning boxes.\nBased on box prefab set.\nDefines range of size, colors, number and ids range of boxes.\nDefines start and end region and its sizes, where boxes show up and where they wanish.\nDefines list of boxes and list of removed boxes.\n\nSpawns box in random position in spawn area.\nSets box id and properties.\nAdds to list.\nOnce box is in end area it moves it back to start.\nIn this physics is disabled for a moment.\nIt defines list to mark removed boxes.\nRemoves them from main list and spawns new ones to maintain number of boxes generated.\n\nIt provides public methods for this.",
+    "tags": [
+      "Warehouse",
+      "Unity"
+    ]
   }
 ]
