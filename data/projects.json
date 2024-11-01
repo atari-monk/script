@@ -11,6 +11,10 @@
     "description": "Unity",
     "repository": "https://github.com/atari-monk/warehouse_dash"
   },
+  "Thales": {
+    "description": "MERN",
+    "repository": "https://github.com/atari-monk/thales"
+  },
   "Script": {
     "description": "Script.",
     "repository": "script"
