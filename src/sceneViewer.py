@@ -56,8 +56,8 @@ class SceneViewerApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Scene Viewer")
-        self.file_path = "data/scenes.json"
-        self.config_path = "config/sceneViewer.json"  # Path to the configuration file
+        self.file_path = "../data/scenes.json"
+        self.config_path = "../config/sceneViewer.json"  # Path to the configuration file
         self.font_config = self.load_font_config()  # Load font configuration
 
         # Scrollable Frame
