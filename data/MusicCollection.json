@@ -1,0 +1,360 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "title": "Bohemian Rhapsody",
+      "artist": "Queen",
+      "category": "Classic Rock"
+    },
+    {
+      "id": 2,
+      "title": "Imagine",
+      "artist": "John Lennon",
+      "category": "Classic Rock"
+    },
+    {
+      "id": 3,
+      "title": "Purple Rain",
+      "artist": "Prince",
+      "category": "Classic Rock"
+    },
+    {
+      "id": 4,
+      "title": "Smells Like Teen Spirit",
+      "artist": "Nirvana",
+      "category": "Grunge"
+    },
+    {
+      "id": 5,
+      "title": "Billie Jean",
+      "artist": "Michael Jackson",
+      "category": "Pop"
+    },
+    {
+      "id": 6,
+      "title": "Hotel California",
+      "artist": "Eagles",
+      "category": "Classic Rock"
+    },
+    {
+      "id": 7,
+      "title": "Hallelujah",
+      "artist": "Jeff Buckley",
+      "category": "Alternative"
+    },
+    {
+      "id": 8,
+      "title": "Like a Rolling Stone",
+      "artist": "Bob Dylan",
+      "category": "Folk Rock"
+    },
+    {
+      "id": 9,
+      "title": "What’s Going On",
+      "artist": "Marvin Gaye",
+      "category": "Soul"
+    },
+    {
+      "id": 10,
+      "title": "Stairway to Heaven",
+      "artist": "Led Zeppelin",
+      "category": "Classic Rock"
+    },
+    {
+      "id": 11,
+      "title": "Rolling in the Deep",
+      "artist": "Adele",
+      "category": "Pop"
+    },
+    {
+      "id": 12,
+      "title": "Lose Yourself",
+      "artist": "Eminem",
+      "category": "Hip Hop"
+    },
+    {
+      "id": 13,
+      "title": "Blinding Lights",
+      "artist": "The Weeknd",
+      "category": "Pop"
+    },
+    {
+      "id": 14,
+      "title": "Superstition",
+      "artist": "Stevie Wonder",
+      "category": "Soul"
+    },
+    {
+      "id": 15,
+      "title": "God Only Knows",
+      "artist": "The Beach Boys",
+      "category": "Pop"
+    },
+    {
+      "id": 16,
+      "title": "Take On Me",
+      "artist": "a-ha",
+      "category": "Pop"
+    },
+    {
+      "id": 17,
+      "title": "Under Pressure",
+      "artist": "Queen & David Bowie",
+      "category": "Classic Rock"
+    },
+    {
+      "id": 18,
+      "title": "Sweet Child O' Mine",
+      "artist": "Guns N' Roses",
+      "category": "Rock"
+    },
+    {
+      "id": 19,
+      "title": "I Will Always Love You",
+      "artist": "Whitney Houston",
+      "category": "Pop"
+    },
+    {
+      "id": 20,
+      "title": "Hey Jude",
+      "artist": "The Beatles",
+      "category": "Classic Rock"
+    },
+    {
+      "id": 21,
+      "title": "Back to Black",
+      "artist": "Amy Winehouse",
+      "category": "Soul"
+    },
+    {
+      "id": 22,
+      "title": "Creep",
+      "artist": "Radiohead",
+      "category": "Alternative"
+    },
+    {
+      "id": 23,
+      "title": "Killing Me Softly with His Song",
+      "artist": "Fugees",
+      "category": "Hip Hop"
+    },
+    {
+      "id": 24,
+      "title": "Don't Stop Believin'",
+      "artist": "Journey",
+      "category": "Classic Rock"
+    },
+    {
+      "id": 25,
+      "title": "Nothing Else Matters",
+      "artist": "Metallica",
+      "category": "Metal"
+    },
+    {
+      "id": 26,
+      "title": "Thriller",
+      "artist": "Michael Jackson",
+      "category": "Pop"
+    },
+    {
+      "id": 27,
+      "title": "House of the Rising Sun",
+      "artist": "The Animals",
+      "category": "Classic Rock"
+    },
+    {
+      "id": 28,
+      "title": "I Wanna Dance with Somebody",
+      "artist": "Whitney Houston",
+      "category": "Pop"
+    },
+    {
+      "id": 29,
+      "title": "Ain't No Mountain High Enough",
+      "artist": "Marvin Gaye & Tammi Terrell",
+      "category": "Soul"
+    },
+    {
+      "id": 30,
+      "title": "Mr. Brightside",
+      "artist": "The Killers",
+      "category": "Alternative"
+    },
+    {
+      "id": 31,
+      "title": "Africa",
+      "artist": "Toto",
+      "category": "Rock"
+    },
+    {
+      "id": 32,
+      "title": "Fast Car",
+      "artist": "Tracy Chapman",
+      "category": "Folk"
+    },
+    {
+      "id": 33,
+      "title": "No Scrubs",
+      "artist": "TLC",
+      "category": "R&B"
+    },
+    {
+      "id": 34,
+      "title": "Zombie",
+      "artist": "The Cranberries",
+      "category": "Alternative"
+    },
+    {
+      "id": 35,
+      "title": "Electric Feel",
+      "artist": "MGMT",
+      "category": "Indie"
+    },
+    {
+      "id": 36,
+      "title": "Sweet Dreams (Are Made of This)",
+      "artist": "Eurythmics",
+      "category": "Synthpop"
+    },
+    {
+      "id": 37,
+      "title": "Seven Nation Army",
+      "artist": "The White Stripes",
+      "category": "Rock"
+    },
+    {
+      "id": 38,
+      "title": "Free Fallin'",
+      "artist": "Tom Petty",
+      "category": "Rock"
+    },
+    {
+      "id": 39,
+      "title": "Roxanne",
+      "artist": "The Police",
+      "category": "Rock"
+    },
+    {
+      "id": 40,
+      "title": "Stay",
+      "artist": "Rihanna ft. Mikky Ekko",
+      "category": "Pop"
+    },
+    {
+      "id": 41,
+      "title": "Lean on Me",
+      "artist": "Bill Withers",
+      "category": "Soul"
+    },
+    {
+      "id": 42,
+      "title": "Shake It Off",
+      "artist": "Taylor Swift",
+      "category": "Pop"
+    },
+    {
+      "id": 43,
+      "title": "Take Me Home, Country Roads",
+      "artist": "John Denver",
+      "category": "Country"
+    },
+    {
+      "id": 44,
+      "title": "I Want It That Way",
+      "artist": "Backstreet Boys",
+      "category": "Pop"
+    },
+    {
+      "id": 45,
+      "title": "Dancing Queen",
+      "artist": "ABBA",
+      "category": "Pop"
+    },
+    {
+      "id": 46,
+      "title": "Mr. Brightside",
+      "artist": "The Killers",
+      "category": "Alternative"
+    },
+    {
+      "id": 47,
+      "title": "Landslide",
+      "artist": "Fleetwood Mac",
+      "category": "Rock"
+    },
+    {
+      "id": 48,
+      "title": "What a Wonderful World",
+      "artist": "Louis Armstrong",
+      "category": "Jazz"
+    },
+    {
+      "id": 49,
+      "title": "Time After Time",
+      "artist": "Cyndi Lauper",
+      "category": "Pop"
+    },
+    {
+      "id": 50,
+      "title": "Somebody That I Used to Know",
+      "artist": "Gotye ft. Kimbra",
+      "category": "Alternative"
+    }
+  ],
+  "playlists": [
+    {
+      "id": 1,
+      "name": "Classic Rock Favorites",
+      "description": "A collection of timeless classic rock hits.",
+      "song_ids": [1, 2, 3, 6, 10, 17, 20, 24, 27]
+    },
+    {
+      "id": 2,
+      "name": "Pop Anthems",
+      "description": "The best pop songs to sing along to.",
+      "song_ids": [5, 11, 13, 19, 28, 40, 44]
+    },
+    {
+      "id": 3,
+      "name": "Chill Vibes",
+      "description": "Relaxing songs perfect for unwinding.",
+      "song_ids": [7, 32, 41, 48]
+    },
+    {
+      "id": 4,
+      "name": "Alternative Rock Essentials",
+      "description": "The must-listen tracks from the alternative rock genre.",
+      "song_ids": [4, 22, 30, 34, 35, 46]
+    },
+    {
+      "id": 5,
+      "name": "Soul Classics",
+      "description": "Timeless soul tracks that touch the heart.",
+      "song_ids": [9, 14, 21, 29]
+    },
+    {
+      "id": 6,
+      "name": "Indie Hits",
+      "description": "The best indie tracks to discover.",
+      "song_ids": [35, 46]
+    },
+    {
+      "id": 7,
+      "name": "Throwback Hits",
+      "description": "Nostalgic songs from the past decades.",
+      "song_ids": [1, 10, 19, 24, 39]
+    },
+    {
+      "id": 8,
+      "name": "Dance Party",
+      "description": "Get ready to dance with these upbeat tracks!",
+      "song_ids": [5, 13, 42, 45]
+    },
+    {
+      "id": 9,
+      "name": "Acoustic Favorites",
+      "description": "Beautiful acoustic renditions of popular songs.",
+      "song_ids": [32, 47]
+    }
+  ]
+}
