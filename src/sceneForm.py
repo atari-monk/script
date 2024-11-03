@@ -133,6 +133,7 @@ class SceneApp:
         self.canvas.yview_scroll(int(-1 * (event.delta // 120)), "units")
 
     def add_entity_form(self):
+        # Create a new frame for each entity
         entity_frame = tk.Frame(self.entity_frame, bd=1, relief="sunken", padx=5, pady=5)
         entity_frame.pack(fill="x", pady=5)
 
@@ -141,6 +142,7 @@ class SceneApp:
         components_var = tk.StringVar()
         systems_var = tk.Text(entity_frame, height=3, wrap="word")
 
+        # Add widgets for name, components, and systems with proper layout
         tk.Label(entity_frame, text="Entity Name:").grid(row=0, column=0, sticky="w")
         tk.Entry(entity_frame, textvariable=name_var).grid(row=0, column=1, sticky="ew", padx=5)
         tk.Label(entity_frame, text="Components (comma-separated):").grid(row=1, column=0, sticky="w")
@@ -148,15 +150,21 @@ class SceneApp:
         tk.Label(entity_frame, text="Systems (comma-separated):").grid(row=2, column=0, sticky="nw")
         systems_var.grid(row=2, column=1, sticky="ew", padx=5)
 
-        # Remove button
+        # Add the remove button
         remove_button = tk.Button(entity_frame, text="Remove Entity", command=lambda: self.remove_entity_form(entity_frame))
         remove_button.grid(row=3, column=0, columnspan=2, pady=5)
 
+        # Store references to the new entity's data in self.entities list
         self.entities.append({"name": name_var, "components": components_var, "systems": systems_var})
+        self.entity_frame.update_idletasks()
 
     def remove_entity_form(self, entity_frame):
+        # Find the entity in self.entities that corresponds to this frame and remove it
+        entity_to_remove = next((e for e in self.entities if e["systems"].master == entity_frame), None)
+        if entity_to_remove:
+            self.entities.remove(entity_to_remove)
         entity_frame.destroy()
-        self.entities = [e for e in self.entities if e["systems"].master != entity_frame]
+
 
     def get_scene_data(self):
         scene = Scene(
@@ -227,8 +235,13 @@ class SceneApp:
         self.name_var.set("")
         self.image_var.set("")
         self.description_text.delete("1.0", tk.END)
-        for entity in self.entity_frame.winfo_children():
-            entity.destroy()
+
+        # Remove all dynamically created entity frames (excluding the "Add Entity" button)
+        for entity_frame in self.entity_frame.winfo_children():
+            if entity_frame != self.add_entity_button:
+                entity_frame.destroy()
+                
+        # Clear the entities list to reset the form
         self.entities.clear()
 
     def load_all_scenes(self):
