@@ -54,5 +54,113 @@
         ]
       }
     ]
+  },
+  {
+    "path": "feature\\engine\\renderer\\text",
+    "name": "text",
+    "description": "Testing text rendering. \nTodo: \nText should loaded from component. \nDocumentat classes.",
+    "image": "-",
+    "entities": [
+      {
+        "name": "options",
+        "components": [
+          "rendererOptions"
+        ],
+        "systems": []
+      },
+      {
+        "name": "canvas",
+        "components": [
+          "canvasScale"
+        ],
+        "systems": [
+          "canvasScaler"
+        ]
+      },
+      {
+        "name": "-",
+        "components": [
+          "-"
+        ],
+        "systems": [
+          "textRenderer"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "feature\\engine\\system\\keyboard_mapping",
+    "name": "keyboard_mapping",
+    "description": "Scene to test keyboard key used as toogle.\nCollision box, stroke render, is toogled.",
+    "image": "-",
+    "entities": [
+      {
+        "name": "options",
+        "components": [
+          "rendererOptions",
+          "keyMap"
+        ],
+        "systems": [
+          "keyboardMapping"
+        ]
+      },
+      {
+        "name": "canvas",
+        "components": [
+          "canvasScale"
+        ],
+        "systems": [
+          "canvasScaler"
+        ]
+      },
+      {
+        "name": "player1",
+        "components": [
+          "transform",
+          "boxCollider"
+        ],
+        "systems": [
+          "collisionBoxRenderer"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "feature\\cards\\renderer\\animator",
+    "name": "animator",
+    "description": "This is animation of whole deck of cards.\nThe key o changes animation to show colors of deck.",
+    "image": "-",
+    "entities": [
+      {
+        "name": "options",
+        "components": [
+          "rendererOptions",
+          "keyMap"
+        ],
+        "systems": [
+          "keyboardMapping"
+        ]
+      },
+      {
+        "name": "canvas",
+        "components": [
+          "canvasScale"
+        ],
+        "systems": [
+          "canvasScaler"
+        ]
+      },
+      {
+        "name": "card",
+        "components": [
+          "transform",
+          "sprite"
+        ],
+        "systems": [
+          "spriteRenderer",
+          "drawTransformPosition"
+        ]
+      }
+    ]
   }
 ]
