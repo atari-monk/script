@@ -3,6 +3,10 @@
 from base.base_command import BaseCommand
 
 class GreetCommand(BaseCommand):
+    def __init__(self, app):
+        super().__init__()
+        self.app = app
+
     def execute(self, name="World"):
         print(f"Hello, {name}!")
 

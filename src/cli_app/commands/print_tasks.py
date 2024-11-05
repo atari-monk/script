@@ -5,6 +5,10 @@ import os
 from base.base_command import BaseCommand
 
 class PrintTasksCommand(BaseCommand):
+    def __init__(self, app):
+        super().__init__()
+        self.app = app
+
     def execute(self):
         tasks_file = '../../data/tasks.json'
         

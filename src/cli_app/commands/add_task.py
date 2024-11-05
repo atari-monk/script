@@ -5,6 +5,10 @@ import os
 from base.base_command import BaseCommand
 
 class AddTaskCommand(BaseCommand):
+    def __init__(self, app):
+        super().__init__()
+        self.app = app
+
     def execute(self, description, priority, duration):
         try:
             task = {
