@@ -7,7 +7,8 @@ class CommandLoaderModule(BaseModule):
     def initialize(self):
         """
         Dynamically load command classes from the 'commands' folder and register them,
-        including commands from subdirectories.
+        including commands from subdirectories. Command names will include folder structure
+        to avoid naming conflicts.
         """
         command_folder = 'commands'
         
@@ -23,5 +24,12 @@ class CommandLoaderModule(BaseModule):
                         command_class = getattr(module, attr)
                         if isinstance(command_class, type) and issubclass(command_class, BaseCommand) and command_class is not BaseCommand:
                             command_instance = command_class(self.app)  # Pass the app instance
-                            command_name = filename[:-3]  # Command name without .py extension
+                            
+                            # Create a command name that includes the folder structure
+                            relative_path = os.path.relpath(dirpath, command_folder)
+                            if relative_path != '.':
+                                command_name = f"{relative_path.replace(os.sep, '/')}/{filename[:-3]}"
+                            else:
+                                command_name = filename[:-3]  # Command name without .py extension
+                            
                             self.app.commands[command_name] = command_instance.execute
