@@ -1,10 +1,12 @@
 # main.py
 
+from app_context import AppContext
 from modules.command_loader import CommandLoaderModule
 from modules.run_module import RunModule
 
 class CLIApp:
     def __init__(self):
+        self.context = AppContext()
         self.commands = {}
         self.running = True
         self.command_loader = CommandLoaderModule(self)
