@@ -1,6 +1,15 @@
 import json
 import os
+from pydantic import BaseModel, Field, ValidationError
 from base.base_command import BaseCommand
+
+class Task(BaseModel):
+    name: str
+    description: str
+    priority_id: int
+    duration_estimate: int
+
+    # You can add constraints for fields if needed, such as min and max values for duration_estimate
 
 class AddTaskCommand(BaseCommand):
     def __init__(self, app):
@@ -16,21 +25,13 @@ class AddTaskCommand(BaseCommand):
         name, description, priority_id, duration_estimate = args
 
         try:
-            # Convert priority_id to an integer for validation
-            priority_id = int(priority_id)
-
-            # Validate name format (only letters, numbers, and underscores)
-            if not self.is_valid_name(name):
-                print("Invalid name format. Name must be alphanumeric or contain underscores.")
-                return
-
-            # Validate description (should be a non-empty string)
-            if not self.is_valid_description(description):
-                print("Invalid description. Description cannot be empty and should be a string.")
-                return
-
-            # Validate duration (should be an integer)
-            duration_estimate_int = self.validate_duration(duration_estimate)
+            # Parse and validate the input parameters using Pydantic
+            task_data = Task(
+                name=name,
+                description=description,
+                priority_id=int(priority_id),
+                duration_estimate=int(duration_estimate)
+            )
 
             # Load existing tasks to establish a new id
             tasks_file = '../../data/tasks.json'
@@ -41,17 +42,17 @@ class AddTaskCommand(BaseCommand):
 
             # Load priorities and validate priority_id
             priorities = self.load_priorities()
-            if not any(priority['id'] == priority_id for priority in priorities):
+            if not any(priority['id'] == task_data.priority_id for priority in priorities):
                 valid_ids = [priority['id'] for priority in priorities]
-                print(f"Invalid priority ID: {priority_id}. Valid priority IDs are: {valid_ids}.")
+                print(f"Invalid priority ID: {task_data.priority_id}. Valid priority IDs are: {valid_ids}.")
                 return
 
             task = {
                 "id": task_id,
-                "name": name,
-                "description": description,
-                "priority_id": priority_id,
-                "duration_estimate": duration_estimate_int
+                "name": task_data.name,
+                "description": task_data.description,
+                "priority_id": task_data.priority_id,
+                "duration_estimate": task_data.duration_estimate
             }
 
             # Append the new task
@@ -63,8 +64,8 @@ class AddTaskCommand(BaseCommand):
 
             print(f"Task added: {task}")
 
-        except ValueError as e:
-            print(f"Error: {e}. Please ensure that duration is an integer.")
+        except ValidationError as e:
+            print(f"Error: Invalid input data. {e}")
 
     @property
     def description(self):
@@ -91,22 +92,3 @@ class AddTaskCommand(BaseCommand):
                 print("Warning: priorities.json is empty or contains invalid JSON. Returning an empty priority list.")
                 return []
         return []
-
-    def is_valid_name(self, name):
-        """Check if the name is valid (alphanumeric and underscores)."""
-        return isinstance(name, str) and bool(name) and all(c.isalnum() or c == '_' for c in name)
-
-    def is_valid_description(self, description):
-        """Check if the description is valid (non-empty string)."""
-        return isinstance(description, str) and bool(description.strip())
-
-    def validate_duration(self, duration_estimate):
-        """Validate that duration_estimate is an integer."""
-        try:
-            duration_int = int(duration_estimate)
-        except ValueError:
-            raise ValueError("Duration estimate must be an integer.")
-        
-        if duration_int < 0:
-            raise ValueError("Duration estimate cannot be negative.")
-        return duration_int
