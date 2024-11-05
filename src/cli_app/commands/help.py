@@ -4,7 +4,7 @@ class HelpCommand(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.ignore_list = {'template'}
+        self.ignore_list = {}
 
     def execute(self, *args):
         """Display the available commands and their descriptions."""

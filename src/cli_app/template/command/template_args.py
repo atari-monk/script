@@ -1,6 +1,6 @@
 from base.base_command import BaseCommand
 
-class TemplateCommand(BaseCommand):
+class TemplateArgsCommand(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
@@ -21,4 +21,4 @@ class TemplateCommand(BaseCommand):
 
     @property
     def description(self):
-        return "Template command help."
+        return "Command help."

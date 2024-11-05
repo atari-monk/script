@@ -8,7 +8,7 @@ class MenuCommand(BaseCommand):
         super().__init__()
         self.app = app
         self.command_list = []  # To store numbered list of commands and folders
-        self.ignore_list = {'__init__.py', '__pycache__', 'template.py'}  # Items to ignore
+        self.ignore_list = {'__init__.py', '__pycache__'}  # Items to ignore
 
     def execute(self, *args):
         # Determine the main commands folder path

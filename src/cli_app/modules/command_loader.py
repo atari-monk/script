@@ -15,7 +15,7 @@ class CommandLoaderModule(BaseModule):
         for dirpath, _, filenames in os.walk(command_folder):
             for filename in filenames:
                 # Skip the init and template files
-                if filename.endswith(".py") and filename not in ["__init__.py", "template.py"]:
+                if filename.endswith(".py") and filename not in ["__init__.py"]:
                     # Create module name by replacing slashes with dots
                     module_name = f"{dirpath.replace(os.sep, '.')}.{filename[:-3]}"
                     module = importlib.import_module(module_name)
