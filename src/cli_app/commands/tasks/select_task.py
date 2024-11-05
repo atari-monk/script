@@ -1,5 +1,3 @@
-# commands/select_task.py
-
 import json
 import os
 from base.base_command import BaseCommand
@@ -9,10 +7,10 @@ class SelectTaskCommand(BaseCommand):
         super().__init__()
         self.app = app
 
-    def execute(self, task_index):
+    def execute(self, task_id):
         try:
-            # Convert task_index to an integer
-            task_index = int(task_index)
+            # Convert task_id to an integer
+            task_id = int(task_id)
 
             tasks_file = '../../data/tasks.json'
 
@@ -24,19 +22,20 @@ class SelectTaskCommand(BaseCommand):
                 print("No tasks found.")
                 return
 
-            # Check if the index is valid
-            if 0 <= task_index < len(tasks):
-                selected_task = tasks[task_index]
+            # Find the task by ID
+            selected_task = next((task for task in tasks if task['id'] == task_id), None)
+
+            if selected_task:
                 self.app.context.current_task = selected_task
                 print(f"Task selected: {selected_task}")
             else:
-                print(f"Invalid task index. Please select a number between 0 and {len(tasks) - 1}.")
+                print(f"Invalid task ID: {task_id}. Please provide a valid task ID.")
 
         except ValueError:
-            print("Invalid input for task index. Please provide a valid number.")
+            print("Invalid input for task ID. Please provide a valid number.")
         except Exception as e:
             print(f"An error occurred: {e}")
 
     @property
     def description(self):
-        return "Select a task by index and store it in the application context."
+        return "Select a task by ID and store it in the application context."

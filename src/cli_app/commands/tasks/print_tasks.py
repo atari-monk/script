@@ -1,5 +1,3 @@
-# commands/print_tasks.py
-
 import json
 import os
 from base.base_command import BaseCommand
@@ -16,16 +14,20 @@ class PrintTasksCommand(BaseCommand):
             print("No tasks file found.")
             return
 
-        with open(tasks_file, 'r') as file:
-            tasks = json.load(file)
+        try:
+            with open(tasks_file, 'r') as file:
+                tasks = json.load(file)
+        except json.JSONDecodeError:
+            print("Error reading tasks file: Invalid JSON format.")
+            return
 
         if not tasks:
             print("No tasks available.")
             return
 
         print("Tasks:")
-        for i, task in enumerate(tasks, start=1):
-            print(f"{i}. Description: {task['description']}, Priority: {task['priority']}, Duration: {task['duration']}")
+        for task in tasks:
+            print(f"ID: {task['id']}, Description: {task['description']}, Priority ID: {task['priority_id']}, Duration Estimate: {task['duration_estimate']} minutes")
 
     @property
     def description(self):
