@@ -1,0 +1,38 @@
+{
+  "scenarios": {
+    "grocery_store_manager": {
+      "questions": [
+        {
+          "panel_member": "Panelist 1",
+          "question": "How would you handle a customer complaint about a product?",
+          "choices": [
+            "Apologize and offer a refund",
+            "Ignore it",
+            "Ask the customer to come back later"
+          ],
+          "correct_answer": "Apologize and offer a refund"
+        },
+        {
+          "panel_member": "Panelist 2",
+          "question": "What would you do if a team member consistently arrives late?",
+          "choices": [
+            "Speak to them privately",
+            "Ignore the issue",
+            "Report them to HR immediately"
+          ],
+          "correct_answer": "Speak to them privately"
+        },
+        {
+          "panel_member": "Panelist 3",
+          "question": "How would you prioritize tasks on a busy day?",
+          "choices": [
+            "Focus on customer service",
+            "Handle inventory first",
+            "Delegate everything"
+          ],
+          "correct_answer": "Focus on customer service"
+        }
+      ]
+    }
+  }
+}
