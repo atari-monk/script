@@ -8,5 +8,10 @@
     "description": "test",
     "priority": "test",
     "duration": 10.0
+  },
+  {
+    "description": "test",
+    "priority": "test",
+    "duration": 10.0
   }
 ]
