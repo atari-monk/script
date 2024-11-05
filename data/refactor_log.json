@@ -1,8 +1,57 @@
-{"task": "Add new scripts.", "status": "completed", "timestamp": "2024-11-05T11:34:32.966863", "additional_info": null}
-{"task": "Add new scripts.", "status": "started", "start_time": "2024-11-05T11:43:23.237826", "end_time": null, "additional_info": null}
-{"task": "Add new scripts.", "status": "completed", "start_time": "2024-11-05T11:43:23.237826", "end_time": "2024-11-05T11:44:41.136817", "additional_info": null}
-{"task": "Add new scripts.", "status": "started", "start_time": "2024-11-05T11:45:53.030702", "end_time": null, "additional_info": null}
-{"task": "Add new scripts.", "status": "completed", "start_time": "2024-11-05T11:45:53.030702", "end_time": "2024-11-05T11:47:04.053061", "additional_info": null}
-{"task": "Add new scripts.", "status": "started", "start_time": "2024-11-05T11:47:57.061533", "end_time": null, "additional_info": null}
-{"task": "Add new scripts.", "status": "completed", "start_time": "2024-11-05T11:47:57.061533", "end_time": "2024-11-05T11:48:57.063798", "additional_info": null}
-{"task": "Add new scripts.", "status": "started", "start_time": "2024-11-05T11:52:05.926551", "end_time": null, "additional_info": null}
+[
+  {
+    "task": "Add new scripts.",
+    "status": "completed",
+    "timestamp": "2024-11-05T11:34:32.966863",
+    "additional_info": null
+  },
+  {
+    "task": "Add new scripts.",
+    "status": "started",
+    "start_time": "2024-11-05T11:43:23.237826",
+    "end_time": null,
+    "additional_info": null
+  },
+  {
+    "task": "Add new scripts.",
+    "status": "completed",
+    "start_time": "2024-11-05T11:43:23.237826",
+    "end_time": "2024-11-05T11:44:41.136817",
+    "additional_info": null
+  },
+  {
+    "task": "Add new scripts.",
+    "status": "started",
+    "start_time": "2024-11-05T11:45:53.030702",
+    "end_time": null,
+    "additional_info": null
+  },
+  {
+    "task": "Add new scripts.",
+    "status": "completed",
+    "start_time": "2024-11-05T11:45:53.030702",
+    "end_time": "2024-11-05T11:47:04.053061",
+    "additional_info": null
+  },
+  {
+    "task": "Add new scripts.",
+    "status": "started",
+    "start_time": "2024-11-05T11:47:57.061533",
+    "end_time": null,
+    "additional_info": null
+  },
+  {
+    "task": "Add new scripts.",
+    "status": "completed",
+    "start_time": "2024-11-05T11:47:57.061533",
+    "end_time": "2024-11-05T11:48:57.063798",
+    "additional_info": null
+  },
+  {
+    "task": "Add new scripts.",
+    "status": "started",
+    "start_time": "2024-11-05T11:52:05.926551",
+    "end_time": null,
+    "additional_info": null
+  }
+]
