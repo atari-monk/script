@@ -1,16 +1,1 @@
-[
-  {
-    "id": 1,
-    "name": "more_commands",
-    "description": "Move scripts from py files to commands in cli app.",
-    "priority_id": 2,
-    "duration_estimate": 25
-  },
-  {
-    "id": 2,
-    "name": "cli_app_help",
-    "description": "Upgrade commands help. Folders as menu item.",
-    "priority_id": 2,
-    "duration_estimate": 25
-  }
-]
+[]
