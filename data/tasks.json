@@ -1,17 +1,9 @@
 [
   {
-    "description": "Add new scripts.",
-    "priority": "Low",
-    "duration": 0.1
-  },
-  {
-    "description": "test",
-    "priority": "test",
-    "duration": 10.0
-  },
-  {
-    "description": "test",
-    "priority": "test",
-    "duration": 10.0
+    "id": 1,
+    "name": "t",
+    "description": "t",
+    "priority": "1",
+    "duration_estimate": 1.0
   }
 ]

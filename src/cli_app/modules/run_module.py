@@ -1,5 +1,3 @@
-# main.py or a separate file for better organization
-
 from base.base_module import BaseModule
 
 class RunModule(BaseModule):
