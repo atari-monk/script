@@ -3,5 +3,10 @@
     "description": "Add new scripts.",
     "priority": "Low",
     "duration": 0.1
+  },
+  {
+    "description": "test",
+    "priority": "test",
+    "duration": 10.0
   }
 ]
