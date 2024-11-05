@@ -14,8 +14,8 @@ class RunModule(BaseModule):
                     continue
 
                 command, *args = user_input
-                if command in self.app.commands:
-                    self.app.commands[command](*args)
+                if command in self.app.context.commands:
+                    self.app.context.execute_command(command, *args)
                 else:
                     print(f"Unknown command: {command}. Type 'help' to see available commands.")
             except Exception as e:

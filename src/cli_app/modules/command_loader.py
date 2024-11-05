@@ -14,12 +14,13 @@ class CommandLoaderModule(BaseModule):
         
         for dirpath, _, filenames in os.walk(command_folder):
             for filename in filenames:
-                if filename.endswith(".py") and filename != ["__init__.py", "template.py"]:
+                # Skip the init and template files
+                if filename.endswith(".py") and filename not in ["__init__.py", "template.py"]:
                     # Create module name by replacing slashes with dots
                     module_name = f"{dirpath.replace(os.sep, '.')}.{filename[:-3]}"
                     module = importlib.import_module(module_name)
 
-                    # Find command class in module
+                    # Find and register command classes in the module
                     for attr in dir(module):
                         command_class = getattr(module, attr)
                         if isinstance(command_class, type) and issubclass(command_class, BaseCommand) and command_class is not BaseCommand:
@@ -32,4 +33,5 @@ class CommandLoaderModule(BaseModule):
                             else:
                                 command_name = filename[:-3]  # Command name without .py extension
                             
-                            self.app.commands[command_name] = command_instance.execute
+                            # Register the command in the app's command registry
+                            self.app.context.register_command(command_name, command_instance.execute)
