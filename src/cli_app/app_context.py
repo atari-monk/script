@@ -1,9 +1,8 @@
-# app_context.py
-
 class AppContext:
     def __init__(self):
         self.current_task = None
         self.commands = {}
+        self.last_menu = []  # To store the last printed menu items
 
     def register_command(self, name, command):
         """Register a command in the context."""
@@ -20,3 +19,11 @@ class AppContext:
             return command(*args, **kwargs)
         else:
             raise ValueError(f"Command '{name}' not found.")
+
+    def set_last_menu(self, menu):
+        """Store the last printed menu items."""
+        self.last_menu = menu
+
+    def get_last_menu(self):
+        """Retrieve the last printed menu items."""
+        return self.last_menu
