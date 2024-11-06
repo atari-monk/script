@@ -4,9 +4,9 @@ from .constants import DATABASE_PATH  # Assuming DATABASE_PATH is imported from 
 
 class DatabaseContext:
     def __init__(self):
-        self.file_name = None  # To store the current database file name
-        self.file_path = None  # To store the full path of the database file
-        self.data = None  # The current loaded database data (dictionary)
+        self.file_name = None
+        self.file_path = None
+        self.data = None
     
     def set_file(self, file_name):
         """Set the database file name and load its data."""
@@ -35,22 +35,36 @@ class DatabaseContext:
         with open(self.file_path, 'w') as file:
             json.dump(self.data, file, indent=2)
 
+    def generate_new_id(self, key):
+        """Generate the next available ID based on existing entries under a given key."""
+        if not self.data:
+            raise ValueError("No database loaded. Please load a database file first.")
+        
+        items = self.data.get(key, [])
+        if not items:
+            return "1"  # If no items, start with ID "1"
+        
+        # Extract the highest existing ID (assuming all items have an integer 'id' field)
+        max_id = max(int(item["project_id"]) for item in items)
+        return str(max_id + 1)
+
     def add_project(self, project_name):
         """Add a new project to the loaded database."""
         if not self.data:
             raise ValueError("No database loaded. Please load a database file first.")
         
-        # Generate new project_id (next available ID based on existing projects)
-        projects = self.data.get("projects", [])
-        new_project_id = str(len(projects) + 1)  # Simple approach, can be adjusted for more complex ID generation
-
+        new_project_id = self.generate_new_id("projects")  # Use the new ID generation method
         new_project = {
             "project_id": new_project_id,
             "name": project_name
         }
 
+        # Add the project to the database
+        projects = self.data.get("projects", [])
         projects.append(new_project)
         self.data["projects"] = projects
+
+        # Save the data back to the file
         self.save_data()
         return new_project  # Return the added project data
 

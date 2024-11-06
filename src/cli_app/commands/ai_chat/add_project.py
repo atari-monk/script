@@ -25,30 +25,10 @@ class AddProjectCommand(BaseCommand):
             print(f"Error: The file '{file_name}' does not exist in the database.")
             return
 
-        # Retrieve the current data from the database
-        data = db_context.get_data()
+        # Add the new project
+        new_project = db_context.add_project(project_name)
 
-        # Determine the highest existing project ID and increment it for the new project
-        if data.get("projects"):
-            max_project_id = max(int(project["project_id"]) for project in data["projects"])
-            new_project_id = str(max_project_id + 1)
-        else:
-            # If no projects exist, start with ID "1"
-            new_project_id = "1"
-
-        # Create the new project
-        new_project = {
-            "project_id": new_project_id,
-            "name": project_name
-        }
-
-        # Add the new project to the list of projects
-        data["projects"].append(new_project)
-
-        # Save the updated data back to the file through the database context
-        db_context.save_data()
-
-        print(f"New project '{project_name}' with ID '{new_project_id}' has been added to '{file_name}'.")
+        print(f"New project '{project_name}' with ID '{new_project['project_id']}' has been added to '{file_name}'.")
 
     @property
     def description(self):
