@@ -1,4 +1,4 @@
-from .database_config import db_context
+from .lib.database_config import db_context
 from base.base_command import BaseCommand
 
 class AddProjectCommand(BaseCommand):
