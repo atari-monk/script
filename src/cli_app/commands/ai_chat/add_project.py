@@ -1,5 +1,6 @@
-from .lib.database_config import db_context
 from base.base_command import BaseCommand
+from .lib.config import db_context
+from .lib.config import parsing_utils
 
 class AddProjectCommand(BaseCommand):
     def __init__(self, app):
@@ -7,9 +8,15 @@ class AddProjectCommand(BaseCommand):
         self.app = app
 
     def execute(self, *args):
-        # Get the file name for the database
-        file_name = input("Enter the database file name (e.g., conversation_01.json): ")
-        project_name = input("Enter the new project name: ")
+        # Validate the arguments
+        if not parsing_utils.validate_args(args, 2, ['file_name', 'project_name']):
+            return
+
+        # Extract file name and project name from args
+        file_name, project_name = args
+
+        # Ensure the file name has a '.json' extension
+        file_name = parsing_utils.validate_and_append_extension(file_name)
 
         # Set the file in the database context
         try:

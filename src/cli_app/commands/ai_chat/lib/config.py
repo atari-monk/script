@@ -1,1 +1,5 @@
-DATABASE_PATH = "C:/atari-monk/code/memory_cell/user_ai_chat"
+from .parsing_utils import ParsingUtils
+from .database_context import DatabaseContext
+
+parsing_utils = ParsingUtils()
+db_context = DatabaseContext()

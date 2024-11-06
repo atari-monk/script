@@ -1,6 +1,6 @@
 import os
 import json
-from .config import DATABASE_PATH  # Assuming DATABASE_PATH is imported from config.py
+from .constants import DATABASE_PATH  # Assuming DATABASE_PATH is imported from config.py
 
 class DatabaseContext:
     def __init__(self):

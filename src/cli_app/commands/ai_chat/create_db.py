@@ -1,5 +1,6 @@
 from base.base_command import BaseCommand
-from .lib.database_config import db_context
+from .lib.config import db_context
+from .lib.config import parsing_utils
 
 class CreateNewDBCommand(BaseCommand):
     def __init__(self, app):
@@ -7,7 +8,15 @@ class CreateNewDBCommand(BaseCommand):
         self.app = app
 
     def execute(self, *args):
-        file_name = input("Enter the new database file name (e.g., conversation_01.json): ")
+        # Validate the arguments
+        if not parsing_utils.validate_args(args, 1, ['file_name']):
+            return
+
+        # Extract the file name from args
+        file_name = args[0]
+
+        # Ensure the file name has a '.json' extension
+        file_name = parsing_utils.validate_and_append_extension(file_name)
 
         # Prepare the empty structure for the database
         conversation_data = {
