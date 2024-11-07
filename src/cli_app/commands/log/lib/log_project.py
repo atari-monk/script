@@ -5,7 +5,7 @@ from datetime import datetime
 
 # Constants
 CONVERS_SCRIPT_PATH = "log_project_convert.py"
-DATA_FOLDER = "./../../data"
+DATA_FOLDER = "../../data"
 DATABASE_FOLDER = "C:/atari-monk/code/apollo/content/Database"
 LOG_FILE_NAME = "log_project.txt"
 PROJECT_LIST_NAME = "projects.json"
@@ -134,6 +134,3 @@ def main():
 
     # Save the updated state
     save_state(state)
-
-if __name__ == "__main__":
-    main()
