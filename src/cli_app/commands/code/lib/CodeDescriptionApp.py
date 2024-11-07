@@ -1,71 +1,22 @@
+from cli_app.commands.code.lib.CodeDescription import CodeDescription
+from cli_app.commands.code.lib.codeForm import load_config
 import json
+import shutil
 import tkinter as tk
 from tkinter import messagebox, ttk
-import shutil
 
-# Define the CodeDescription data structure
-class CodeDescription:
-    def __init__(self, name='', description='', tags=None):
-        self.name = name
-        self.description = description
-        self.tags = tags if tags is not None else []
-
-    def to_dict(self):
-        return {
-            "name": self.name,
-            "description": self.description,
-            "tags": self.tags
-        }
-
-    @staticmethod
-    def from_dict(data):
-        return CodeDescription(
-            name=data.get("name", ""),
-            description=data.get("description", ""),
-            tags=data.get("tags", [])
-        )
-
-    @staticmethod
-    def load_tags(file_path):
-        try:
-            with open(file_path, "r") as f:
-                data = json.load(f)
-                tags = set()
-                for item in data:
-                    tags.update(item.get("tags", []))
-                tags.add("None")  # Ensure "None" is included
-                sorted_tags = sorted(tags)  # Sort tags
-                sorted_tags.remove("None")
-                return ["None"] + sorted_tags  # Return list with "None" first
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to load tags: {e}")
-            return ["None"]  # Default to ["None"]
-
-# Load configuration settings from JSON
-def load_config(file_path):
-    try:
-        with open(file_path, "r") as f:
-            return json.load(f)
-    except Exception as e:
-        messagebox.showerror("Error", f"Failed to load config: {e}")
-        return {
-            "font": {"font_family": "Arial", "font_size": 12},
-            "paths": {"data_file": {"storage1": "data/code_descriptions.json", "storage2": ""}}
-        }  # Default values
-
-# GUI Application
 class CodeDescriptionApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Code Description Form")
-        
+
         # Load configuration
         self.config = load_config("../config/codeForm.json")
         self.font_config = self.config.get("font", {})
         self.path_config = self.config.get("paths", {})
         self.file_path_storage1 = self.path_config.get("storage1", "../data/code_descriptions.json")
         self.file_path_storage2 = self.path_config.get("storage2", "")
-        
+
         self.font = (self.font_config.get("font_family", "Arial"), self.font_config.get("font_size", 12))
 
         # Load tags from JSON
@@ -149,7 +100,7 @@ class CodeDescriptionApp:
             # Save to storage1
             with open(self.file_path_storage1, "w") as f:
                 json.dump([desc.to_dict() for desc in descriptions], f, indent=2)
-            
+
             # Copy to storage2 if path is specified
             if self.file_path_storage2:
                 shutil.copy(self.file_path_storage1, self.file_path_storage2)
@@ -214,8 +165,4 @@ class CodeDescriptionApp:
         self.description_text.delete("1.0", tk.END)
         self.tags_var.set("")  # Clear tags input
         self.tag_var.set("None")  # Reset tag to default
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = CodeDescriptionApp(root)
-    root.mainloop()
+        
