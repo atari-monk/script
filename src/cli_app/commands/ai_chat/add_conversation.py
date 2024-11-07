@@ -29,7 +29,7 @@ class AddConversationCommand(BaseCommand):
         if isinstance(tags_id, str):
             tags_id = tags_id.split(",")  # Split comma-separated string into list
 
-        # Add the new conversation (without dialogues)
+        # Add the new conversation
         new_conversation = db_context.add_conversation(
             project_id=project_id,
             tags_id=tags_id,
@@ -37,7 +37,7 @@ class AddConversationCommand(BaseCommand):
             description=description
         )
 
-        print(f"New conversation '{name}' has been added to '{file_name}' with ID '{new_conversation['project_id']}'.")
+        print(f"New conversation '{name}' has been added to '{file_name}' with ID '{new_conversation['conversation_id']}'.")
 
     @property
     def description(self):

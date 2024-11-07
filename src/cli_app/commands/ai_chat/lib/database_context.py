@@ -102,12 +102,14 @@ class DatabaseContext:
         
         new_conversation_id = self.generate_new_id("conversations")  # Generate a unique ID for the conversation
         new_conversation = {
+            "conversation_id": new_conversation_id,
             "project_id": project_id,
             "tags_id": tags_id,
             "name": name,
             "description": description,
             "start_timestamp": self.parsing_utils.get_current_timestamp(),
             "last_mod_timestamp": self.parsing_utils.get_current_timestamp(),
+            "dialogues": []  # Initialize as an empty list
         }
 
         # Add the conversation to the database
