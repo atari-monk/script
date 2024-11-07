@@ -121,6 +121,20 @@ class DatabaseContext:
         self.save_data()
         return new_conversation
     
+    def get_conversation(self, conversation_id):
+        """Retrieve a conversation by its ID."""
+        if not self.data:
+            raise ValueError("No database loaded. Please load a database file first.")
+
+        # Find the conversation by its ID
+        conversations = self.data.get("conversations", [])
+        conversation = next((conv for conv in conversations if conv["conversation_id"] == conversation_id), None)
+
+        if not conversation:
+            raise ValueError(f"Conversation with ID '{conversation_id}' not found.")
+        
+        return conversation
+    
     def add_dialog(self, conversation_id, message, response):
         """Add a dialog entry to a specific conversation with a unique dialog ID."""
         if not self.data:
