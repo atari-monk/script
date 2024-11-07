@@ -4,7 +4,7 @@ from datetime import datetime
 
 # Define project_files as a dictionary, not a set
 project_files = {
-    "morpheus": './../data/morpheus_time_logger.json'
+    "morpheus": '../../data/morpheus_time_logger.json'
 }
 
 # Function to validate date format
@@ -50,7 +50,7 @@ def load_or_create_project_file(project_name):
         project_file_path = project_files[project_name]
     else:
         # If project doesn't exist, create a new file path
-        project_file_path = f'./../data/{project_name.lower().replace(" ", "_")}_schedule.json'
+        project_file_path = f'../../data/{project_name.lower().replace(" ", "_")}_schedule.json'
         project_files[project_name] = project_file_path
     
     if os.path.exists(project_file_path):
@@ -105,6 +105,5 @@ def add_day_to_project():
 
     print(f"Data for {date_to_add} added to {project_name} and saved to {project_file_path}")
 
-# Run the main function
-if __name__ == "__main__":
+def main():
     add_day_to_project()

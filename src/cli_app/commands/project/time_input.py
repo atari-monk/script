@@ -1,7 +1,7 @@
 from base.base_command import BaseCommand
-from .lib.project_selection import main
+from .lib.selection import main
 
-class ProjectSelectionCommand(BaseCommand):
+class ProjectTimeInputCommand(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
@@ -11,4 +11,5 @@ class ProjectSelectionCommand(BaseCommand):
 
     @property
     def description(self):
-        return "Project selection."
+        return "Project time input."
+    
