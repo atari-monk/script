@@ -1,63 +1,14 @@
 import json
 import tkinter as tk
 from tkinter import messagebox, ttk
+from .scene import Scene
 
-# Define the Scene, Entity, Component, and System data structures
-class Scene:
-    def __init__(self, path='', name='', description='', image='', entities=None):
-        self.path = path
-        self.name = name
-        self.description = description
-        self.image = image
-        self.entities = entities if entities is not None else []
-
-    def to_dict(self):
-        return {
-            "path": self.path,
-            "name": self.name,
-            "description": self.description,
-            "image": self.image,
-            "entities": [entity.to_dict() for entity in self.entities]
-        }
-
-    @staticmethod
-    def from_dict(data):
-        return Scene(
-            path=data.get("path", ""),
-            name=data.get("name", ""),
-            description=data.get("description", ""),
-            image=data.get("image", ""),
-            entities=[Entity.from_dict(e) for e in data.get("entities", [])]
-        )
-
-class Entity:
-    def __init__(self, name='', components=None, systems=None):
-        self.name = name
-        self.components = components if components is not None else []
-        self.systems = systems if systems is not None else []
-
-    def to_dict(self):
-        return {
-            "name": self.name,
-            "components": self.components,
-            "systems": self.systems
-        }
-
-    @staticmethod
-    def from_dict(data):
-        return Entity(
-            name=data.get("name", ""),
-            components=data.get("components", []),
-            systems=data.get("systems", [])
-        )
-
-# GUI Application
 class SceneViewerApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Scene Viewer")
-        self.file_path = "../data/scenes.json"
-        self.config_path = "../config/sceneViewer.json"  # Path to the configuration file
+        self.file_path = "../../data/scenes.json"
+        self.config_path = "../../config/sceneViewer.json"  # Path to the configuration file
         self.font_config = self.load_font_config()  # Load font configuration
 
         # Scrollable Frame
@@ -133,8 +84,3 @@ class SceneViewerApp:
         
         self.details_text.delete("1.0", tk.END)  # Clear previous details
         self.details_text.insert(tk.END, details)  # Insert new details
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = SceneViewerApp(root)
-    root.mainloop()
