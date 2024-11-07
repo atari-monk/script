@@ -1,17 +1,17 @@
 import tkinter as tk
 from base.base_command import BaseCommand
-from .lib.code_description_app import CodeDescriptionApp
+from .lib.code_viewer_app import CodeViewerApp
 
-class CodeFormCommand(BaseCommand):
+class CodeViewerCommand(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
 
     def execute(self, *args):
         root = tk.Tk()
-        app = CodeDescriptionApp(root, '../../data/code_descriptions.json')
+        app = CodeViewerApp(root)
         root.mainloop()
 
     @property
     def description(self):
-        return "Code form."
+        return "Code Viewer."

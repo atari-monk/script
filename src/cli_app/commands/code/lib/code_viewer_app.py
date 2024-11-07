@@ -1,62 +1,16 @@
 import json
 import tkinter as tk
 from tkinter import messagebox, ttk
+from .database_context import DatabaseContext
+from .code_description import CodeDescription
 
-# Define the CodeDescription data structure
-class CodeDescription:
-    def __init__(self, name='', description='', tags=None):
-        self.name = name
-        self.description = description
-        self.tags = tags if tags is not None else []
-
-    def to_dict(self):
-        return {
-            "name": self.name,
-            "description": self.description,
-            "tags": self.tags
-        }
-
-    @staticmethod
-    def from_dict(data):
-        return CodeDescription(
-            name=data.get("name", ""),
-            description=data.get("description", ""),
-            tags=data.get("tags", [])
-        )
-
-    @staticmethod
-    def load_tags(file_path):
-        try:
-            with open(file_path, "r") as f:
-                data = json.load(f)
-                tags = set()
-                for item in data:
-                    tags.update(item.get("tags", []))
-                tags.add("None")  # Ensure "None" is included
-                sorted_tags = sorted(tags)  # Sort tags
-                # Ensure "None" is the first element
-                sorted_tags.remove("None")
-                return ["None"] + sorted_tags  # Return list with "None" first
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to load tags: {e}")
-            return ["None"]  # Default to ["None"]
-
-# Load configuration settings from JSON
-def load_config(file_path):
-    try:
-        with open(file_path, "r") as f:
-            return json.load(f)
-    except Exception as e:
-        messagebox.showerror("Error", f"Failed to load config: {e}")
-        return {"font_family": "Arial", "font_size": 12}  # Default values
-
-# GUI Application
 class CodeViewerApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Code Viewer")
-        self.file_path = "data/code_descriptions.json"
-        self.config = load_config("config/codeForm.json")  # Load font configuration
+        self.file_path = "../../data/code_descriptions.json"
+        self.db = DatabaseContext(self.file_path)
+        self.config = self.db.load_config("../../config/codeForm.json")  # Load font configuration
         self.font = (self.config.get("font_family", "Arial"), self.config.get("font_size", 12))
 
         # Load tags from JSON
@@ -162,8 +116,3 @@ class CodeViewerApp:
         self.description_text.config(state="normal")  # Enable text widget to clear
         self.description_text.delete("1.0", tk.END)
         self.description_text.config(state="disabled")  # Set back to read-only
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = CodeViewerApp(root)
-    root.mainloop()
