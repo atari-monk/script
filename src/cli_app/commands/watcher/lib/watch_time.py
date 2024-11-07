@@ -9,7 +9,7 @@ reminder_rules = [
 def reminder(title, rule):
     messagebox.showinfo(title, rule)
 
-def check_reminder():
+def check_reminder(root):
     current_time = time.localtime()
 
     print(f"Current Time: {current_time.tm_hour}:{current_time.tm_min}")
@@ -25,12 +25,12 @@ def check_reminder():
 
     root.after(60000, check_reminder)
 
-if __name__ == "__main__":
+def main():
     root = tk.Tk()
     root.withdraw()
 
     messagebox.showinfo("Reminder", "Time Watcher on")
 
-    check_reminder()
+    check_reminder(root)
 
     root.mainloop()
