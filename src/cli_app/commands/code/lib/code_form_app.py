@@ -4,7 +4,7 @@ from tkinter import messagebox, ttk
 from .code_description import CodeDescription
 from .database_context import DatabaseContext
 
-class CodeDescriptionApp:
+class CodeFormApp:
     def __init__(self, root, db_path):
         self.root = root
         self.root.title("Code Description Form")
