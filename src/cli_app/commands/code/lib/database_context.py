@@ -53,6 +53,23 @@ class DatabaseContext:
                 return CodeDescription(name=entry["name"], description=entry["description"], tags=entry["tags"])
         return None
 
+    def get_all_tags(self):
+        try:
+            # Use a set to avoid duplicates
+            tags = set()
+
+            # Collect all tags from the descriptions already loaded in db_data
+            for entry in self.db_data:
+                tags.update(entry.get("tags", []))  # Add tags for each entry, if any
+
+            tags.add("None")  # Ensure "None" is included in the tags
+
+            # Return sorted tags
+            return sorted(tags)
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load tags: {e}")
+            return ["None"]  # Default value in case of error
+
     # Load configuration settings from JSON
     def load_config(self, file_path):
         try:

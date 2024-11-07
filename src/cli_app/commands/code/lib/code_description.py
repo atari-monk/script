@@ -21,20 +21,4 @@ class CodeDescription:
             description=data.get("description", ""),
             tags=data.get("tags", [])
         )
-
-    @staticmethod
-    def load_tags(file_path):
-        try:
-            with open(file_path, "r") as f:
-                data = json.load(f)
-                tags = set()
-                for item in data:
-                    tags.update(item.get("tags", []))
-                tags.add("None")
-                sorted_tags = sorted(tags)
-                sorted_tags.remove("None")
-                return ["None"] + sorted_tags
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to load tags: {e}")
-            return ["None"]
         
