@@ -47,8 +47,7 @@ def decide_project(method_name="random_choice"):
         raise ValueError(f"Method '{method_name}' not found. Available methods: {list(decision_methods.keys())}")
     return decision_methods[method_name]()
 
-# Main execution
-if __name__ == "__main__":
+def main() :
     # Choose a method (you can replace 'random_choice' with other method names like 'priority_based')
     chosen_method = "priority_based"  # Change to test different methods
     project = decide_project(chosen_method)
