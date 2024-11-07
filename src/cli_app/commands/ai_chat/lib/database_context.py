@@ -1,13 +1,14 @@
 import os
 import json
-from .constants import DATABASE_PATH  # Assuming DATABASE_PATH is imported from config.py
+from .constants import DATABASE_PATH
 
 class DatabaseContext:
-    def __init__(self):
+    def __init__(self, parsing_utils):
         self.file_name = None
         self.file_path = None
         self.data = None
-    
+        self.parsing_utils = parsing_utils
+
     def set_file(self, file_name):
         """Set the database file name and load its data."""
         self.file_name = file_name
@@ -45,8 +46,28 @@ class DatabaseContext:
             return "1"  # If no items, start with ID "1"
         
         # Extract the highest existing ID (assuming all items have an integer 'id' field)
-        max_id = max(int(item["project_id"]) for item in items)
+        max_id = max(int(item[f"{key[:-1]}_id"]) for item in items)  # Handles both "project_id" and "tag_id"
         return str(max_id + 1)
+
+    def add_tag(self, tag_name):
+        """Add a new tag to the loaded database."""
+        if not self.data:
+            raise ValueError("No database loaded. Please load a database file first.")
+        
+        new_tag_id = self.generate_new_id("tags")  # Use the new ID generation method for tags
+        new_tag = {
+            "tag_id": new_tag_id,
+            "name": tag_name
+        }
+
+        # Add the tag to the database
+        tags = self.data.get("tags", [])
+        tags.append(new_tag)
+        self.data["tags"] = tags
+
+        # Save the data back to the file
+        self.save_data()
+        return new_tag
 
     def add_project(self, project_name):
         """Add a new project to the loaded database."""
@@ -73,3 +94,53 @@ class DatabaseContext:
         if not self.data:
             raise ValueError("No database loaded. Please load a database file first.")
         return self.data.get("projects", [])
+
+    def add_conversation(self, project_id, tags_id, name, description):
+        """Add a new conversation to the loaded database."""
+        if not self.data:
+            raise ValueError("No database loaded. Please load a database file first.")
+        
+        new_conversation_id = self.generate_new_id("conversations")  # Generate a unique ID for the conversation
+        new_conversation = {
+            "project_id": project_id,
+            "tags_id": tags_id,
+            "name": name,
+            "description": description,
+            "start_timestamp": self.parsing_utils.get_current_timestamp(),
+            "last_mod_timestamp": self.parsing_utils.get_current_timestamp(),
+        }
+
+        # Add the conversation to the database
+        conversations = self.data.get("conversations", [])
+        conversations.append(new_conversation)
+        self.data["conversations"] = conversations
+
+        # Save the data back to the file
+        self.save_data()
+        return new_conversation
+    
+    def add_dialog(self, conversation_id, message, response):
+        """Add a dialog entry to a specific conversation."""
+        if not self.data:
+            raise ValueError("No database loaded. Please load a database file first.")
+        
+        # Find the conversation by its ID
+        conversations = self.data.get("conversations", [])
+        conversation = next((conv for conv in conversations if conv["project_id"] == conversation_id), None)
+
+        if not conversation:
+            raise ValueError(f"Conversation with ID '{conversation_id}' not found.")
+        
+        # Create the new dialog entry
+        new_dialog = {
+            "message": message,
+            "response": response
+        }
+
+        # Add the new dialog to the conversation's dialogues
+        conversation["dialogues"].append(new_dialog)
+        conversation["last_mod_timestamp"] = self.parsing_utils.get_current_timestamp()  # Update timestamp
+
+        # Save the updated data back to the file
+        self.save_data()
+        return new_dialog 

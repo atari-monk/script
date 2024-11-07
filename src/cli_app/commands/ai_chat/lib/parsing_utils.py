@@ -1,3 +1,5 @@
+import time
+
 class ParsingUtils:
     @staticmethod
     def validate_and_append_extension(file_name: str, extension: str = '.json') -> str:
@@ -19,3 +21,8 @@ class ParsingUtils:
                 return False
         
         return True
+
+    @staticmethod
+    def get_current_timestamp():
+        """Returns the current timestamp in a standard format."""
+        return time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())  # Return in UTC format, you can modify if needed
