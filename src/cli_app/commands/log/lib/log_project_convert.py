@@ -90,7 +90,7 @@ log_lines = read_log_file(log_file_path)
 markdown_result = convert_log_to_markdown(log_lines)
 
 # Print the Markdown output to console
-print(markdown_result)
+#print(markdown_result)
 
 # Write the Markdown output to a file
 output_file_path = os.path.join(LOG_FOLDER, OUTPUT_FILE)
