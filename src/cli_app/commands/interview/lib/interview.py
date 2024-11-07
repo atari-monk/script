@@ -38,11 +38,3 @@ class InterviewSimulator:
         
         # Final score
         print(f"Interview completed! Your score: {self.score}/{self.total_questions}")
-
-# Set up the interview scenario
-data_file = '../data/interview_data.json'
-scenario = 'grocery_store_manager'
-
-# Run the interview
-interview = InterviewSimulator(data_file, scenario)
-interview.conduct_interview()
