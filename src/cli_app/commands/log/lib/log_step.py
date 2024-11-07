@@ -28,7 +28,3 @@ def main():
             print("Exiting the logger.")
             break
         log_step(step)
-
-# Run the logger
-if __name__ == "__main__":
-    main()
