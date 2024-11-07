@@ -2,7 +2,7 @@ import json
 import os
 from datetime import datetime
 
-DATA_FILE = "../data/wellness_log.json"
+DATA_FILE = "../../data/wellness_log.json"
 
 # Load or initialize data
 if os.path.exists(DATA_FILE):
@@ -77,6 +77,3 @@ def main():
             break
         else:
             print("Invalid choice. Please try again.")
-
-if __name__ == "__main__":
-    main()
