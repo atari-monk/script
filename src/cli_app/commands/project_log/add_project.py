@@ -1,5 +1,5 @@
 from base.base_command import BaseCommand
-from .lib.crud.project_crud import ProjectCRUD  # Import your ProjectCRUD
+from .lib.crud.project_crud import ProjectCRUD  # Import ProjectCRUD
 from pydantic import BaseModel, Field, field_validator, ValidationError
 
 class AddProjectCommand(BaseCommand):
@@ -37,7 +37,6 @@ class AddProjectCommand(BaseCommand):
     @property
     def description(self):
         return "Add Project"
-
 
 # Pydantic Model to validate project input using @field_validator
 class ProjectInput(BaseModel):

@@ -1,75 +1,97 @@
+import json
+import os
 from typing import Optional, Dict
-from tinydb import Query
-from pydantic import ValidationError
-from ..database.database import db_context  # Get the shared db context
-from ..model.project import Project
-import logging
+from pydantic import BaseModel, ValidationError
+from ..config import DB_DIR
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Define the Project Pydantic model for validation
+class Project(BaseModel):
+    name: str
+    description: str
 
 class ProjectCRUD:
     def __init__(self):
-        #import pdb; pdb.set_trace()
-        db_context.set_table("projects")
-        print("Table set, now calling get_table...")
-        self.table = db_context.get_table()
+        self.file_path = os.path.join(DB_DIR, 'projects.json')
+        # Ensure the file exists, if not create it with an empty list
+        if not os.path.exists(self.file_path):
+            with open(self.file_path, 'w') as f:
+                json.dump([], f)
+
+    def _read_data(self) -> list:
+        """Reads the current data from the JSON file."""
+        with open(self.file_path, 'r') as f:
+            return json.load(f)
+
+    def _write_data(self, data: list):
+        """Writes the data back to the JSON file."""
+        with open(self.file_path, 'w') as f:
+            json.dump(data, f, indent=2)
 
     def create_project(self, name: str, description: str) -> Optional[dict]:
-        """Creates a new project with validation and adds it to the database."""
+        """Creates a new project and adds it to the JSON file."""
         try:
             # Validate data
             project = Project(name=name, description=description)
             
-            # Insert into TinyDB and automatically assign an ID
-            project_data = project.dict(exclude={"id"})  # Exclude the id to let TinyDB manage it
-            project_id = self.table.insert(project_data)
-            project_data['id'] = project_id  # Manually assign the id here after insertion
+            # Generate the project data as a dictionary (exclude 'id')
+            project_data = project.dict()
+            projects = self._read_data()
             
-            logger.info(f"Project created with ID: {project_id}")
+            # Assign a unique ID
+            project_id = len(projects) + 1
+            project_data['id'] = project_id
+            
+            # Add the new project to the data list
+            projects.append(project_data)
+            
+            # Save the updated data back to the file
+            self._write_data(projects)
+            
             return project_data
-        
+
         except ValidationError as e:
-            logger.error(f"Validation error: {e}")
+            print(f"Validation error: {e}")
+            return None
+        except Exception as e:
+            print(f"Unexpected error: {e}")
             return None
 
     def get_project(self, project_id: int) -> Optional[dict]:
-        """Retrieves a project by ID."""
-        return self._get_project_by_id(project_id)
-
-    def _get_project_by_id(self, project_id: int) -> Optional[dict]:
-        """Helper method to reduce repetitive code when querying by project ID."""
-        project = self.table.get(Query().id == project_id)
-        if project:
-            return project
-        else:
-            logger.warning(f"Project with ID {project_id} not found.")
-            return None
+        """Retrieves a project by its ID from the JSON file."""
+        projects = self._read_data()
+        for project in projects:
+            if project['id'] == project_id:
+                return project
+        print(f"Project with ID {project_id} not found.")
+        return None
 
     def update_project(self, project_id: int, name: Optional[str] = None, description: Optional[str] = None) -> bool:
-        """Updates an existing project with new data."""
-        updates = {}
-        if name:
-            updates["name"] = name
-        if description:
-            updates["description"] = description
-        
-        if updates:
-            result = self.table.update(updates, Query().id == project_id)
-            if result:
-                logger.info(f"Project {project_id} updated successfully.")
+        """Updates a project in the JSON file."""
+        projects = self._read_data()
+        for project in projects:
+            if project['id'] == project_id:
+                if name:
+                    project['name'] = name
+                if description:
+                    project['description'] = description
+                
+                # Write the updated list back to the file
+                self._write_data(projects)
+                print(f"Project {project_id} updated successfully.")
                 return True
-            else:
-                logger.warning(f"Failed to update project with ID {project_id}.")
+        print(f"Failed to update project with ID {project_id}.")
         return False
 
     def delete_project(self, project_id: int) -> bool:
-        """Deletes a project by ID."""
-        result = self.table.remove(Query().id == project_id)
-        if result:
-            logger.info(f"Project with ID {project_id} deleted.")
-            return True
-        else:
-            logger.warning(f"Project with ID {project_id} not found.")
+        """Deletes a project by its ID from the JSON file."""
+        projects = self._read_data()
+        updated_projects = [project for project in projects if project['id'] != project_id]
+        
+        if len(updated_projects) == len(projects):
+            print(f"Project with ID {project_id} not found.")
             return False
+        
+        # Write the updated list back to the file
+        self._write_data(updated_projects)
+        print(f"Project with ID {project_id} deleted.")
+        return True
