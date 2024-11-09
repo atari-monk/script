@@ -1,0 +1,115 @@
+{
+  "default_output": "C:\\atari-monk\\code\\script\\data\\print_code",
+  "printouts": {
+    "ts_engine_nx": {
+      "engine_folders": {
+        "folder_path": "C:/atari-monk/code/ts-engine-nx/packages/engine/src",
+        "output_file": "",
+        "exclude_files": true,
+        "excluded_folders": [],
+        "excluded_files": [],
+        "print_file_content": false,
+        "isActive": false
+      },
+      "ecs_system_builder_folders": {
+        "folder_path": "C:/atari-monk/code/ts-engine-nx/packages/engine/src/ecs_system_builder",
+        "output_file": "",
+        "exclude_files": true,
+        "excluded_folders": [],
+        "excluded_files": [],
+        "print_file_content": false,
+        "isActive": false
+      },
+      "collision_detector": {
+        "folder_path": "C:/atari-monk/code/ts-engine-nx/packages/engine/src/collision_detector",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": [],
+        "excluded_files": [],
+        "print_file_content": true,
+        "isActive": false
+      },
+      "ecs_system_core": {
+        "folder_path": "C:/atari-monk/code/ts-engine-nx/packages/engine/src/ecs_system_core",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": [],
+        "excluded_files": [],
+        "print_file_content": true,
+        "isActive": false
+      },
+      "client": {
+        "folder_path": "C:/atari-monk/code/ts-engine-nx/packages/client/src",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": [],
+        "excluded_files": [],
+        "print_file_content": false,
+        "isActive": false
+      },
+      "character_editor": {
+        "folder_path": "C:/atari-monk/code/ts-engine-nx/playground/character_editor",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": [],
+        "excluded_files": ["project_runner.py"],
+        "print_file_content": true,
+        "isActive": false
+      },
+      "cards": {
+        "folder_path": "C:/atari-monk/code/ts-engine-nx/playground/cards",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": [],
+        "excluded_files": [],
+        "print_file_content": true,
+        "isActive": false
+      },
+      "coin_toss": {
+        "folder_path": "C:/atari-monk/code/ts-engine-nx/playground/coin_toss",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": [],
+        "excluded_files": [],
+        "print_file_content": false,
+        "isActive": false
+      },
+      "playground_page": {
+        "folder_path": "C:/atari-monk/code/ts-engine-nx/playground",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": [
+          "cards",
+          "character_editor",
+          "coin_toss",
+          "images",
+          "robot",
+          "skeletal_animation"
+        ],
+        "excluded_files": ["server"],
+        "print_file_content": true,
+        "isActive": false
+      },
+      "client_data": {
+        "folder_path": "C:/atari-monk/code/ts-engine-nx/packages/client/src/data",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": [],
+        "excluded_files": [],
+        "print_file_content": false,
+        "isActive": false
+      }
+    },
+    "script": {
+      "project_log": {
+        "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app\\commands\\project_log",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": ["__pycache__", ".pytest_cache"],
+        "excluded_files": ["__init__.py"],
+        "print_file_content": true,
+        "isActive": true
+      }
+    }
+  }
+}
