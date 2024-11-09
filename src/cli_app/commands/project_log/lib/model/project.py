@@ -19,3 +19,4 @@ class Project(BaseModel):
     @classmethod
     def validate_description(cls, value):
         return value.strip()
+    
