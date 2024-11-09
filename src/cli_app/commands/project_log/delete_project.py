@@ -31,7 +31,7 @@ class DeleteProjectCommand(BaseCommand):
             return "Error: Project ID must be an integer."
 
         # Perform the delete operation
-        self.project_crud.delete_project(project_id)
+        self.project_crud.delete(project_id)
 
     @property
     def description(self):
