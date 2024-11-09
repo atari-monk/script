@@ -29,8 +29,12 @@ class CommandLoaderModule(BaseModule):
             # Skip the 'lib' directory if it is found
             if 'lib' in dirnames:
                 dirnames.remove('lib')
-                dirnames.remove('tests')
                 logger.debug("Skipping 'lib' folder in directory: %s", dirpath)  # This won't show up either
+
+             # Skip the 'tests' directory if it is found
+            if 'tests' in dirnames:
+                dirnames.remove('tests')
+                logger.debug("Skipping 'tests' folder in directory: %s", dirpath)  # This won't show up either
 
             logger.debug("Checking directory: %s", dirpath)  # This will also be suppressed
 
