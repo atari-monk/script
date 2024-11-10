@@ -2,10 +2,10 @@
 
 To run the tests for this module, follow these steps:
 
-1. Navigate to the `json_crud` directory (parent of tests):
+1. Navigate to the `crud` directory (parent of tests):
 
    ```bash
-   cd json_crud
+   cd crud
    ```
 
 2. Run the tests **using** `pytest`:

@@ -1,6 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-from lib.crud.project_crud import ProjectCRUD  # Ensure correct import path
+from ..project_crud import ProjectCRUD  # Ensure correct import path
 
 class ProjectCRUDTest(TestCase):
     def test_create_project(self):
