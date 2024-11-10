@@ -20,6 +20,7 @@ class AddConversationCommand(BaseCommand):
 
         # Validate the conversation data
         try:
+            # No need to manually set the timestamps here; they'll be automatically handled by the model
             validated_conversation = Conversation(
                 name=name,
                 description=description
@@ -33,7 +34,9 @@ class AddConversationCommand(BaseCommand):
         try:
             result = self.conversation_crud.create(
                 name=validated_conversation.name,
-                description=validated_conversation.description
+                description=validated_conversation.description,
+                start_timestamp=validated_conversation.start_timestamp,
+                last_mod_timestamp=validated_conversation.last_mod_timestamp
             )
             if result:
                 print(f"Conversation '{result['name']}' created successfully with id '{result['id']}'.")

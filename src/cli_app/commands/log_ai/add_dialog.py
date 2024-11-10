@@ -12,18 +12,11 @@ class AddDialogCommand(BaseCommand):
 
     def execute(self, *args):
         # Ensure the correct number of arguments
-        if len(args) < 2:
-            print("Usage: add_dialog <file_name> <conversation_id>")
+        if len(args) < 1:
+            print("Usage: add_dialog <conversation_id>")
             return
 
-        file_name, conversation_id = args
-
-        # Validate and prepare the file name
-        file_name = self.validate_and_append_extension(file_name)
-
-        # Load the specified database file
-        if not self.load_file(file_name):
-            return
+        conversation_id = args[0]
 
         # Get the message content from clipboard
         print("Please copy the message content to your clipboard (in Markdown format), then press Enter.")
@@ -69,25 +62,6 @@ class AddDialogCommand(BaseCommand):
         except Exception as e:
             print(f"Unexpected error during dialog creation: {e}")
 
-    def validate_and_append_extension(self, file_name):
-        """Validate the file name and append the correct extension if needed."""
-        # Assuming you have a specific extension for your database files
-        if not file_name.endswith(".db"):
-            file_name += ".db"
-        return file_name
-
-    def load_file(self, file_name):
-        """Load the specified database file."""
-        # Add the logic to open and validate the database file here
-        print(f"Loading database file: {file_name}")
-        try:
-            # Simulate loading the file (you can replace this with actual loading logic)
-            # e.g., db.load(file_name)
-            return True
-        except FileNotFoundError:
-            print(f"Error: The file '{file_name}' does not exist.")
-            return False
-
     def get_clipboard_content(self, content_type):
         """Retrieves and parses content from the clipboard."""
         try:
@@ -102,4 +76,4 @@ class AddDialogCommand(BaseCommand):
 
     @property
     def description(self):
-        return "Adds a new dialog to an existing conversation within a database file, linking it by conversation_id."
+        return "Adds a new dialog to an existing conversation within a database, linking it by conversation_id."
