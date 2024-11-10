@@ -109,6 +109,15 @@
         "excluded_files": ["__init__.py"],
         "print_file_content": true,
         "isActive": true
+      },
+      "ai_chat": {
+        "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app\\commands\\ai_chat",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": ["__pycache__", ".pytest_cache"],
+        "excluded_files": ["__init__.py"],
+        "print_file_content": true,
+        "isActive": true
       }
     }
   }
