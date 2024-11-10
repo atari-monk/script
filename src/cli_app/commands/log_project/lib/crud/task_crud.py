@@ -1,8 +1,8 @@
 import os
-from .....libs.crud.crud import CRUD
-from .....libs.crud.json_storage import JSONStorage
-from ..model.task import Task
-from ..config import DB_DIR
+from libs.crud.crud import CRUD
+from libs.crud.json_storage import JSONStorage
+from commands.log_project.lib.model.task import Task
+from commands.log_project.lib.config import DB_DIR
 
 class TaskCRUD(CRUD):
     def __init__(self):

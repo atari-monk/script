@@ -1,44 +1,58 @@
+from pydantic import ValidationError
 from base.base_command import BaseCommand
-from .lib.singletons import db_context
-from .lib.singletons import parsing_utils
+from commands.log_ai.lib.crud.conversation_crud import ConversationCRUD
+from commands.log_ai.lib.model.conversation import Conversation
 
 class AddConversationCommand(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
+        self.conversation_crud = ConversationCRUD()
 
     def execute(self, *args):
-        # Validate that all required arguments are provided
-        if not parsing_utils.validate_args(args, 5, ['file_name', 'project_id', 'tags_id', 'name', 'description']):
+        # Check for minimum required arguments
+        if len(args) < 5:
+            print("Usage: add_conversation <conversation_id> <project_id> <tags_id> <name> <description> <start_timestamp> <last_mod_timestamp>")
             return
 
-        # Extract arguments
-        file_name, project_id, tags_id, name, description = args
+        conversation_id, project_id, tags_id, name, description, start_timestamp, last_mod_timestamp = args[:7]
 
-        # Ensure file name has '.json' extension
-        file_name = parsing_utils.validate_and_append_extension(file_name)
-
-        # Load the specified database file
+        # Validate the conversation data
         try:
-            db_context.set_file(file_name)
-        except FileNotFoundError:
-            print(f"Error: The file '{file_name}' does not exist in the database.")
+            validated_conversation = Conversation(
+                conversation_id=conversation_id,
+                project_id=project_id,
+                tags_id=tags_id,
+                name=name,
+                description=description,
+                start_timestamp=start_timestamp,
+                last_mod_timestamp=last_mod_timestamp,
+                dialogues=[]
+            )
+        except ValidationError as e:
+            print("Error: Invalid input data.")
+            print(e.json())  # Detailed error info in JSON format
             return
 
-        # Convert tags_id if it is not already in list format
-        if isinstance(tags_id, str):
-            tags_id = tags_id.split(",")  # Split comma-separated string into list
-
-        # Add the new conversation
-        new_conversation = db_context.add_conversation(
-            project_id=project_id,
-            tags_id=tags_id,
-            name=name,
-            description=description
-        )
-
-        print(f"New conversation '{name}' has been added to '{file_name}' with ID '{new_conversation['conversation_id']}'.")
+        # Attempt to create the conversation with validated data
+        try:
+            result = self.conversation_crud.create(
+                conversation_id=validated_conversation.conversation_id,
+                project_id=validated_conversation.project_id,
+                tags_id=validated_conversation.tags_id,
+                name=validated_conversation.name,
+                description=validated_conversation.description,
+                start_timestamp=validated_conversation.start_timestamp,
+                last_mod_timestamp=validated_conversation.last_mod_timestamp,
+                dialogues=validated_conversation.dialogues
+            )
+            if result:
+                print(f"Conversation '{result['name']}' created successfully with ID: {result['conversation_id']}")
+            else:
+                print("Failed to create conversation.")
+        except Exception as e:
+            print(f"Unexpected error during conversation creation: {e}")
 
     @property
     def description(self):
-        return "Adds a new conversation to an existing database file with specified project, tags, name, and description."
+        return "Add a new conversation to the database with a project ID, tag ID, name, description, timestamps, and dialogues."

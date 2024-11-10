@@ -1,8 +1,8 @@
 import os
-from .crud import CRUD
-from .json_storage import JSONStorage
-from ..model.project import Project
-from ...commands.log_project.lib.config import DB_DIR
+from libs.crud.crud import CRUD
+from libs.crud.json_storage import JSONStorage
+from libs.model.project import Project
+from commands.log_project.lib.config import DB_DIR
 
 class ProjectCRUD(CRUD):
     def __init__(self):
