@@ -1,5 +1,5 @@
 import os
-from .crud import CRUD
+from .....libs.json_crud.crud import CRUD
 from .json_storage import JSONStorage
 from ..model.project import Project
 from ..config import DB_DIR
