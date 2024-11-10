@@ -1,7 +1,7 @@
 from base.base_command import BaseCommand
 from .lib.model.task import Task
 from .lib.crud.task_crud import TaskCRUD
-from ...libs.json_crud.project_crud import ProjectCRUD
+from ...libs.crud.project_crud import ProjectCRUD
 from pydantic import ValidationError
 from datetime import datetime
 
