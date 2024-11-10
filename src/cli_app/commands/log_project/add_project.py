@@ -1,7 +1,7 @@
 from base.base_command import BaseCommand
 from .lib.crud.project_crud import ProjectCRUD
 from pydantic import ValidationError
-from .lib.model.project import Project
+from ...libs.model.project import Project
 
 class AddProjectCommand(BaseCommand):
     def __init__(self, app):

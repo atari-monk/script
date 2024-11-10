@@ -37,10 +37,9 @@ class Project(BaseModel):
             raise ValueError("Description should contain at least 5 words.")
         return value
 
-    # Optional custom validator for date consistency
     @field_validator('end_date')
     def validate_dates(cls, value, values):
-        start_date = values.get('start_date')
+        start_date = values.start_date if hasattr(values, 'start_date') else None  # Access directly
         if start_date and value and value < start_date:
             raise ValueError("End date must be after the start date.")
         return value
