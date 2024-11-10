@@ -1,6 +1,6 @@
 from base.base_command import BaseCommand
-from .lib.config import db_context
-from .lib.config import parsing_utils
+from .lib.singletons import db_context
+from .lib.singletons import parsing_utils
 from rich.console import Console
 from rich.table import Table
 import re

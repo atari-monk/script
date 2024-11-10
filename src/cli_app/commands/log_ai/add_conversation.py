@@ -1,6 +1,6 @@
 from base.base_command import BaseCommand
-from .lib.config import db_context
-from .lib.config import parsing_utils
+from .lib.singletons import db_context
+from .lib.singletons import parsing_utils
 
 class AddConversationCommand(BaseCommand):
     def __init__(self, app):

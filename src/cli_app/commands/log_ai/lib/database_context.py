@@ -1,6 +1,6 @@
 import os
 import json
-from .constants import DATABASE_PATH
+from .config import DB_DIR
 
 class DatabaseContext:
     def __init__(self, parsing_utils):
@@ -12,11 +12,11 @@ class DatabaseContext:
     def set_file(self, file_name):
         """Set the database file name and load its data."""
         self.file_name = file_name
-        self.file_path = os.path.join(DATABASE_PATH, file_name)
+        self.file_path = os.path.join(DB_DIR, file_name)
 
         # Check if the file exists
         if not os.path.exists(self.file_path):
-            raise FileNotFoundError(f"Database file '{file_name}' not found in the folder '{DATABASE_PATH}'.")
+            raise FileNotFoundError(f"Database file '{file_name}' not found in the folder '{DB_DIR}'.")
 
         # Load the data from the file
         with open(self.file_path, 'r') as file:
