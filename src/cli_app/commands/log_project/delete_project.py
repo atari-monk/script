@@ -1,7 +1,7 @@
 import os
 from base.base_command import BaseCommand
 from .lib.config import DB_DIR
-from .lib.crud.project_crud import ProjectCRUD  # Assuming ProjectCRUD is imported from its module
+from ...libs.json_crud.project_crud import ProjectCRUD  # Assuming ProjectCRUD is imported from its module
 import logging
 
 # Configure logging

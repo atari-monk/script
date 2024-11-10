@@ -1,5 +1,5 @@
 from base.base_command import BaseCommand
-from .lib.crud.project_crud import ProjectCRUD
+from ...libs.json_crud.project_crud import ProjectCRUD
 
 class GetProjectCommand(BaseCommand):
     def __init__(self, app):
