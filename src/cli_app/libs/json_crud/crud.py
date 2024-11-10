@@ -1,6 +1,6 @@
 from typing import Type, TypeVar, Optional, List, Dict
 from pydantic import BaseModel, ValidationError
-from ...commands.project_log.lib.crud.json_storage import JSONStorage
+from .json_storage import JSONStorage
 import logging
 
 T = TypeVar('T', bound=BaseModel)  # Generic type for Pydantic models

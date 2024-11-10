@@ -1,6 +1,6 @@
 import os
 from .....libs.json_crud.crud import CRUD
-from .json_storage import JSONStorage
+from .....libs.json_crud.json_storage import JSONStorage
 from ..model.task import Task
 from ..config import DB_DIR
 
