@@ -13,37 +13,21 @@ class ProjectEditCommand(BaseCommand):
             self.print_usage()
             return
 
-        action = args[0].lower()
-        if action == "edit":
-            self.edit_project(args[1:])
-        else:
-            print("Error: Invalid action. Use 'edit' to update a project.")
-            self.print_usage()
-
-    def edit_project(self, args):
-        if len(args) < 2:
-            print("Usage: project edit <project_id> <field1=value1> <field2=value2> ...")
-            return
-
         project_id = args[0]
         field_value_pairs = args[1:]
+        update_data = {}
 
-        # Fetch the current project to validate the ID and make sure it exists
         existing_project = self.project_crud.read(project_id)
         if not existing_project:
             print(f"Error: Project with ID '{project_id}' not found.")
             return
 
-        # Prepare the data to update
-        update_data = {}
-
         for field_value in field_value_pairs:
             try:
-                field, value = field_value.split('=')  # Split into field and value
-                field = field.strip().lower()  # Clean up spaces and convert to lower case
-                value = value.strip()  # Clean up spaces
+                field, value = field_value.split('=')
+                field = field.strip().lower()
+                value = value.strip()
 
-                # Validate and assign the fields
                 if field == "name":
                     if not Project._contains_only_valid_characters(value):
                         raise ValueError("Project name must contain only alphanumeric characters, spaces, hyphens, and underscores.")
@@ -74,13 +58,12 @@ class ProjectEditCommand(BaseCommand):
                     update_data["current_tasks"] = value.split(',')
                 else:
                     print(f"Warning: Unknown field '{field}', skipping.")
-                    continue  # Skip unknown fields
+                    continue
 
             except ValueError as e:
                 print(f"Error: Invalid format for '{field_value}', {e}")
                 return
 
-        # Update the project with the validated data
         try:
             updated_project = self.project_crud.update(project_id, **update_data)
             if updated_project:
@@ -92,13 +75,10 @@ class ProjectEditCommand(BaseCommand):
 
     def print_usage(self):
         print("""
-Usage: project edit <project_id> <field1=value1> <field2=value2> ...
-Actions:
-- edit: Update an existing project by specifying the project ID, and the fields you want to modify in the format 'field=value'. At least one field must be provided.
-
+Usage: command <project_id> <field1=value1> <field2=value2> ...
 Example:
 - To edit an existing project:
-  project edit 123 name="Updated Project" description="Updated Description" status="In Progress"
+  command 123 name="Updated Project" description="Updated Description" status="In Progress"
 """)
     
     @property
