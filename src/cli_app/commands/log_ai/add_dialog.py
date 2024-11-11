@@ -1,8 +1,8 @@
 from pydantic import ValidationError
+import pyperclip
 from base.base_command import BaseCommand
 from commands.log_ai.lib.crud.dialog_crud import DialogCRUD
 from commands.log_ai.lib.model.dialog import Dialog
-import pyperclip
 
 class AddDialogCommand(BaseCommand):
     def __init__(self, app):

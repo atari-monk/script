@@ -1,38 +1,29 @@
-from base.base_command import BaseCommand
-from .lib.singletons import db_context
-from .lib.singletons import parsing_utils
 from rich.console import Console
 from rich.table import Table
-import re
+from base.base_command import BaseCommand
+from commands.log_ai.lib.crud.dialog_crud import DialogCRUD
 
 class PrintDialogCommand(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.console = Console()  # Initialize the rich console for printing
+        self.console = Console()
+        self.dialog_crud = DialogCRUD()
 
     def execute(self, *args):
-        # Validate arguments: file_name, conversation_id
-        if not parsing_utils.validate_args(args, 2, ['file_name', 'conversation_id']):
+        # Validate arguments: conversation_id
+        if len(args) < 1:
+            self.console.print("[bold red]Error:[/bold red] Missing argument: conversation_id.")
             return
+        
+        conversation_id = args[0]
 
-        # Extract arguments
-        file_name, conversation_id = args
+        # Fetch the dialogs for the given conversation ID using the new CRUD class
+        dialogs = self.dialog_crud.list_all()  # Fetch all dialogs, or you could filter by conversation_id if needed
+        conversation_dialogs = [dialog for dialog in dialogs if dialog["conversation_id"] == conversation_id]
 
-        # Ensure file name has '.json' extension
-        file_name = parsing_utils.validate_and_append_extension(file_name)
-
-        # Load the specified database file
-        try:
-            db_context.set_file(file_name)
-        except FileNotFoundError:
-            self.console.print(f"[bold red]Error:[/bold red] The file '{file_name}' does not exist in the database.")
-            return
-
-        # Retrieve the conversation and its dialogs
-        conversation = db_context.get_conversation(conversation_id)
-        if not conversation:
-            self.console.print(f"[bold red]Error:[/bold red] Conversation with ID '{conversation_id}' not found.")
+        if not conversation_dialogs:
+            self.console.print(f"[bold red]Error:[/bold red] No dialogs found for conversation ID '{conversation_id}'.")
             return
 
         # Print all dialogs in the format: id - message
@@ -43,20 +34,21 @@ class PrintDialogCommand(BaseCommand):
         table.add_column("Dialog ID", style="dim", width=10)
         table.add_column("Message", style="bold", width=60)
 
-        for dialog in conversation["dialogues"]:
-            table.add_row(str(dialog['dialog_id']), dialog['message'])
+        # Add rows for each dialog in the conversation
+        for dialog in conversation_dialogs:
+            table.add_row(str(dialog['id']), dialog['message'])
 
         self.console.print(table)
 
         # Ask the user to select a dialog ID to view the details
         dialog_id_to_print = input("Enter dialog ID to view its message and response: ")
-        dialog = next((d for d in conversation["dialogues"] if str(d["dialog_id"]) == dialog_id_to_print), None)
+        dialog = next((d for d in conversation_dialogs if str(d["id"]) == dialog_id_to_print), None)
 
         if dialog:
             # Print the selected dialog's message and response in a nice format
             self.console.print(f"\n[bold cyan]Dialog ID {dialog_id_to_print}:[/bold cyan]")
             self.console.print(f"[bold]Message:[/bold] {dialog['message']}")
-            print(f"Response: {self.remove_markdown_markers(dialog['response'])}")
+            self.console.print(f"[bold]Response:[/bold] {self.remove_markdown_markers(dialog['response'])}")
         else:
             self.console.print(f"[bold red]Error:[/bold red] No dialog found with ID '{dialog_id_to_print}'.")
 

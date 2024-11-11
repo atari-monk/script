@@ -100,4 +100,3 @@ class CRUD:
         except Exception as e:
             logger.error(f"Error listing data: {e}")
             return []
-
