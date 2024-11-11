@@ -1,5 +1,6 @@
 from pydantic import ValidationError
 from base.base_command import BaseCommand
+from commands.log_ai.lib.crud.dialogue_crud import DialogueCRUD
 from commands.log_ai.lib.crud.conversation_crud import ConversationCRUD
 from commands.log_ai.lib.model.conversation import Conversation
 
@@ -8,6 +9,7 @@ class AddConversationCommand(BaseCommand):
         super().__init__()
         self.app = app
         self.conversation_crud = ConversationCRUD()
+        self.dialogue_crud = DialogueCRUD()
 
     def execute(self, *args):
         if len(args) < 2:
@@ -20,8 +22,10 @@ class AddConversationCommand(BaseCommand):
             self.add_conversation(args[1:])
         elif action == "edit":
             self.edit_conversation(args[1:])
+        elif action == "delete":
+            self.delete_conversation(args[1:])
         else:
-            print("Error: Invalid action. Use 'add' to create or 'edit' to update a conversation.")
+            print("Error: Invalid action. Use 'add' to create, 'edit' to update, or 'delete' to remove a conversation.")
 
     def add_conversation(self, args):
         if len(args) < 2:
@@ -101,6 +105,35 @@ class AddConversationCommand(BaseCommand):
         except Exception as e:
             print(f"Unexpected error during conversation update: {e}")
 
+    def delete_conversation(self, args):
+        if len(args) < 1:
+            print("Usage: add_conversation delete <conversation_id>")
+            return
+
+        conversation_id = args[0]
+
+        # Fetch the conversation to ensure it exists
+        existing_conversation = self.conversation_crud.get_by_id(conversation_id)
+        if not existing_conversation:
+            print(f"Error: Conversation with ID '{conversation_id}' not found.")
+            return
+
+        # Check if there are any dialogs associated with the conversation
+        dialogs = self.dialogue_crud.get_dialogs_by_conversation_id(conversation_id)
+        if dialogs:
+            print(f"Error: Conversation with ID '{conversation_id}' has associated dialogs and cannot be deleted.")
+            return
+
+        try:
+            # Perform the deletion
+            result = self.conversation_crud.delete(conversation_id)
+            if result:
+                print(f"Conversation '{conversation_id}' deleted successfully.")
+            else:
+                print(f"Failed to delete conversation '{conversation_id}'.")
+        except Exception as e:
+            print(f"Unexpected error during conversation deletion: {e}")
+
     @property
     def description(self):
-        return "Add or edit a conversation. Use 'add' to create or 'edit' to update a conversation."
+        return "Add, edit, or delete a conversation. Use 'add' to create, 'edit' to update, or 'delete' to remove a conversation."

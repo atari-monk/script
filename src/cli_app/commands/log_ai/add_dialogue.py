@@ -20,8 +20,10 @@ class AddDialogCommand(BaseCommand):
             self.add_dialogue(args[1:])
         elif action == "edit":
             self.edit_dialogue(args[1:])
+        elif action == "delete":
+            self.delete_dialogue(args[1:])
         else:
-            print("Error: Invalid action. Use 'add' to create or 'edit' to update a dialogue.")
+            print("Error: Invalid action. Use 'add' to create, 'edit' to update, or 'delete' to remove a dialogue.")
 
     def add_dialogue(self, args):
         if len(args) < 1:
@@ -40,12 +42,12 @@ class AddDialogCommand(BaseCommand):
             return
 
         try:
-            result = self.dialogue_crud.create(
+            result = self.dialog_crud.create(
                 text=validated_dialogue.text,
                 timestamp=validated_dialogue.timestamp
             )
             if result:
-                print(f"dialogue added successfully with id '{result['id']}'.")
+                print(f"Dialogue added successfully with id '{result['id']}'.")
             else:
                 print("Failed to add dialogue.")
         except Exception as e:
@@ -59,9 +61,9 @@ class AddDialogCommand(BaseCommand):
         dialogue_id, new_text = args[0], args[1]
 
         # Fetch the current dialogue to validate the ID and make sure it exists
-        existing_dialogue = self.dialogue_crud.get_by_id(dialogue_id)
+        existing_dialogue = self.dialog_crud.get_by_id(dialogue_id)
         if not existing_dialogue:
-            print(f"Error: dialogue with ID '{dialogue_id}' not found.")
+            print(f"Error: Dialogue with ID '{dialogue_id}' not found.")
             return
 
         # Update the dialogue's text
@@ -79,7 +81,7 @@ class AddDialogCommand(BaseCommand):
 
         # Update the dialogue in the database
         try:
-            result = self.dialogue_crud.update(
+            result = self.dialog_crud.update(
                 dialogue_id,
                 validated_dialogue.text,
                 validated_dialogue.timestamp
@@ -91,6 +93,29 @@ class AddDialogCommand(BaseCommand):
         except Exception as e:
             print(f"Unexpected error during dialogue update: {e}")
 
+    def delete_dialogue(self, args):
+        if len(args) < 1:
+            print("Usage: add_dialogue delete <dialogue_id>")
+            return
+
+        dialogue_id = args[0]
+
+        # Check if the dialogue exists before attempting to delete
+        existing_dialogue = self.dialog_crud.get_by_id(dialogue_id)
+        if not existing_dialogue:
+            print(f"Error: Dialogue with ID '{dialogue_id}' not found.")
+            return
+
+        # Attempt to delete the dialogue
+        try:
+            result = self.dialog_crud.delete(dialogue_id)
+            if result:
+                print(f"Dialogue '{dialogue_id}' deleted successfully.")
+            else:
+                print(f"Failed to delete dialogue '{dialogue_id}'.")
+        except Exception as e:
+            print(f"Unexpected error during dialogue deletion: {e}")
+
     @property
     def description(self):
-        return "Add or edit a dialogue. Use 'add' to create or 'edit' to update a dialogue."
+        return "Add, edit, or delete a dialogue. Use 'add' to create, 'edit' to update, or 'delete' to remove a dialogue."
