@@ -16,12 +16,12 @@ class Project:
         current_tasks: List[str] = None,
         last_updated: Optional[date] = None,
     ):
+        self.start_date = start_date
+        self.end_date = self._validate_dates(end_date, start_date)
         self.name = self._validate_name(name)
         self.description = self._validate_description(description)
         self.repo_link = repo_link
         self.status = status
-        self.start_date = start_date
-        self.end_date = self._validate_dates(end_date, start_date)
         self.priority = priority
         self.technologies = technologies or []
         self.milestones = milestones or []

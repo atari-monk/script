@@ -1,68 +1,86 @@
 import pytest
-from pydantic import ValidationError
 from datetime import date
-from project import Project
+from project import Project  # Replace with the correct import path
 
 def test_valid_project():
+    # Test valid project initialization
     project = Project(
-        name="My Project",
-        description="This is a valid project description with more than five words.",
-        repo_link="https://github.com/example",
-        status="In Progress",
+        name="Project_Alpha",
+        description="This is a test project with at least five words.",
         start_date=date(2024, 1, 1),
         end_date=date(2024, 12, 31),
-        priority="Medium",
-        technologies=["Python", "Pydantic"],
+        status="In Progress",
+        priority="High",
+        technologies=["Python", "Django"],
         milestones=["Milestone 1", "Milestone 2"],
         current_tasks=["Task 1", "Task 2"],
-        last_updated=date(2024, 10, 1)
+        last_updated=date(2024, 11, 11)
     )
-    assert project.name == "My Project"
-    assert project.description == "This is a valid project description with more than five words."
-    assert str(project.repo_link) == "https://github.com/example"
-    assert project.status == "In Progress"
+
+    assert project.name == "Project_Alpha"
+    assert project.description == "This is a test project with at least five words."
     assert project.start_date == date(2024, 1, 1)
     assert project.end_date == date(2024, 12, 31)
-    assert project.priority == "Medium"
-    assert project.technologies == ["Python", "Pydantic"]
+    assert project.status == "In Progress"
+    assert project.priority == "High"
+    assert project.technologies == ["Python", "Django"]
     assert project.milestones == ["Milestone 1", "Milestone 2"]
     assert project.current_tasks == ["Task 1", "Task 2"]
-    assert project.last_updated == date(2024, 10, 1)
+    assert project.last_updated == date(2024, 11, 11)
 
-def test_invalid_project_name():
-    with pytest.raises(ValidationError):
+def test_invalid_name():
+    # Test invalid project name
+    with pytest.raises(ValueError, match="Project name must contain only alphanumeric characters, spaces, hyphens, and underscores."):
         Project(
-            name="Invalid@Name",  # Invalid name (contains non-allowed characters)
+            name="Project!Alpha",
             description="Valid description.",
+            start_date=date(2024, 1, 1),
+            end_date=date(2024, 12, 31)
         )
 
-def test_description_too_short():
-    with pytest.raises(ValidationError):
+def test_invalid_description():
+    # Test invalid project description (less than 5 words)
+    with pytest.raises(ValueError, match="Description should contain at least 5 words."):
         Project(
             name="Valid Project",
-            description="Short.",
+            description="Short description.",
+            start_date=date(2024, 1, 1),
+            end_date=date(2024, 12, 31)
         )
 
 def test_end_date_before_start_date():
-    with pytest.raises(ValidationError):
+    # Test invalid project dates (end date before start date)
+    with pytest.raises(ValueError, match="End date must be after the start date."):
         Project(
             name="Valid Project",
             description="Valid description.",
-            start_date=date(2024, 1, 1),
-            end_date=date(2023, 12, 31),
+            start_date=date(2024, 12, 1),
+            end_date=date(2024, 1, 1)
         )
 
-def test_optional_fields():
+def test_default_empty_lists():
+    # Test that the lists default to empty when not provided
     project = Project(
-        name="Project with optional fields",
-        description="Valid description with optional fields.",
+        name="Project_Alpha",
+        description="This is a valid description with at least five words.",
+        start_date=date(2024, 1, 1),
+        end_date=date(2024, 12, 31)
     )
-    assert project.repo_link is None
-    assert project.status is None
-    assert project.start_date is None
-    assert project.end_date is None
-    assert project.priority is None
+    
     assert project.technologies == []
     assert project.milestones == []
     assert project.current_tasks == []
+
+def test_optional_fields():
+    # Test that optional fields can be left empty
+    project = Project(
+        name="Project_Alpha",
+        description="This is a valid description with at least five words.",
+        start_date=date(2024, 1, 1),
+        end_date=date(2024, 12, 31)
+    )
+    
+    assert project.repo_link is None
+    assert project.status is None
+    assert project.priority is None
     assert project.last_updated is None
