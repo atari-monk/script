@@ -8,7 +8,6 @@ class Task(BaseModel):
     status: str = Field('pending', description="Status of the task (e.g., pending, in progress, completed)")
 
     # Optional fields listed below
-    id: Optional[int] = None  # This will be auto-assigned upon creation
     description: Optional[str] = Field(None, max_length=255, description="A brief description of the task.")
     priority: Optional[str] = Field('medium', description="Priority of the task (e.g., low, medium, high).")
     due_date: Optional[datetime] = Field(None, description="The due date for the task.")

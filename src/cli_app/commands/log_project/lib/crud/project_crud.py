@@ -2,7 +2,7 @@ import os
 from libs.crud.crud import CRUD
 from libs.crud.json_storage import JSONStorage
 from commands.log_project.lib.config import DB
-from cli_app.commands.log_project.lib.model.project import Project
+from commands.log_project.lib.model.project import Project
 
 class ProjectCRUD(CRUD):
     def __init__(self):
