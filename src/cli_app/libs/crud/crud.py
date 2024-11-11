@@ -1,25 +1,22 @@
-from typing import Type, TypeVar, Optional, List, Dict
-from pydantic import BaseModel, ValidationError
-from .json_storage import JSONStorage
+from typing import Type, Optional, List, Dict
 import logging
-
-T = TypeVar('T', bound=BaseModel)  # Generic type for Pydantic models
+from libs.crud.json_storage import JSONStorage
 
 # Set up logging configuration
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 class CRUD:
-    def __init__(self, model: Type[T], storage: JSONStorage):
-        self.model = model
+    def __init__(self, model: Type[dict], storage: JSONStorage):
+        self.model = model  # model is now a dictionary type
         self.storage = storage
 
     def create(self, **data) -> Optional[Dict]:
         """Creates a new entry and adds it to the storage."""
         try:
-            # Validate and create model instance
-            item = self.model(**data)
-            item_data = item.model_dump()  # Pydantic v2.x, use .dict() for v1.x
+            # Assuming `data` is a dictionary or is already validated
+            item_data = data
+            
             items = self.storage.read_data()
             
             # Assign a unique ID based on the highest existing ID + 1
@@ -33,9 +30,6 @@ class CRUD:
             logger.info(f"Item with ID {item_id} created successfully.")
             return item_data
 
-        except ValidationError as e:
-            logger.error(f"Validation error: {e}")
-            return None
         except Exception as e:
             logger.error(f"Unexpected error during creation: {e}")
             return None
@@ -64,10 +58,8 @@ class CRUD:
             items = self.storage.read_data()
             for item in items:
                 if item.get('id') == item_id:
-                    # Update fields if they are valid attributes of the model
-                    for key, value in data.items():
-                        if key in self.model.model_fields:
-                            item[key] = value
+                    # Update the item fields with the provided data
+                    item.update(data)  # Directly update the dictionary
                     self.storage.write_data(items)
                     logger.info(f"Item {item_id} updated successfully.")
                     return True
