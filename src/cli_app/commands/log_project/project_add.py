@@ -12,16 +12,10 @@ class ProjectAddCommand(BaseCommand):
         if len(args) < 2:
             self.print_usage()
             return
-        self.add_project(args)
-
-    def add_project(self, args):
         name, description = args[0], args[1]
 
         try:
-            validated_project = Project(
-                name=name,
-                description=description
-            )
+            validated_project = Project(name=name, description=description)
         except ValueError as e:
             print(f"Error: Invalid input data. {e}")
             return

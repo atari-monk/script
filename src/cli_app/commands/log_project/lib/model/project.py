@@ -16,6 +16,7 @@ class Project:
         current_tasks: List[str] = None,
         last_updated: Optional[date] = None,
     ):
+        #todo: dates must be first for test to pass
         self.start_date = start_date
         self.end_date = self._validate_dates(end_date, start_date)
         self.name = self._validate_name(name)
@@ -28,18 +29,16 @@ class Project:
         self.current_tasks = current_tasks or []
         self.last_updated = last_updated
     
-    def _validate_name(self, value: str) -> str:
-        value = value.strip()
-        if not all(c.isalnum() or c.isspace() or c in "-_" for c in value):
+    def _validate_name(self, name: str) -> str:
+        if not all(c.isalnum() or c.isspace() or c in "-_" for c in name.strip()):
             raise ValueError("Project name must contain only alphanumeric characters, spaces, hyphens, and underscores.")
-        return value
+        return name.strip()
     
-    def _validate_description(self, value: str) -> str:
-        value = value.strip()
-        if len(value.split()) < 5:
+    def _validate_description(self, description: str) -> str:
+        if len(description.split()) < 5:
             raise ValueError("Description should contain at least 5 words.")
-        return value
-    
+        return description.strip()
+
     def _validate_dates(self, end_date: Optional[date], start_date: Optional[date]) -> Optional[date]:
         if start_date and end_date and end_date < start_date:
             raise ValueError("End date must be after the start date.")
