@@ -1,6 +1,6 @@
 from typing import Type, Optional, List, Dict
 import logging
-from libs.crud.json_storage import JSONStorage
+from .json_storage import JSONStorage
 
 # Set up logging configuration
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
