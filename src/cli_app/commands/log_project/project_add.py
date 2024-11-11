@@ -12,19 +12,9 @@ class ProjectAddCommand(BaseCommand):
         if len(args) < 2:
             self.print_usage()
             return
-
-        action = args[0].lower()
-        if action == "add":
-            self.add_project(args[1:])
-        else:
-            print("Error: Invalid action. Use 'add' to create a project.")
-            self.print_usage()
+        self.add_project(args)
 
     def add_project(self, args):
-        if len(args) < 2:
-            print("Usage: project add <name> <description> [optional: <repo_link> <status> <start_date> <end_date> <priority> <technologies> <milestones> <current_tasks>]")
-            return
-
         name, description = args[0], args[1]
 
         try:
@@ -59,13 +49,13 @@ class ProjectAddCommand(BaseCommand):
 
     def print_usage(self):
         print("""
-Usage: project add <name> <description> [optional: <repo_link> <status> <start_date> <end_date> <priority> <technologies> <milestones> <current_tasks>]
+Usage: command <name> <description> [optional: <repo_link> <status> <start_date> <end_date> <priority> <technologies> <milestones> <current_tasks>]
 
 Examples:
 - To add a new project: 
-  project add "New Project" "This is a description" "https://repo.com" "Active" "2024-01-01" "2024-12-31" "High" "Tech1, Tech2" "Milestone1, Milestone2" "Task1, Task2"
+  command "New Project" "This is a description" "https://repo.com" "Active" "2024-01-01" "2024-12-31" "High" "Tech1, Tech2" "Milestone1, Milestone2" "Task1, Task2"
 """)
     
     @property
     def description(self):
-        return "Add a new project. Use 'add' to create a project."
+        return "Add a new project."
