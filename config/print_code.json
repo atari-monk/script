@@ -115,7 +115,13 @@
         "output_file": "",
         "exclude_files": false,
         "excluded_folders": ["__pycache__", ".pytest_cache"],
-        "excluded_files": ["__init__.py"],
+        "excluded_files": [
+          "__init__.py",
+          "search_dialog.py",
+          "search_conversations.py",
+          "print_conversations.py",
+          "print_dialogue.py"
+        ],
         "print_file_content": true,
         "isActive": true
       },

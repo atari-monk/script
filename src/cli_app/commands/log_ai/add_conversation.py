@@ -66,7 +66,7 @@ class AddConversationCommand(BaseCommand):
         conversation_id, name, description = args[0], args[1], args[2]
 
         # Fetch the current conversation to validate the ID and make sure it exists
-        existing_conversation = self.conversation_crud.get_by_id(conversation_id)
+        existing_conversation = self.conversation_crud.read(conversation_id)
         if not existing_conversation:
             print(f"Error: Conversation with ID '{conversation_id}' not found.")
             return
@@ -93,10 +93,7 @@ class AddConversationCommand(BaseCommand):
         try:
             result = self.conversation_crud.update(
                 conversation_id,
-                validated_conversation.name,
-                validated_conversation.description,
-                validated_conversation.start_timestamp,
-                validated_conversation.last_mod_timestamp
+                **validated_conversation.model_dump()
             )
             if result:
                 print(f"Conversation '{conversation_id}' updated successfully.")
@@ -113,7 +110,7 @@ class AddConversationCommand(BaseCommand):
         conversation_id = args[0]
 
         # Fetch the conversation to ensure it exists
-        existing_conversation = self.conversation_crud.get_by_id(conversation_id)
+        existing_conversation = self.conversation_crud.read(conversation_id)
         if not existing_conversation:
             print(f"Error: Conversation with ID '{conversation_id}' not found.")
             return

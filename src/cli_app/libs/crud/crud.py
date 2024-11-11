@@ -43,13 +43,16 @@ class CRUD:
     def read(self, item_id: int) -> Optional[Dict]:
         """Reads a single item by its ID."""
         try:
+            item_id = int(item_id)  # Ensure item_id is an integer
             items = self.storage.read_data()
             item = next((item for item in items if item.get('id') == item_id), None)
             
             if item is None:
                 logger.error(f"Item with ID {item_id} not found.")
             return item
-
+        except ValueError:
+            logger.error(f"Invalid item_id: {item_id} is not an integer.")
+            return None
         except Exception as e:
             logger.error(f"Error reading data: {e}")
             return None
@@ -57,6 +60,7 @@ class CRUD:
     def update(self, item_id: int, **data) -> bool:
         """Updates an item by its ID with provided data."""
         try:
+            item_id = int(item_id)
             items = self.storage.read_data()
             for item in items:
                 if item.get('id') == item_id:
@@ -78,6 +82,7 @@ class CRUD:
     def delete(self, item_id: int) -> bool:
         """Deletes an item by its ID."""
         try:
+            item_id = int(item_id)
             items = self.storage.read_data()
             updated_items = [item for item in items if item.get('id') != item_id]
             

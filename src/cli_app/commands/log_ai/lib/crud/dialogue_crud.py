@@ -12,6 +12,6 @@ class DialogueCRUD(CRUD):
     def get_dialogs_by_conversation_id(self, conversation_id: str):
         # Assuming you have a way to fetch dialogs by conversation_id
         # This could query a dialogs database or list where dialogs are stored
-        dialogs = self.storage.get_all()
+        dialogs = self.list_all()
         return [dialog for dialog in dialogs if dialog['conversation_id'] == conversation_id]
     
