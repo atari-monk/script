@@ -1,79 +1,96 @@
 from pydantic import ValidationError
-import pyperclip
 from base.base_command import BaseCommand
 from commands.log_ai.lib.crud.dialogue_crud import DialogueCRUD
 from commands.log_ai.lib.model.dialogue import Dialogue
 
-class AddDialogueCommand(BaseCommand):
+class AddDialogCommand(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
         self.dialog_crud = DialogueCRUD()
 
     def execute(self, *args):
-        # Ensure the correct number of arguments
+        if len(args) < 2:
+            print("Usage: add_dialogue <action> <dialogue_id (optional)> <text>")
+            return
+
+        action = args[0].lower()
+
+        if action == "add":
+            self.add_dialogue(args[1:])
+        elif action == "edit":
+            self.edit_dialogue(args[1:])
+        else:
+            print("Error: Invalid action. Use 'add' to create or 'edit' to update a dialogue.")
+
+    def add_dialogue(self, args):
         if len(args) < 1:
-            print("Usage: add_dialog <conversation_id>")
+            print("Usage: add_dialogue add <text>")
             return
 
-        conversation_id = args[0]
+        text = args[0]
 
-        # Get the message content from clipboard
-        print("Please copy the message content to your clipboard (in Markdown format), then press Enter.")
-        input("Press Enter to continue...")
         try:
-            message = self.get_clipboard_content("message")
-        except Exception as e:
-            print(f"Error: {e}")
-            return
-
-        # Get the response content from clipboard
-        print("Please copy the response content to your clipboard (in Markdown format), then press Enter.")
-        input("Press Enter to continue...")
-        try:
-            response = self.get_clipboard_content("response")
-        except Exception as e:
-            print(f"Error: {e}")
-            return
-
-        # Validate the dialog data
-        try:
-            validated_dialog = Dialogue(
-                message=message,
-                response=response,
-                conversation_id=conversation_id  # Added conversation_id to Dialog
+            validated_dialogue = Dialogue(
+                text=text
             )
         except ValidationError as e:
             print("Error: Invalid input data.")
-            print(e.json())  # Detailed error info in JSON format
+            print(e.json())
             return
 
-        # Attempt to add the new dialog
         try:
-            result = self.dialog_crud.create(
-                conversation_id=validated_dialog.conversation_id,
-                message=validated_dialog.message,
-                response=validated_dialog.response
+            result = self.dialogue_crud.create(
+                text=validated_dialogue.text,
+                timestamp=validated_dialogue.timestamp
             )
             if result:
-                print(f"New dialog added to conversation '{conversation_id}'.")
+                print(f"dialogue added successfully with id '{result['id']}'.")
             else:
-                print("Failed to add dialog.")
+                print("Failed to add dialogue.")
         except Exception as e:
-            print(f"Unexpected error during dialog creation: {e}")
+            print(f"Unexpected error during dialogue addition: {e}")
 
-    def get_clipboard_content(self, content_type):
-        """Retrieves and parses content from the clipboard."""
+    def edit_dialogue(self, args):
+        if len(args) < 2:
+            print("Usage: add_dialogue edit <dialogue_id> <text>")
+            return
+
+        dialogue_id, new_text = args[0], args[1]
+
+        # Fetch the current dialogue to validate the ID and make sure it exists
+        existing_dialogue = self.dialogue_crud.get_by_id(dialogue_id)
+        if not existing_dialogue:
+            print(f"Error: dialogue with ID '{dialogue_id}' not found.")
+            return
+
+        # Update the dialogue's text
+        existing_dialogue['text'] = new_text
+
         try:
-            content = pyperclip.paste().strip()
-            return self.parse_markdown(content)
-        except Exception:
-            raise ValueError(f"Failed to retrieve {content_type} from clipboard.")
+            validated_dialogue = Dialogue(
+                text=existing_dialogue['text'],
+                timestamp=existing_dialogue['timestamp']
+            )
+        except ValidationError as e:
+            print("Error: Invalid input data.")
+            print(e.json())
+            return
 
-    def parse_markdown(self, md_text):
-        """Cleans up Markdown content for JSON."""
-        return '\n'.join(md_text.strip().splitlines())
+        # Update the dialogue in the database
+        try:
+            result = self.dialogue_crud.update(
+                dialogue_id,
+                validated_dialogue.text,
+                validated_dialogue.timestamp
+            )
+            if result:
+                print(f"Dialogue '{dialogue_id}' updated successfully.")
+            else:
+                print("Failed to update dialogue.")
+        except Exception as e:
+            print(f"Unexpected error during dialogue update: {e}")
 
     @property
     def description(self):
-        return "Adds a new dialog to an existing conversation within a database, linking it by conversation_id."
+        return "Add or edit a dialogue. Use 'add' to create or 'edit' to update a dialogue."

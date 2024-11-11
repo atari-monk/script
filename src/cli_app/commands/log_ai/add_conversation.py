@@ -10,27 +10,36 @@ class AddConversationCommand(BaseCommand):
         self.conversation_crud = ConversationCRUD()
 
     def execute(self, *args):
-        # Check for minimum required arguments
         if len(args) < 2:
-            print("Usage: add_conversation <name> <description>")
+            print("Usage: add_conversation <action> <conversation_id (optional)> <name> <description>")
             return
 
-        # Extract required arguments
+        action = args[0].lower()
+
+        if action == "add":
+            self.add_conversation(args[1:])
+        elif action == "edit":
+            self.edit_conversation(args[1:])
+        else:
+            print("Error: Invalid action. Use 'add' to create or 'edit' to update a conversation.")
+
+    def add_conversation(self, args):
+        if len(args) < 2:
+            print("Usage: add_conversation add <name> <description>")
+            return
+
         name, description = args[0], args[1]
 
-        # Validate the conversation data
         try:
-            # No need to manually set the timestamps here; they'll be automatically handled by the model
             validated_conversation = Conversation(
                 name=name,
                 description=description
             )
         except ValidationError as e:
             print("Error: Invalid input data.")
-            print(e.json())  # Detailed error info in JSON format
+            print(e.json())
             return
 
-        # Attempt to create the conversation with validated data
         try:
             result = self.conversation_crud.create(
                 name=validated_conversation.name,
@@ -45,6 +54,53 @@ class AddConversationCommand(BaseCommand):
         except Exception as e:
             print(f"Unexpected error during conversation creation: {e}")
 
+    def edit_conversation(self, args):
+        if len(args) < 3:
+            print("Usage: add_conversation edit <conversation_id> <name or 'none'> <description or 'none'>")
+            return
+
+        conversation_id, name, description = args[0], args[1], args[2]
+
+        # Fetch the current conversation to validate the ID and make sure it exists
+        existing_conversation = self.conversation_crud.get_by_id(conversation_id)
+        if not existing_conversation:
+            print(f"Error: Conversation with ID '{conversation_id}' not found.")
+            return
+
+        # Update only the fields that are provided (not 'none')
+        if name != "none":
+            existing_conversation['name'] = name
+        if description != "none":
+            existing_conversation['description'] = description
+
+        try:
+            validated_conversation = Conversation(
+                name=existing_conversation['name'],
+                description=existing_conversation['description'],
+                start_timestamp=existing_conversation['start_timestamp'],
+                last_mod_timestamp=existing_conversation['last_mod_timestamp']
+            )
+        except ValidationError as e:
+            print("Error: Invalid input data.")
+            print(e.json())
+            return
+
+        # Update the conversation in the database
+        try:
+            result = self.conversation_crud.update(
+                conversation_id,
+                validated_conversation.name,
+                validated_conversation.description,
+                validated_conversation.start_timestamp,
+                validated_conversation.last_mod_timestamp
+            )
+            if result:
+                print(f"Conversation '{conversation_id}' updated successfully.")
+            else:
+                print("Failed to update conversation.")
+        except Exception as e:
+            print(f"Unexpected error during conversation update: {e}")
+
     @property
     def description(self):
-        return "Add a new conversation to the database, requiring a name and description."
+        return "Add or edit a conversation. Use 'add' to create or 'edit' to update a conversation."
