@@ -12,28 +12,14 @@ class ProjectDeleteCommand(BaseCommand):
             self.print_usage()
             return
 
-        action = args[0].lower()
-        if action == "delete":
-            self.delete_project(args[1:])
-        else:
-            print("Error: Invalid action. Use 'delete' to remove a project.")
-            self.print_usage()
-
-    def delete_project(self, args):
-        if len(args) < 1:
-            print("Usage: project delete <project_id>")
-            return
-
         project_id = args[0]
 
-        # Fetch the project to ensure it exists
         existing_project = self.project_crud.read(project_id)
         if not existing_project:
             print(f"Error: Project with ID '{project_id}' not found.")
             return
 
         try:
-            # Perform the deletion
             result = self.project_crud.delete(project_id)
             if result:
                 print(f"Project '{project_id}' deleted successfully.")
@@ -44,13 +30,11 @@ class ProjectDeleteCommand(BaseCommand):
 
     def print_usage(self):
         print("""
-Usage: project delete <project_id>
-Actions:
-- delete: Remove a project by specifying its project ID.
+Usage: command <project_id>
 
 Example:
 - To delete a project:
-  project delete 123
+  command 123
 """)
     
     @property
