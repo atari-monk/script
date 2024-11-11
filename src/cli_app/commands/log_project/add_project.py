@@ -11,11 +11,10 @@ class ProjectCommand(BaseCommand):
 
     def execute(self, *args):
         if len(args) < 2:
-            print("Usage: project <action> <project_id (optional)> <name> <description>")
+            self.print_usage()
             return
 
         action = args[0].lower()
-
         if action == "add":
             self.add_project(args[1:])
         elif action == "edit":
@@ -24,10 +23,11 @@ class ProjectCommand(BaseCommand):
             self.delete_project(args[1:])
         else:
             print("Error: Invalid action. Use 'add' to create, 'edit' to update, or 'delete' to remove a project.")
+            self.print_usage()
 
     def add_project(self, args):
         if len(args) < 2:
-            print("Usage: project add <name> <description>")
+            print("Usage: project add <name> <description> [optional: <repo_link> <status> <start_date> <end_date> <priority> <technologies> <milestones> <current_tasks>]")
             return
 
         name, description = args[0], args[1]
@@ -65,7 +65,7 @@ class ProjectCommand(BaseCommand):
 
     def edit_project(self, args):
         if len(args) < 3:
-            print("Usage: project edit <project_id> <name or 'none'> <description or 'none'>")
+            print("Usage: project edit <project_id> <name or 'none'> <description or 'none'> [optional: <repo_link> <status> <start_date> <end_date> <priority> <technologies> <milestones> <current_tasks>]")
             return
 
         project_id, name, description = args[0], args[1], args[2]
@@ -136,6 +136,25 @@ class ProjectCommand(BaseCommand):
         except Exception as e:
             print(f"Unexpected error during project deletion: {e}")
 
+    def print_usage(self):
+        print("""
+Usage: project <action> <project_id (optional)> <name> <description>
+Actions:
+- add: Create a new project. You must specify a name and description. Optional additional fields: <repo_link>, <status>, <start_date>, <end_date>, <priority>, <technologies>, <milestones>, <current_tasks>.
+- edit: Update an existing project by specifying the project ID, and the fields you want to modify. Use 'none' for fields you don't want to update.
+- delete: Remove a project by specifying its project ID.
+
+Examples:
+- To add a new project: 
+  project add "New Project" "This is a description" "https://repo.com" "Active" "2024-01-01" "2024-12-31" "High" "Tech1, Tech2" "Milestone1, Milestone2" "Task1, Task2"
+
+- To edit an existing project:
+  project edit 123 "Updated Project Name" "Updated Description"
+
+- To delete a project:
+  project delete 123
+""")
+    
     @property
     def description(self):
         return "Add, edit, or delete a project. Use 'add' to create, 'edit' to update, or 'delete' to remove a project."
