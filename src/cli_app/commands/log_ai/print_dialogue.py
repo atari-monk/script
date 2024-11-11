@@ -1,14 +1,14 @@
 from rich.console import Console
 from rich.table import Table
 from base.base_command import BaseCommand
-from commands.log_ai.lib.crud.dialog_crud import DialogCRUD
+from commands.log_ai.lib.crud.dialogue_crud import DialogueCRUD
 
-class PrintDialogCommand(BaseCommand):
+class PrintDialogueCommand(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
         self.console = Console()
-        self.dialog_crud = DialogCRUD()
+        self.dialog_crud = DialogueCRUD()
 
     def execute(self, *args):
         # Validate arguments: conversation_id

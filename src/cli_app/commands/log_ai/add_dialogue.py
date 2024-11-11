@@ -1,14 +1,14 @@
 from pydantic import ValidationError
 import pyperclip
 from base.base_command import BaseCommand
-from commands.log_ai.lib.crud.dialog_crud import DialogCRUD
-from commands.log_ai.lib.model.dialog import Dialog
+from commands.log_ai.lib.crud.dialogue_crud import DialogueCRUD
+from commands.log_ai.lib.model.dialogue import Dialogue
 
-class AddDialogCommand(BaseCommand):
+class AddDialogueCommand(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.dialog_crud = DialogCRUD()
+        self.dialog_crud = DialogueCRUD()
 
     def execute(self, *args):
         # Ensure the correct number of arguments
@@ -38,7 +38,7 @@ class AddDialogCommand(BaseCommand):
 
         # Validate the dialog data
         try:
-            validated_dialog = Dialog(
+            validated_dialog = Dialogue(
                 message=message,
                 response=response,
                 conversation_id=conversation_id  # Added conversation_id to Dialog
