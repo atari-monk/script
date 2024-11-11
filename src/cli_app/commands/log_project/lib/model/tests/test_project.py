@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 from datetime import date
-from ..project import Project  # Replace with the actual import
+from project import Project
 
 def test_valid_project():
     project = Project(

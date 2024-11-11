@@ -1,7 +1,7 @@
 from pydantic import ValidationError
 from base.base_command import BaseCommand
 from commands.log_project.lib.crud.project_crud import ProjectCRUD
-from libs.model.project import Project
+from cli_app.commands.log_project.lib.model.project import Project
 
 class AddProjectCommand(BaseCommand):
     def __init__(self, app):
