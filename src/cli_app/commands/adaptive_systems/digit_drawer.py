@@ -1,3 +1,5 @@
+import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 from base.base_command import BaseCommand
 from commands.adaptive_systems.lib.digit_drawer import DigitDrawer
 
