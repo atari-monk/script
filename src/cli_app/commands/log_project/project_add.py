@@ -29,6 +29,14 @@ class ProjectAddCommand(BaseCommand):
         logger.debug(f"Arguments received: {args}")
         logger.debug(f"Project name: {name}")
         logger.debug(f"Project description: {description}")
+        logger.debug(f"Repository link: {repo_link if repo_link else 'None provided'}")
+        logger.debug(f"Status: {status if status else 'None provided'}")
+        logger.debug(f"Start date: {start_date if start_date else 'None provided'}")
+        logger.debug(f"End date: {end_date if end_date else 'None provided'}")
+        logger.debug(f"Priority: {priority if priority else 'None provided'}")
+        logger.debug(f"Technologies: {', '.join(technologies) if technologies else 'None provided'}")
+        logger.debug(f"Milestones: {', '.join(milestones) if milestones else 'None provided'}")
+        logger.debug(f"Current tasks: {', '.join(current_tasks) if current_tasks else 'None provided'}")
 
         try:
             validated_project = Project(name=name, description=description, repo_link=repo_link,
@@ -40,26 +48,27 @@ class ProjectAddCommand(BaseCommand):
             milestones=milestones,
             current_tasks=current_tasks)
         except ValueError as e:
-            print(f"Error: Invalid input data. {e}")
+            logger.error(f"Error: Invalid input data. {e}")
             return
 
         try:
             result = self.project_crud.create(validated_project)
             if result:
-                print(f"Project '{result['name']}' created successfully with ID '{result['id']}'.")
+                logger.info(f"Project '{result['name']}' created successfully with ID '{result['id']}'.")
             else:
-                print("Failed to create project.")
+                logger.warning("Failed to create project.")
         except Exception as e:
-            print(f"Unexpected error during project creation: {e}")
+            logger.error(f"Unexpected error during project creation: {e}")
 
     def print_usage(self):
-        print("""
+        usage_message = """
 Usage: command <name> <description> [optional: <repo_link> <status> <start_date> <end_date> <priority> <technologies> <milestones> <current_tasks>]
 
 Examples:
 - To add a new project: 
   command "New Project" "This is a description" "https://repo.com" "Active" "2024-01-01" "2024-12-31" "High" "Tech1, Tech2" "Milestone1, Milestone2" "Task1, Task2"
-""")
+"""
+        logger.info(usage_message)
     
     @property
     def description(self):

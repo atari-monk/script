@@ -3,7 +3,7 @@ from modules.command_loader import CommandLoaderModule
 from modules.run_module import RunModule
 import logging
 
-logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
 class CLIApp:
     def __init__(self):
