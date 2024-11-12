@@ -1,6 +1,6 @@
 from typing import Type, Optional, List, Dict
 import logging
-from json_storage import JSONStorage
+from .json_storage import JSONStorage
 
 logger = logging.getLogger(__name__)
 
