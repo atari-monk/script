@@ -1,5 +1,6 @@
+import logging
 from typing import List, Optional, Literal
-from datetime import date
+from datetime import date, datetime
 
 class Project:
     def __init__(
@@ -11,12 +12,13 @@ class Project:
         start_date: Optional[date] = None,
         end_date: Optional[date] = None,
         priority: Optional[Literal['Low', 'Medium', 'High']] = None,
-        technologies: List[str] = None,
-        milestones: List[str] = None,
-        current_tasks: List[str] = None,
+        technologies: Optional[List[str]] = None,
+        milestones: Optional[List[str]] = None,
+        current_tasks: Optional[List[str]] = None,
         last_updated: Optional[date] = None,
+        id: Optional[int] = None
     ):
-        #todo: dates must be first for test to pass
+        # Validate dates first for tests to pass
         self.start_date = start_date
         self.end_date = self._validate_dates(end_date, start_date)
         self.name = self._validate_name(name)
@@ -27,7 +29,8 @@ class Project:
         self.technologies = technologies or []
         self.milestones = milestones or []
         self.current_tasks = current_tasks or []
-        self.last_updated = last_updated
+        self.last_updated = last_updated or date.today()
+        self.id = id
     
     def _validate_name(self, name: str) -> str:
         if not all(c.isalnum() or c.isspace() or c in "-_" for c in name.strip()):
@@ -35,8 +38,9 @@ class Project:
         return name.strip()
     
     def _validate_description(self, description: str) -> str:
-        if len(description.split()) < 5:
-            raise ValueError("Description should contain at least 5 words.")
+        logging.debug(f"Project description: {description}")
+        if len(description.split()) < 1:
+            raise ValueError("Description should contain at least 1 word.")
         return description.strip()
 
     def _validate_dates(self, end_date: Optional[date], start_date: Optional[date]) -> Optional[date]:
@@ -46,3 +50,42 @@ class Project:
     
     def __repr__(self):
         return f"Project(name={self.name}, description={self.description}, start_date={self.start_date}, end_date={self.end_date}, status={self.status})"
+
+    def to_dict(self) -> dict:
+        """
+        Converts the Project object to a dictionary, with dates formatted in ISO format.
+        """
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'repo_link': self.repo_link,
+            'status': self.status,
+            'start_date': self.start_date.isoformat() if self.start_date else None,
+            'end_date': self.end_date.isoformat() if self.end_date else None,
+            'priority': self.priority,
+            'technologies': self.technologies,
+            'milestones': self.milestones,
+            'current_tasks': self.current_tasks,
+            'last_updated': self.last_updated.isoformat() if self.last_updated else None
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Project':
+        """
+        Creates a Project instance from a dictionary, converting dates back from ISO format.
+        """
+        def parse_date(date_str: Optional[str]) -> Optional[date]:
+            if date_str and isinstance(date_str, str):  # Ensure it's a string
+                try:
+                    return datetime.fromisoformat(date_str).date()
+                except ValueError as e:
+                    logging.error(f"Invalid date format: {date_str}. Error: {e}")
+                    return None
+            return None
+
+        data['start_date'] = parse_date(data.get('start_date'))
+        data['end_date'] = parse_date(data.get('end_date'))
+        data['last_updated'] = parse_date(data.get('last_updated')) or date.today()
+
+        return cls(**data)

@@ -6,7 +6,7 @@ from base.base_command import BaseCommand
 from base.base_module import BaseModule
 
 # Configure logging
-log_level = logging.WARNING  # Change to WARNING or ERROR to suppress lower-level logs
+log_level = logging.DEBUG  # Change to WARNING or ERROR to suppress lower-level logs
 logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 

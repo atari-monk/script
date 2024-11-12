@@ -1,6 +1,10 @@
+import logging
 from base.base_command import BaseCommand
 from commands.log_project.lib.crud.project_crud import ProjectCRUD
 from commands.log_project.lib.model.project import Project
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.debug('Logging is set up correctly')
 
 class ProjectAddCommand(BaseCommand):
     def __init__(self, app):
@@ -9,11 +13,15 @@ class ProjectAddCommand(BaseCommand):
         self.project_crud = ProjectCRUD()
 
     def execute(self, *args):
+        logging.debug(f"Arguments received: {args}")
         if len(args) < 2:
             self.print_usage()
             return
         
         name, description = args[0], args[1]
+
+        logging.debug(f"Project name: {name}")
+        logging.debug(f"Project description: {description}")
 
         try:
             validated_project = Project(name=name, description=description)
@@ -22,19 +30,7 @@ class ProjectAddCommand(BaseCommand):
             return
 
         try:
-            result = self.project_crud.create(
-                name=validated_project.name,
-                description=validated_project.description,
-                repo_link=validated_project.repo_link,
-                status=validated_project.status,
-                start_date=validated_project.start_date,
-                end_date=validated_project.end_date,
-                priority=validated_project.priority,
-                technologies=validated_project.technologies,
-                milestones=validated_project.milestones,
-                current_tasks=validated_project.current_tasks,
-                last_updated=validated_project.last_updated
-            )
+            result = self.project_crud.create(validated_project)
             if result:
                 print(f"Project '{result['name']}' created successfully with ID '{result['id']}'.")
             else:
