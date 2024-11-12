@@ -101,14 +101,31 @@
       }
     },
     "script": {
-      "project_log": {
-        "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app\\commands\\project_log",
+      "log_project_project_add": {
+        "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app\\commands\\log_project",
         "output_file": "",
         "exclude_files": false,
-        "excluded_folders": ["__pycache__", ".pytest_cache"],
+        "excluded_folders": ["__pycache__", ".pytest_cache", "tests"],
+        "excluded_files": [
+          "__init__.py",
+          "task.py",
+          "task_crud.py",
+          "task_cmd.py",
+          "task_add.py",
+          "project_edit.py",
+          "project_delete.py"
+        ],
+        "print_file_content": true,
+        "isActive": true
+      },
+      "libs_crud": {
+        "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app\\libs\\crud",
+        "output_file": "",
+        "exclude_files": false,
+        "excluded_folders": ["__pycache__", ".pytest_cache", "tests"],
         "excluded_files": ["__init__.py"],
         "print_file_content": true,
-        "isActive": false
+        "isActive": true
       },
       "log_ai": {
         "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app\\commands\\log_ai",
@@ -123,7 +140,7 @@
           "print_dialogue.py"
         ],
         "print_file_content": true,
-        "isActive": true
+        "isActive": false
       },
       "cli_app": {
         "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app",

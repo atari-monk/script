@@ -4,7 +4,6 @@ from commands.log_project.lib.crud.project_crud import ProjectCRUD
 from commands.log_project.lib.model.project import Project
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.debug('Logging is set up correctly')
 
 class ProjectAddCommand(BaseCommand):
     def __init__(self, app):
@@ -19,12 +18,27 @@ class ProjectAddCommand(BaseCommand):
             return
         
         name, description = args[0], args[1]
+        repo_link = args[2] if len(args) > 2 else None
+        status = args[3] if len(args) > 3 else None
+        start_date = args[4] if len(args) > 4 else None
+        end_date = args[5] if len(args) > 5 else None
+        priority = args[6] if len(args) > 6 else None
+        technologies = args[7].split(",") if len(args) > 7 else []
+        milestones = args[8].split(",") if len(args) > 8 else []
+        current_tasks = args[9].split(",") if len(args) > 9 else []
 
         logging.debug(f"Project name: {name}")
         logging.debug(f"Project description: {description}")
 
         try:
-            validated_project = Project(name=name, description=description)
+            validated_project = Project(name=name, description=description, repo_link=repo_link,
+            status=status,
+            start_date=start_date,
+            end_date=end_date,
+            priority=priority,
+            technologies=technologies,
+            milestones=milestones,
+            current_tasks=current_tasks)
         except ValueError as e:
             print(f"Error: Invalid input data. {e}")
             return
