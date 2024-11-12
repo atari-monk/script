@@ -36,7 +36,7 @@ class CRUD:
         """Reads a single item by its ID."""
         try:
             items = self.storage.read_data(model=self.model)
-            item = next((item for item in items if item.get('id') == item_id), None)
+            item = next((item for item in items if item.id == item_id), None)
             
             if item is None:
                 logger.error(f"Item with ID {item_id} not found.")
@@ -52,7 +52,7 @@ class CRUD:
             items = self.storage.read_data(model=self.model)
             updated = False
             for item in items:
-                if item.get('id') == item_id:
+                if item.id == item_id:
                     for key, value in data.items():
                         setattr(item, key, value)
                     updated = True
@@ -74,7 +74,7 @@ class CRUD:
         """Deletes an item by its ID."""
         try:
             items = self.storage.read_data(model=self.model)
-            updated_items = [item for item in items if item.get('id') != item_id]
+            updated_items = [item for item in items if item.id != item_id]
             
             if len(updated_items) == len(items):
                 logger.error(f"Item with ID {item_id} not found.")

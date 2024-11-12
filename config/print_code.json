@@ -101,7 +101,7 @@
       }
     },
     "script": {
-      "log_project_project_add": {
+      "log_project": {
         "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app\\commands\\log_project",
         "output_file": "",
         "exclude_files": false,
@@ -113,12 +113,12 @@
           "task_cmd.py",
           "task_add.py",
           "project_edit.py",
-          "project_delete.py"
+          "project_add.py"
         ],
         "print_file_content": true,
         "isActive": true
       },
-      "libs_crud": {
+      "log_project_crud": {
         "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app\\libs\\crud",
         "output_file": "",
         "exclude_files": false,

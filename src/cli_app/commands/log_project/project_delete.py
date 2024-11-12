@@ -1,5 +1,8 @@
+import logging
 from base.base_command import BaseCommand
 from commands.log_project.lib.crud.project_crud import ProjectCRUD
+
+logger = logging.getLogger(__name__)
 
 class ProjectDeleteCommand(BaseCommand):
     def __init__(self, app):
@@ -12,31 +15,36 @@ class ProjectDeleteCommand(BaseCommand):
             self.print_usage()
             return
 
-        project_id = args[0]
+        project_id = int(args[0])
 
-        existing_project = self.project_crud.read(project_id)
-        if not existing_project:
-            print(f"Error: Project with ID '{project_id}' not found.")
-            return
+        logger.debug(f"Attempting to delete project with ID: {project_id}")
 
         try:
+            existing_project = self.project_crud.read(project_id)
+            if not existing_project:
+                logger.error(f"Project with ID '{project_id}' not found.")
+                return
+
             result = self.project_crud.delete(project_id)
             if result:
-                print(f"Project '{project_id}' deleted successfully.")
+                logger.info(f"Project '{project_id}' deleted successfully.")
             else:
-                print(f"Failed to delete project '{project_id}'.")
+                logger.warning(f"Failed to delete project '{project_id}'.")
+        except ValueError:
+            logger.error("Invalid project ID. Please provide a numeric ID.")
         except Exception as e:
-            print(f"Unexpected error during project deletion: {e}")
+            logger.error(f"Unexpected error during project deletion: {e}")
 
     def print_usage(self):
-        print("""
+        usage_message = """
 Usage: command <project_id>
 
 Example:
 - To delete a project:
   command 123
-""")
-    
+"""
+        logger.info(usage_message)
+
     @property
     def description(self):
         return "Delete a project by its ID."
