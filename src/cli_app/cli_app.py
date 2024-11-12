@@ -1,18 +1,22 @@
 from app_context import AppContext
 from modules.command_loader import CommandLoaderModule
 from modules.run_module import RunModule
+import logging
+
+logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class CLIApp:
     def __init__(self):
         self.context = AppContext()
-        self.running = True
         self.command_loader = CommandLoaderModule(self)
         self.run_module = RunModule(self)
+        self.running = False
 
     def start(self):
         """
         Start the application by initializing modules and running the main loop.
         """
+        self.running = True
         self.command_loader.initialize()
         self.run_module.initialize()
 

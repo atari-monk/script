@@ -1,7 +1,7 @@
 import pytest
 import json
 import os
-from ..json_storage import JSONStorage  # Replace with the actual path to your library
+from json_storage import JSONStorage  # Replace with the actual path to your library
 
 @pytest.fixture
 def setup_and_teardown():

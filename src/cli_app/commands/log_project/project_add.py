@@ -3,7 +3,7 @@ from base.base_command import BaseCommand
 from commands.log_project.lib.crud.project_crud import ProjectCRUD
 from commands.log_project.lib.model.project import Project
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 class ProjectAddCommand(BaseCommand):
     def __init__(self, app):
@@ -12,7 +12,6 @@ class ProjectAddCommand(BaseCommand):
         self.project_crud = ProjectCRUD()
 
     def execute(self, *args):
-        logging.debug(f"Arguments received: {args}")
         if len(args) < 2:
             self.print_usage()
             return
@@ -27,8 +26,9 @@ class ProjectAddCommand(BaseCommand):
         milestones = args[8].split(",") if len(args) > 8 else []
         current_tasks = args[9].split(",") if len(args) > 9 else []
 
-        logging.debug(f"Project name: {name}")
-        logging.debug(f"Project description: {description}")
+        logger.debug(f"Arguments received: {args}")
+        logger.debug(f"Project name: {name}")
+        logger.debug(f"Project description: {description}")
 
         try:
             validated_project = Project(name=name, description=description, repo_link=repo_link,

@@ -1,43 +1,35 @@
 from typing import Type, Optional, List, Dict
 import logging
-from .json_storage import JSONStorage
+from json_storage import JSONStorage
 
-# Set up logging configuration
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 class CRUD:
     def __init__(self, model: Type[dict], storage: JSONStorage):
-        self.model = model  # model is now a dictionary type
+        self.model = model
         self.storage = storage
 
     def create(self, instance: object) -> Optional[Dict]:
         """Creates a new entry and adds it to the storage using a model instance."""
         try:
-            # Convert the instance's attributes to a dictionary
             item_data = instance.__dict__
 
-            # Ensure the dictionary is valid, e.g., removing any private or unwanted attributes
             item_data = {key: value for key, value in item_data.items() if not key.startswith('_')}
             
-            # Read existing data from storage
-            items = self.storage.read_data(model=self.model)  # Pass the model class for deserialization
+            items = self.storage.read_data(model=self.model)
 
-            # Assign a unique ID based on the highest existing ID + 1
             item_id = max([item.id for item in items], default=0) + 1
             item_data['id'] = item_id
             
-            # Append the new item to the list
-            items.append(self.model.from_dict(item_data))  # Use model's `from_dict` for consistency
+            items.append(self.model.from_dict(item_data))
             
-            # Write updated data back to storage
             self.storage.write_data(items)
 
-            logging.info(f"Item with ID {item_id} created successfully.")
+            logger.info(f"Item with ID {item_id} created successfully.")
             return item_data
 
         except Exception as e:
-            logging.error(f"Error creating item: {e}")
+            logger.error(f"Error creating item: {e}")
             return None
 
     def read(self, item_id: int) -> Optional[Dict]:
@@ -48,7 +40,7 @@ class CRUD:
             
             if item is None:
                 logger.error(f"Item with ID {item_id} not found.")
-            return item.to_dict() if item else None  # Convert to dictionary for output
+            return item.to_dict() if item else None
 
         except Exception as e:
             logger.error(f"Error reading data: {e}")
