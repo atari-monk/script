@@ -1,4 +1,5 @@
 import logging
+from typing import List
 from base.base_command import BaseCommand
 from commands.log_project.lib.crud.project_crud import ProjectCRUD
 
@@ -10,7 +11,7 @@ class ProjectDeleteCommand(BaseCommand):
         self.app = app
         self.project_crud = ProjectCRUD()
 
-    def execute(self, *args):
+    def execute(self, *args: List[str]) -> None:
         if len(args) < 1:
             self.print_usage()
             return
