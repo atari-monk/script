@@ -34,3 +34,13 @@ class JSONLFileStorage(IStorage):
             logger.info(f"Data successfully written to {self.file_path}")
         except IOError as e:
             logger.error(f"Error writing to {self.file_path}: {e}")
+
+    def append(self, instance):
+        """Appends a model instance to the JSONL file."""
+        try:
+            with open(self.file_path, 'a') as f:  # Open file in append mode
+                f.write(json.dumps(instance.to_dict()) + "\n")
+            logger.info(f"Appended data to {self.file_path}")
+        except IOError as e:
+            logger.error(f"Error appending to {self.file_path}: {e}")
+            

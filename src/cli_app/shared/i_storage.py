@@ -10,3 +10,9 @@ class IStorage(ABC):
     def save_all(self, instances):
         """Save model instances to storage."""
         pass
+
+    @abstractmethod
+    def append(self, instance):
+        """Appends a model instance to the storage."""
+        pass
+    

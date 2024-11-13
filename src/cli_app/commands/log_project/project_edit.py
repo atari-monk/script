@@ -1,7 +1,7 @@
 import logging
 from typing import List
 from base.base_command import BaseCommand
-from commands.log_project.lib.crud.project_crud import ProjectCRUD
+from commands.log_project.lib.crud.project_crud import ProjectCRUD, ProjectCRUD3
 from commands.log_project.lib.model.project import Project
 
 logger = logging.getLogger(__name__)
@@ -10,7 +10,8 @@ class ProjectEditCommand(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.project_crud = ProjectCRUD()
+        self.project_json_reposotory = ProjectCRUD()
+        self.project_jsonl_reposotory = ProjectCRUD3()
 
     def execute(self, *args: List[str]) -> None:
         if len(args) < 2:
@@ -23,7 +24,7 @@ class ProjectEditCommand(BaseCommand):
 
         logger.debug(f"Attempting to edit project with ID: {project_id}")
 
-        existing_project = self.project_crud.get_by_id(project_id)
+        existing_project = self.project_json_reposotory.get_by_id(project_id)
         if not existing_project:
             logger.error(f"Project with ID '{project_id}' not found.")
             return
@@ -44,11 +45,15 @@ class ProjectEditCommand(BaseCommand):
                 return
 
         try:
-            updated_project = self.project_crud.update_by_id(project_id, **update_data)
-            if updated_project:
-                logger.info(f"Project '{project_id}' updated successfully.")
+            result = self.project_json_reposotory.update_by_id(project_id, **update_data)
+            result_jsonl = self.project_jsonl_reposotory.update_by_id(project_id, **update_data)
+            if result and result_jsonl:
+                logger.info(f"Project '{project_id}' updated successfully in both repositories (JSON and JSONL).")
             else:
-                logger.warning(f"Failed to update project '{project_id}'.")
+                if not result:
+                    logger.warning(f"Failed to update project '{project_id}' in JSON repository.")
+                if not result_jsonl:
+                    logger.warning(f"Failed to update project '{project_id}' in JSONL repository.")
         except Exception as e:
             logger.error(f"Unexpected error during project update: {e}")
 

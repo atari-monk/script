@@ -31,3 +31,8 @@ class JSONFileStorage(IStorage):
             logger.info(f"Data successfully written to {self.file_path}")
         except IOError as e:
             logger.error(f"Error writing to {self.file_path}: {e}")
+
+    def append(self, instance):
+        """Appends a model instance to the JSON file (Not supported for JSON)."""
+        raise NotImplementedError("Appending is not supported for JSON format.")
+    
