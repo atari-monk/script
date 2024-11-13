@@ -49,7 +49,7 @@ class TaskAddCommand(BaseCommand):
 
         # Attempt to save the task
         try:
-            result = self.task_crud.create(validated_task)
+            result = self.task_crud.add_item(validated_task)
             if result:
                 print(f"Task '{result['description']}' created successfully with ID '{result['id']}'.")
             else:

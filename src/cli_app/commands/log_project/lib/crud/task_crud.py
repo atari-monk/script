@@ -1,10 +1,10 @@
 import os
-from shared.crud import CRUD
-from cli_app.shared.json_storage import JSONStorage
+from shared.json_repository import JSONRepository
+from shared.json_file_storage import JSONFileStorage
 from commands.log_project.lib.config import DB
 from commands.log_project.lib.model.task import Task
 
-class TaskCRUD(CRUD):
+class TaskCRUD(JSONRepository):
     def __init__(self):
-        storage = JSONStorage(file_path=os.path.join(DB, 'tasks.json'))
+        storage = JSONFileStorage(file_path=os.path.join(DB, 'tasks.json'))
         super().__init__(model=Task, storage=storage)

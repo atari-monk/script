@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock
-from ..crud import CRUD  # Assuming CRUD is implemented for standard Python dicts
+from ..json_repository import JSONRepository  # Assuming CRUD is implemented for standard Python dicts
 
 class ItemModel:
     def __init__(self, name: str, description: str):
@@ -24,7 +24,7 @@ def mock_storage():
 @pytest.fixture
 def crud(mock_storage):
     """Provide CRUD instance with mocked storage."""
-    return CRUD(dict, mock_storage)  # Use `dict` as model instead of Pydantic
+    return JSONRepository(dict, mock_storage)  # Use `dict` as model instead of Pydantic
 
 def test_create(crud, mock_storage):
     """Test creating an item."""

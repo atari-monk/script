@@ -12,7 +12,10 @@ class Project2:
         
     @staticmethod
     def parse_data(id: int, name: str) -> dict:
-        return { 'id': id, 'name': Validator.validate_name(name.strip()) }
+        data = {'id': id}
+        if name is not None:
+            data['name'] = Validator.validate_name(name.strip())
+        return data
     
     @classmethod
     def from_dict(cls, data: dict) -> 'Project2':

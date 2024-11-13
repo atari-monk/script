@@ -23,7 +23,7 @@ class ProjectEditCommand(BaseCommand):
 
         logger.debug(f"Attempting to edit project with ID: {project_id}")
 
-        existing_project = self.project_crud.read(project_id)
+        existing_project = self.project_crud.get_by_id(project_id)
         if not existing_project:
             logger.error(f"Project with ID '{project_id}' not found.")
             return
@@ -44,7 +44,7 @@ class ProjectEditCommand(BaseCommand):
                 return
 
         try:
-            updated_project = self.project_crud.update(project_id, **update_data)
+            updated_project = self.project_crud.update_by_id(project_id, **update_data)
             if updated_project:
                 logger.info(f"Project '{project_id}' updated successfully.")
             else:

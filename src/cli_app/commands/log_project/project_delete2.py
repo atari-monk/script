@@ -1,15 +1,15 @@
 import logging
 from typing import List
 from base.base_command import BaseCommand
-from commands.log_project.lib.crud.project_crud import ProjectCRUD
+from commands.log_project.lib.crud.project_crud import ProjectCRUD2
 
 logger = logging.getLogger(__name__)
 
-class ProjectDeleteCommand(BaseCommand):
+class ProjectDelete2Command(BaseCommand):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.project_crud = ProjectCRUD()
+        self.project_crud = ProjectCRUD2()
 
     def execute(self, *args: List[str]) -> None:
         if len(args) < 1:

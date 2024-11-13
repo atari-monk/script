@@ -26,7 +26,7 @@ class ProjectAdd2Command(BaseCommand):
             return
 
         try:
-            result = self.project_crud.create(validated_project)
+            result = self.project_crud.add_item(validated_project)
             if result:
                 logger.info(f"Project '{result['name']}' created successfully with ID '{result['id']}'.")
             else:
