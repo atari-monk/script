@@ -33,23 +33,31 @@ class Project:
         self.id = id
     
     def _validate_name(self, name: str) -> str:
+        if not 3 <= len(name) <= 50:
+            raise ValueError("Project name must be between 3 and 50 characters.")
         if not all(c.isalnum() or c.isspace() or c in "-_" for c in name.strip()):
             raise ValueError("Project name must contain only alphanumeric characters, spaces, hyphens, and underscores.")
         return name.strip()
     
     def _validate_description(self, description: str) -> str:
-        logging.debug(f"Project description: {description}")
         if len(description.split()) < 1:
             raise ValueError("Description should contain at least 1 word.")
+        if len(description) < 10:  # Minimum length of description
+            raise ValueError("Description should be at least 10 characters long.")
         return description.strip()
 
     def _validate_dates(self, end_date: Optional[date], start_date: Optional[date]) -> Optional[date]:
+        if start_date and not isinstance(start_date, date):
+            raise ValueError("Start date must be a valid date.")
         if start_date and end_date and end_date < start_date:
             raise ValueError("End date must be after the start date.")
         return end_date
     
     def __repr__(self):
-        return f"Project(name={self.name}, description={self.description}, start_date={self.start_date}, end_date={self.end_date}, status={self.status})"
+        return (f"Project(name={self.name}, description={self.description}, repo_link={self.repo_link}, "
+            f"status={self.status}, start_date={self.start_date}, end_date={self.end_date}, "
+            f"priority={self.priority}, technologies={self.technologies}, milestones={self.milestones}, "
+            f"current_tasks={self.current_tasks}, last_updated={self.last_updated}, id={self.id})")
 
     def to_dict(self) -> dict:
         """
