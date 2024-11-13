@@ -37,6 +37,12 @@ class Project:
         self.last_updated = last_updated or date.today()
         self.id = id
     
+    @staticmethod
+    def parse_add(name: str) -> dict:
+        #converts cli input to dict for add command  
+        
+        return { 'name': name.strip(), }
+
     def _validate_name(self, name: str) -> str:
         if not 3 <= len(name) <= 50:
             raise ValueError("Project name must be between 3 and 50 characters.")
@@ -117,20 +123,5 @@ class Project:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Project':
-        """
-        Creates a Project instance from a dictionary, converting dates back from ISO format.
-        """
-        def parse_date(date_str: Optional[str]) -> Optional[date]:
-            if date_str and isinstance(date_str, str):  # Ensure it's a string
-                try:
-                    return datetime.fromisoformat(date_str).date()
-                except ValueError as e:
-                    logging.error(f"Invalid date format: {date_str}. Error: {e}")
-                    return None
-            return None
-
-        data['start_date'] = parse_date(data.get('start_date'))
-        data['end_date'] = parse_date(data.get('end_date'))
-        data['last_updated'] = parse_date(data.get('last_updated')) or date.today()
-
+        # Assumes `data` contains all keys that match the __init__ parameters of `Project` with compatible value types.
         return cls(**data)

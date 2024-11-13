@@ -1,6 +1,6 @@
 import os
-from libs.crud.crud import CRUD
-from libs.crud.json_storage import JSONStorage
+from shared.crud import CRUD
+from cli_app.shared.json_storage import JSONStorage
 from commands.log_project.lib.config import DB
 from commands.log_project.lib.model.task import Task
 
