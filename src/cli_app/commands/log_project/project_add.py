@@ -18,15 +18,15 @@ class ProjectAddCommand(BaseCommand):
             self.print_usage()
             return
         
-        name, description = args[0].strip(), args[1].strip()  # Clean input
+        name, description = args[0], args[1]
         repo_link = args[2] if len(args) > 2 else None
         status = args[3] if len(args) > 3 else None
-        start_date = self._parse_date(args[4]) if len(args) > 4 else None
-        end_date = self._parse_date(args[5]) if len(args) > 5 else None
+        start_date = Project.parse_date(args[4]) if len(args) > 4 else None
+        end_date = Project.parse_date(args[5]) if len(args) > 5 else None
         priority = args[6] if len(args) > 6 else None
-        technologies = self._parse_comma_separated_list(args[7]) if len(args) > 7 else []
-        milestones = self._parse_comma_separated_list(args[8]) if len(args) > 8 else []
-        current_tasks = self._parse_comma_separated_list(args[9]) if len(args) > 9 else []
+        technologies = Project.parse_comma_separated_list(args[7]) if len(args) > 7 else []
+        milestones = Project.parse_comma_separated_list(args[8]) if len(args) > 8 else []
+        current_tasks = Project.parse_comma_separated_list(args[9]) if len(args) > 9 else []
 
         logger.debug(f"Arguments received: {args}")
 
@@ -63,13 +63,3 @@ Examples:
     @property
     def description(self):
         return "Add a new project."
-
-    def _parse_date(self, date_str: str) -> Optional[date]:
-        try:
-            return datetime.fromisoformat(date_str).date()
-        except ValueError:
-            logger.error(f"Invalid date format: {date_str}")
-            return None
-
-    def _parse_comma_separated_list(self, input_str: str) -> List[str]:
-        return [item.strip() for item in input_str.split(",")] if input_str else []

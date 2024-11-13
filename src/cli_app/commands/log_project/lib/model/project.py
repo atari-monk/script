@@ -2,7 +2,12 @@ import logging
 from typing import List, Optional, Literal
 from datetime import date, datetime
 
+logger = logging.getLogger(__name__)
+
 class Project:
+    STATUS_CHOICES = ['Not Started', 'In Progress', 'Completed', 'On Hold']
+    PRIORITY_CHOICES = ['Low', 'Medium', 'High']
+
     def __init__(
         self,
         name: str,
@@ -19,8 +24,8 @@ class Project:
         id: Optional[int] = None
     ):
         # Validate dates first for tests to pass
-        self.start_date = start_date
-        self.end_date = self._validate_dates(end_date, start_date)
+        self.start_date = self._validate_start_date(start_date)
+        self.end_date = self._validate_end_date(end_date, self.start_date)
         self.name = self._validate_name(name)
         self.description = self._validate_description(description)
         self.repo_link = repo_link
@@ -46,12 +51,44 @@ class Project:
             raise ValueError("Description should be at least 10 characters long.")
         return description.strip()
 
-    def _validate_dates(self, end_date: Optional[date], start_date: Optional[date]) -> Optional[date]:
+    def _validate_start_date(self, start_date: Optional[date]) -> Optional[date]:
         if start_date and not isinstance(start_date, date):
             raise ValueError("Start date must be a valid date.")
+        return start_date
+    
+    def _validate_end_date(self, end_date: Optional[date], start_date: Optional[date]) -> Optional[date]:
+        if end_date and not isinstance(end_date, date):
+            raise ValueError("End date must be a valid date.")
         if start_date and end_date and end_date < start_date:
             raise ValueError("End date must be after the start date.")
         return end_date
+    
+    @staticmethod
+    def parse_date(date_str: str) -> Optional[date]:
+        try:
+            return datetime.fromisoformat(date_str).date()
+        except ValueError:
+            logger.error(f"Invalid date format: {date_str}")
+            return None
+        
+    @staticmethod
+    def parse_comma_separated_list(input_str: str) -> List[str]:
+        if input_str:
+            items = [item.strip() for item in input_str.split(",")]
+            if any(not item for item in items):
+                raise ValueError("Comma-separated list contains empty values.")
+            return items
+        return []
+    
+    @staticmethod
+    def parse_fields(field: str, value: str) -> any:
+        if field == "technologies" or field == "milestones" or field == "current_tasks":
+            return Project.parse_comma_separated_list(value)
+        elif field == "status":
+            return value if value in Project.STATUS_CHOICES else None
+        elif field == "priority":
+            return value if value in Project.PRIORITY_CHOICES else None
+        return value
     
     def __repr__(self):
         return (f"Project(name={self.name}, description={self.description}, repo_link={self.repo_link}, "
