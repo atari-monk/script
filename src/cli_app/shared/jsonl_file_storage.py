@@ -5,29 +5,32 @@ from .i_storage import IStorage
 
 logger = logging.getLogger(__name__)
 
-class JSONFileStorage(IStorage):
-    """Handles reading and writing JSON in standard format with indentation."""
-    def __init__(self, file_path: str, indent: int = 2):
+class JSONLFileStorage(IStorage):
+    """Handles reading and writing line-delimited JSON (JSONL) format."""
+    def __init__(self, file_path: str):
         self.file_path = file_path
-        self.indent = indent
         if not os.path.exists(self.file_path):
             self.save_all([])  # Create an empty file if it doesn't exist
 
     def load_all(self, model):
-        """Reads the entire JSON file and converts it to model instances."""
+        """Reads each line in a JSONL file and converts it to model instances."""
+        instances = []
         try:
             with open(self.file_path, 'r') as f:
-                data = json.load(f)
-                return [model.from_dict(item) for item in data]
+                for line in f:
+                    data = json.loads(line)
+                    instances.append(model.from_dict(data))
         except (json.JSONDecodeError, IOError) as e:
             logger.error(f"Error reading from {self.file_path}: {e}")
-            return []
+        return instances
 
     def save_all(self, instances):
-        """Writes a list of model instances back to the JSON file."""
+        """Writes each model instance as a separate line in the JSONL file."""
         try:
             with open(self.file_path, 'w') as f:
-                json.dump([instance.to_dict() for instance in instances], f, indent=self.indent)
+                for instance in instances:
+                    json_line = json.dumps(instance.to_dict())
+                    f.write(json_line + '\n')
             logger.info(f"Data successfully written to {self.file_path}")
         except IOError as e:
             logger.error(f"Error writing to {self.file_path}: {e}")

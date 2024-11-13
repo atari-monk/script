@@ -1,10 +1,10 @@
 import logging
-from .json_file_storage import JSONFileStorage
+from .i_storage import IStorage
 
 logger = logging.getLogger(__name__)
 
 class JSONRepository:
-    def __init__(self, model, storage: JSONFileStorage):
+    def __init__(self, model, storage: IStorage):
         self.model = model
         self.storage = storage
 
