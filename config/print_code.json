@@ -112,18 +112,29 @@
           "task_crud.py",
           "task_cmd.py",
           "task_add.py",
+          "project.py",
           "project_edit.py",
-          "project_add.py"
+          "project_add.py",
+          "project_add2.py",
+          "project_delete.py",
+          "project_delete2.py"
         ],
         "print_file_content": true,
         "isActive": true
       },
-      "log_project_crud": {
-        "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app\\libs\\crud",
+      "log_project_shared": {
+        "folder_path": "C:\\atari-monk\\code\\script\\src\\cli_app\\shared",
         "output_file": "",
         "exclude_files": false,
         "excluded_folders": ["__pycache__", ".pytest_cache", "tests"],
-        "excluded_files": ["__init__.py"],
+        "excluded_files": [
+          "__init__.py",
+          "i_storage.py",
+          "input_validator.py",
+          "validator_date.py",
+          "validator.py",
+          "input_validator.py"
+        ],
         "print_file_content": true,
         "isActive": true
       },

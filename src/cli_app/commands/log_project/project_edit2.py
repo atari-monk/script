@@ -1,4 +1,5 @@
 import logging
+import pdb
 from typing import List
 from base.base_command import BaseCommand
 from shared.input_validator import InputValidator
@@ -12,9 +13,10 @@ class ProjectEdit2Command(BaseCommand):
         super().__init__()
         self.app = app
         self.project_json_reposotory = ProjectCRUD2()
-        self.project_jsonl_reposotory = ProjectCRUD3()
+        #self.project_jsonl_reposotory = ProjectCRUD3()
 
     def execute(self, *args: List[str]) -> None:
+        #pdb.set_trace()
         if len(args) < 2:
             self.print_usage()
             return
@@ -30,18 +32,9 @@ class ProjectEdit2Command(BaseCommand):
         data_input = InputValidator.validate_and_parse(field_value_pairs)
         if not data_input: return
 
-        data_valid = Project2.parse_data(
-            project_id,
-            data_input.get('name'),
-            data_input.get('description'),
-            data_input.get('repo_link'),
-            data_input.get('status'),
-            data_input.get('start_date'),
-        )
-
         try:
-            result = self.project_json_reposotory.update_by_id(project_id, **data_valid)
-            result_jsonl = self.project_jsonl_reposotory.update_by_id(project_id, **data_valid)
+            result = self.project_json_reposotory.update_by_id(project_id, **data_input)
+            result_jsonl = True #self.project_jsonl_reposotory.update_by_id(project_id, **data_input)
             if result and result_jsonl:
                 logger.info(f"Project '{project_id}' updated successfully in both repositories (JSON and JSONL).")
             else:

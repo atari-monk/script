@@ -9,14 +9,10 @@ class JSONRepository:
         self.model = model
         self.storage = storage
 
-    def add_item(self, instance) -> dict:
-        """Creates a new entry and adds it to the storage."""
-        item_data = {key: value for key, value in vars(instance).items() if not key.startswith('_')}
-        
-        # If using JSONLFileStorage, call the dedicated method to append the item
+    def add_item(self, item_data: dict) -> dict:
         if isinstance(self.storage, JSONLFileStorage):
             return self.jsonl_add_item(item_data)
-        
+
         # Default flow for other storage types (like JSONFileStorage)
         items = self.storage.load_all(self.model)
         item_data['id'] = self._get_new_id(items)
@@ -25,7 +21,7 @@ class JSONRepository:
         logger.info(f"Item with ID {item_data['id']} created successfully.")
         return item_data
 
-    def jsonl_add_item(self, item_data) -> dict:
+    def jsonl_add_item(self, item_data: dict) -> dict:
         """Handles adding an item to JSONL storage."""
         item_data['id'] = self._get_new_id()
         self.storage.append(self.model.from_dict(item_data))  # Appending to JSONL storage
@@ -49,15 +45,19 @@ class JSONRepository:
         return {}
 
     def update_by_id(self, item_id: int, **data) -> bool:
-        """Updates an item by its ID with provided data."""
-        items = self.storage.load_all (self.model)
-        for item in items:
+        items = self.storage.load_all(self.model)
+        for index, item in enumerate(items):
             if item.id == item_id:
-                for key, value in data.items():
-                    setattr(item, key, value)
-                self.storage.save_all(items)
-                logger.info(f"Item {item_id} updated successfully.")
-                return True
+                updated_data = {**item.to_dict(), **data}  # Merge current and new data
+                try:
+                    # Reinitialize item with validated data
+                    items[index] = self.model.from_dict(updated_data)
+                    self.storage.save_all(items)
+                    logger.info(f"Item {item_id} updated successfully.")
+                    return True
+                except Exception as e:
+                    logger.error(f"Validation failed for item {item_id}: {e}")
+                    return False
         logger.error(f"Item with ID {item_id} not found.")
         return False
 

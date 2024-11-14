@@ -1,6 +1,4 @@
-from datetime import datetime
 from typing import Optional
-
 
 class Validator:
     @staticmethod
@@ -59,23 +57,6 @@ class Validator:
             raise ValueError(f"Value must be one of the following: {', '.join(allowed_values)}.")
         return value
     
-    @staticmethod
-    def validate_date(value: str, date_format: str = "%Y-%m-%d") -> str:
-        """
-        Validates if the provided date string matches the given format.
-
-        :param value: The date string to validate.
-        :param date_format: The expected format of the date (default is "%Y-%m-%d").
-        :return: The validated date string if valid.
-        :raises ValueError: If the date format is invalid.
-        """
-        try:
-            # Try parsing the date string according to the specified format
-            datetime.strptime(value, date_format)
-        except ValueError:
-            raise ValueError(f"Date must be in the format {date_format}.")
-        return value.strip()
-
     @staticmethod
     def validate_name(name: str, min_len: int = 3, max_len: int = 50) -> str:
         """
