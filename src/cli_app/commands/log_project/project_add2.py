@@ -1,5 +1,5 @@
 import logging
-import pdb
+#import pdb
 from base.base_command import BaseCommand
 from commands.log_project.lib.crud.project_crud import ProjectCRUD2, ProjectCRUD3
 from commands.log_project.lib.model.project2 import Project2
@@ -21,7 +21,8 @@ class ProjectAdd2Command(BaseCommand):
         
         name = args[0]
         description = args[1]
-        data_valid = Project2.parse_data(0, name, description)
+        repo_link =  args[2] if len(args) > 2 else None
+        data_valid = Project2.parse_data(0, name, description, repo_link)
 
         try:
             project_new = Project2.from_dict(data_valid)
@@ -44,11 +45,11 @@ class ProjectAdd2Command(BaseCommand):
 
     def print_usage(self):
         usage_message = """
-Usage: command <name> <description>
+Usage: command <name> <description> [optional: <repo_link>]
 
 Examples:
 - To add a new project: 
-  command "New Project" "Project description"
+  command "New Project" "Project description" "https://repo.com"
 """
         logger.info(usage_message)
 
