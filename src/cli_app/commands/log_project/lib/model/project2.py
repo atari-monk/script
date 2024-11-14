@@ -1,3 +1,4 @@
+from datetime import date
 import logging
 from typing import Literal, Optional
 from urllib.parse import urlparse, ParseResult
@@ -11,15 +12,17 @@ class Project2:
     def __init__(
         self, id: int, name: str, description: str, repo_link: Optional[ParseResult] = None,
         status: Optional[Literal['Not Started', 'In Progress', 'Completed', 'On Hold']] = None,
+        start_date: Optional[date] = None,
     ):
         self.id = id
         self.name = name
         self.description = description
         self.repo_link = repo_link
         self.status = status
+        self.start_date = start_date
         
     @staticmethod
-    def parse_data(id: int, name: str, description: str, repo_link: str, status: str) -> dict:
+    def parse_data(id: int, name: str, description: str, repo_link: str, status: str, start_date: str) -> dict:
         data = {'id': id}
         if name is not None:
             data['name'] = Validator.validate_name(name.strip())
@@ -29,6 +32,8 @@ class Project2:
             data['repo_link'] = urlparse(repo_link.strip())
         if status is not None:
             data['status'] = Validator.validate_enum(status.strip(), Project2.STATUS_ENUM)
+        if start_date is not None:
+            data['start_date'] = Validator.validate_date(start_date.strip())
         return data
     
     @classmethod
@@ -48,8 +53,9 @@ class Project2:
             'name': self.name,
             'description': self.description,
             'repo_link': self.repo_link.geturl() if self.repo_link else None,
-            'status': self.status if self.status else None
+            'status': self.status if self.status else None,
+            'start_date': self.start_date if self.start_date else None
         }
     
     def __repr__(self):
-        return (f"Project(id={self.id}), name={self.name}, description={self.description}, repo_link={self.repo_link.geturl() if self.repo_link else None}, status={self.status})")
+        return (f"Project(id={self.id}), name={self.name}, description={self.description}, repo_link={self.repo_link.geturl() if self.repo_link else None}, status={self.status}, start_date={self.start_date})")
