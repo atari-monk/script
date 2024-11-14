@@ -5,16 +5,19 @@ logger = logging.getLogger(__name__)
 
 class Project2:
     def __init__(
-        self, id: int, name: str,
+        self, id: int, name: str, description: str,
     ):
         self.id = id
         self.name = name
+        self.description = description
         
     @staticmethod
-    def parse_data(id: int, name: str) -> dict:
+    def parse_data(id: int, name: str, description: str) -> dict:
         data = {'id': id}
         if name is not None:
             data['name'] = Validator.validate_name(name.strip())
+        if description is not None:
+            data['description'] = Validator.validate_description(description.strip())
         return data
     
     @classmethod
@@ -28,9 +31,10 @@ class Project2:
         """
         return {
             'id': self.id,
-            'name': self.name
+            'name': self.name,
+            'description': self.description
         }
     
     def __repr__(self):
-        return (f"Project(id={self.id}), name={self.name}")
+        return (f"Project(id={self.id}), name={self.name}, description={self.description}")
     
