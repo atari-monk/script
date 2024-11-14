@@ -33,7 +33,8 @@ class ProjectEdit2Command(BaseCommand):
         data_valid = Project2.parse_data(
             project_id,
             data_input.get('name'),
-            data_input.get('description')
+            data_input.get('description'),
+            data_input.get('repo_link'),
         )
 
         try:
