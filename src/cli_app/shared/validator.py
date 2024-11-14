@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 class Validator:
     @staticmethod
     def validate_length(value: str, min_len: int = 3, max_len: int = 50) -> str:
@@ -41,6 +44,20 @@ class Validator:
             raise ValueError(f"Value should contain at least {min_words} word(s).")
         return value.strip()
 
+    @staticmethod
+    def validate_enum(value: Optional[str], allowed_values: list) -> str:
+        """
+        Validates that the value is one of the allowed options.
+
+        :param value: The value to validate.
+        :param allowed_values: A list of allowed values.
+        :return: The value if valid.
+        :raises ValueError: If the value is not one of the allowed values.
+        """
+        if value not in allowed_values:
+            raise ValueError(f"Value must be one of the following: {', '.join(allowed_values)}.")
+        return value
+    
     @staticmethod
     def validate_name(name: str, min_len: int = 3, max_len: int = 50) -> str:
         """

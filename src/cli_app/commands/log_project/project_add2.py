@@ -22,7 +22,8 @@ class ProjectAdd2Command(BaseCommand):
         name = args[0]
         description = args[1]
         repo_link =  args[2] if len(args) > 2 else None
-        data_valid = Project2.parse_data(0, name, description, repo_link)
+        status = args[3] if len(args) > 3 else None
+        data_valid = Project2.parse_data(0, name, description, repo_link, status)
 
         try:
             project_new = Project2.from_dict(data_valid)
@@ -45,11 +46,11 @@ class ProjectAdd2Command(BaseCommand):
 
     def print_usage(self):
         usage_message = """
-Usage: command <name> <description> [optional: <repo_link>]
+Usage: command <name> <description> [optional: <repo_link> <status>]
 
 Examples:
 - To add a new project: 
-  command "New Project" "Project description" "https://repo.com"
+  command "New Project" "Project description" "https://repo.com" "Not Started"
 """
         logger.info(usage_message)
 
