@@ -35,6 +35,7 @@ class ProjectEdit2Command(BaseCommand):
             data_input.get('name'),
             data_input.get('description'),
             data_input.get('repo_link'),
+            data_input.get('status'),
         )
 
         try:
