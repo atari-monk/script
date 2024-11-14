@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 class Project2:
     def __init__(
-        self, id: int, name: str, description: str,
+        self, id: int, name: str, description: str
     ):
         self.id = id
         self.name = name

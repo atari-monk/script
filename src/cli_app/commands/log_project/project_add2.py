@@ -21,17 +21,17 @@ class ProjectAdd2Command(BaseCommand):
         
         name = args[0]
         description = args[1]
-        data = Project2.parse_data(0, name, description)
+        data_valid = Project2.parse_data(0, name, description)
 
         try:
-            data_valid = Project2.from_dict(data)
+            project_new = Project2.from_dict(data_valid)
         except ValueError as e:
             logger.error(f"Error: Invalid input data. {e}")
             return
 
         try:
-            result = self.project_json_reposotory.add_item(data_valid)
-            result_jsonl = self.project_jsonl_reposotory.add_item(data_valid)
+            result = self.project_json_reposotory.add_item(project_new)
+            result_jsonl = self.project_jsonl_reposotory.add_item(project_new)
             if result and result_jsonl:
                 logger.info(f"Project '{result['name']}' created successfully with ID '{result['id']}' in both repositories (JSON and JSONL).")
             else:

@@ -22,17 +22,23 @@ class ProjectEdit2Command(BaseCommand):
         project_id = int(args[0])
         field_value_pairs = args[1:]
 
-        existing_project = self.project_json_reposotory.get_by_id(project_id)
-        if not existing_project:
+        project_existing = self.project_json_reposotory.get_by_id(project_id)
+        if not project_existing:
             logger.error(f"Project with ID '{project_id}' not found.")
             return
 
-        validated_data = InputValidator.validate_and_parse(field_value_pairs)
-        if not validated_data: return
+        data_input = InputValidator.validate_and_parse(field_value_pairs)
+        if not data_input: return
+
+        data_valid = Project2.parse_data(
+            project_id,
+            data_input.get('name'),
+            data_input.get('description')
+        )
 
         try:
-            result = self.project_json_reposotory.update_by_id(project_id, **validated_data)
-            result_jsonl = self.project_jsonl_reposotory.update_by_id(project_id, **validated_data)
+            result = self.project_json_reposotory.update_by_id(project_id, **data_valid)
+            result_jsonl = self.project_jsonl_reposotory.update_by_id(project_id, **data_valid)
             if result and result_jsonl:
                 logger.info(f"Project '{project_id}' updated successfully in both repositories (JSON and JSONL).")
             else:
