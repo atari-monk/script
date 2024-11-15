@@ -1,5 +1,6 @@
 from base.base_module import BaseModule
 
+
 class RunModule(BaseModule):
     def initialize(self):
         """
@@ -13,26 +14,25 @@ class RunModule(BaseModule):
                 if not user_input:
                     continue
 
-                # Parse the user input into arguments
-                parts = self.parse_input(user_input)
-
-                command = parts[0]
-                args = parts[1:]
+                command, args = self.parse_input(user_input)
 
                 # Map number input to command if applicable
-                if command.isdigit():
-                    command = self.get_command_by_number(int(command))
-                    if not command:
-                        print(f"No command found for number: {command}")
-                        continue
+                command = self.get_command_by_number_if_digit(command)
 
-                # Execute the command if it's valid
-                if command in self.app.context.commands:
-                    self.app.context.execute_command(command, *args)
+                if command:
+                    self.execute_command(command, args)
                 else:
                     print(f"Unknown command: {command}. Type 'help' to see available commands.")
             except Exception as e:
                 print(f"An error occurred: {e}")
+
+    def get_command_by_number_if_digit(self, command):
+        """
+        If the command is a digit, attempt to map it to a command from the last menu.
+        """
+        if command.isdigit():
+            return self.get_command_by_number(int(command))
+        return command
 
     def get_command_by_number(self, command_number):
         """
@@ -44,6 +44,15 @@ class RunModule(BaseModule):
                 return item['command']
         return None
 
+    def execute_command(self, command, args):
+        """
+        Executes the command if it's valid.
+        """
+        if command in self.app.context.commands:
+            self.app.context.execute_command(command, *args)
+        else:
+            print(f"Unknown command: {command}. Type 'help' to see available commands.")
+
     def parse_input(self, user_input):
         """
         Parse the user input, handling both double and single quoted strings as a single argument.
@@ -51,38 +60,55 @@ class RunModule(BaseModule):
         """
         parts = []
         current_arg = []
-        inside_quotes = None  # None = not inside quotes, otherwise it holds the quote type (' or ")
+        inside_quotes = None
 
-        # Loop through each character in the input string
         for char in user_input:
             if char in ('"', "'"):
-                # Handle quoted strings
-                if inside_quotes == char:
-                    # End of the quoted string, push current argument
-                    parts.append(''.join(current_arg))
-                    current_arg = []
-                    inside_quotes = None  # Exit the quoted section
-                elif inside_quotes is None:
-                    # Start of a quoted string (either ' or ")
-                    inside_quotes = char
-                else:
-                    # Ignore other quotes if already inside quotes
-                    current_arg.append(char)
+                self.handle_quotes(char, inside_quotes, current_arg, parts)
+                inside_quotes = self.toggle_quotes(char, inside_quotes)
             elif char == ' ' and inside_quotes is None:
-                # If not inside quotes, split on spaces
-                if current_arg:
-                    parts.append(''.join(current_arg))
-                    current_arg = []
+                self.add_argument(parts, current_arg)
             else:
-                # Collect characters for the current argument
                 current_arg.append(char)
 
-        # Add any remaining argument (in case no space at the end)
+        self.finalize_argument(parts, current_arg, inside_quotes)
+
+        # If no arguments, return just the command
+        if len(parts) == 1:
+            return parts[0], []
+
+        return parts[0], parts[1:]
+
+    def handle_quotes(self, char, inside_quotes, current_arg, parts):
+        """
+        Handles the state change when encountering a quote (either single or double).
+        """
+        if inside_quotes == char:
+            parts.append(''.join(current_arg))
+            current_arg.clear()
+
+    def toggle_quotes(self, char, inside_quotes):
+        """
+        Toggles the state of quote (either starting or ending a quoted section).
+        """
+        if inside_quotes is None:
+            return char
+        return None
+
+    def add_argument(self, parts, current_arg):
+        """
+        Adds the current argument to the parts list when a space is encountered.
+        """
+        if current_arg:
+            parts.append(''.join(current_arg))
+            current_arg.clear()
+
+    def finalize_argument(self, parts, current_arg, inside_quotes):
+        """
+        Finalizes the current argument and ensures no unmatched quotes.
+        """
         if current_arg:
             parts.append(''.join(current_arg))
 
-        # Reject input with unmatched quotes
         if inside_quotes is not None:
             raise ValueError("Error: Unmatched quote detected. Please ensure both quotes are closed.")
-
-        return parts
