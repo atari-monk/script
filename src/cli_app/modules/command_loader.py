@@ -12,61 +12,68 @@ class CommandLoaderModule(BaseModule):
         """
         Dynamically load command classes from the 'commands' folder and register them,
         including commands from subdirectories. Only files that contain a class subclassing
-        'BaseCommand' will be treated as commands. Skips 'lib' folders.
+        'BaseCommand' will be treated as commands. Skips 'lib' and 'tests' folders.
         """
         command_folder = 'commands'
         
-        # Log the current Python path to ensure the correct directories are included
-        logger.debug("Python Path: %s", sys.path)  # This won't show up if log_level is WARNING or higher
-
-        # Log where the command folder is located
-        logger.debug("Command Folder: %s", os.path.abspath(command_folder))  # This won't show up either
-
+        # Log Python path and command folder for debugging
+        self._log_paths(command_folder)
+        
+        # Walk through the command directory structure
         for dirpath, dirnames, filenames in os.walk(command_folder):
-            # Skip the 'lib' directory if it is found
-            if 'lib' in dirnames:
-                dirnames.remove('lib')
-                logger.debug("Skipping 'lib' folder in directory: %s", dirpath)  # This won't show up either
+            # Skip 'lib' and 'tests' directories
+            self._skip_folders(dirnames, dirpath)
 
-             # Skip the 'tests' directory if it is found
-            if 'tests' in dirnames:
-                dirnames.remove('tests')
-                logger.debug("Skipping 'tests' folder in directory: %s", dirpath)  # This won't show up either
-
-            logger.debug("Checking directory: %s", dirpath)  # This will also be suppressed
+            logger.debug("Checking directory: %s", dirpath)
 
             for filename in filenames:
-                # Skip the init and template files
-                if filename.endswith(".py") and filename not in ["__init__.py"]:
-                    # Log the module that will be loaded
-                    logger.debug("Attempting to load module: %s", filename)  # This will be suppressed
+                if filename.endswith(".py") and filename != "__init__.py":
+                    self._load_and_register_command(dirpath, filename)
 
-                    try:
-                        # Create module name by replacing slashes with dots
-                        module_name = f"{dirpath.replace(os.sep, '.')}.{filename[:-3]}"
-                        logger.debug("Module Name: %s", module_name)  # This won't show up
+    def _log_paths(self, command_folder):
+        """Log Python path and command folder for debugging."""
+        logger.debug("Python Path: %s", sys.path)
+        logger.debug("Command Folder: %s", os.path.abspath(command_folder))
 
-                        module = importlib.import_module(module_name)
+    def _skip_folders(self, dirnames, dirpath):
+        """Skip 'lib' and 'tests' folders."""
+        if 'lib' in dirnames:
+            dirnames.remove('lib')
+            logger.debug("Skipping 'lib' folder in directory: %s", dirpath)
+        if 'tests' in dirnames:
+            dirnames.remove('tests')
+            logger.debug("Skipping 'tests' folder in directory: %s", dirpath)
 
-                        for attr in dir(module):
-                            command_class = getattr(module, attr)
-                            if isinstance(command_class, type) and issubclass(command_class, BaseCommand) and command_class is not BaseCommand:
-                                logger.debug("Found BaseCommand subclass: %s", command_class)  # This will be suppressed
+    def _load_and_register_command(self, dirpath, filename):
+        """Load and register command class from the module."""
+        try:
+            module_name = self._get_module_name(dirpath, filename)
+            module = importlib.import_module(module_name)
 
-                                command_instance = command_class(self.app)  # Pass the app instance
-                                
-                                # Create a command name that includes the folder structure
-                                relative_path = os.path.relpath(dirpath, command_folder)
-                                if relative_path != '.':
-                                    command_name = f"{relative_path.replace(os.sep, '/')}/{filename[:-3]}"
-                                else:
-                                    command_name = filename[:-3]  # Command name without .py extension
-                                
-                                # Register the command in the app's command registry
-                                self.app.context.register_command(command_name, command_instance.execute)
-                                logger.debug("Command '%s' registered.", command_name)  # This will also be suppressed
-                                break  # We found a valid command, no need to continue checking other attributes
-                    except ModuleNotFoundError as e:
-                        logger.error("Module not found: %s", e)
-                    except Exception as e:
-                        logger.error("Error loading module '%s': %s", filename, str(e))
+            for attr in dir(module):
+                command_class = getattr(module, attr)
+                if self._is_valid_command_class(command_class):
+                    command_instance = command_class(self.app)
+                    command_name = self._get_command_name(dirpath, filename)
+                    self.app.context.register_command(command_name, command_instance.execute)
+                    logger.debug("Command '%s' registered.", command_name)
+                    break  # Command found, no need to check other attributes
+        except ModuleNotFoundError as e:
+            logger.error("Module not found: %s", e)
+        except Exception as e:
+            logger.error("Error loading module '%s': %s", filename, str(e))
+
+    def _get_module_name(self, dirpath, filename):
+        """Generate module name from directory and filename."""
+        return f"{dirpath.replace(os.sep, '.')}.{filename[:-3]}"
+
+    def _is_valid_command_class(self, command_class):
+        """Check if the class is a valid subclass of BaseCommand."""
+        return isinstance(command_class, type) and issubclass(command_class, BaseCommand) and command_class is not BaseCommand
+
+    def _get_command_name(self, dirpath, filename):
+        """Generate command name based on folder structure."""
+        relative_path = os.path.relpath(dirpath, 'commands')
+        if relative_path != '.':
+            return f"{relative_path.replace(os.sep, '/')}/{filename[:-3]}"
+        return filename[:-3]  # Command name without .py extension
