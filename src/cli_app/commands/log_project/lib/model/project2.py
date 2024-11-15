@@ -1,21 +1,22 @@
 from datetime import date
 import logging
-import pdb
-from typing import Literal, Optional
+from typing import Optional
 from urllib.parse import urlparse, ParseResult
+from shared.validator_enum import ValidatorEnum
+from commands.log_project.lib.model.status import Status
+from commands.log_project.lib.model.priority import Priority
 from shared.validator import Validator
 from shared.validator_date import ValidatorDate
 
 logger = logging.getLogger(__name__)
 
 class Project2:
-    STATUS_ENUM = ['Not Started', 'In Progress', 'Completed', 'On Hold']
-
     def __init__(
         self, id: int, name: str, description: str, repo_link: Optional[ParseResult] = None,
-        status: Optional[Literal['Not Started', 'In Progress', 'Completed', 'On Hold']] = None,
+        status: Optional[Status] = None,
         start_date: Optional[date] = None,
-        end_date: Optional[date] = None,
+        end_date: Optional[date] = None
+        #priority: Optional[Priority] = None
     ):
         self.id = id
         self.name = name
@@ -48,7 +49,7 @@ class Project2:
 
         # Handling the 'status' field
         if status is not None:
-            data['status'] = Validator.validate_enum(status.strip(), Project2.STATUS_ENUM)
+            data['status'] = ValidatorEnum.validate_enum_by_class(status.strip(), Status)
 
         # Handle start_date and end_date based on their types
         if start_date is not None:
