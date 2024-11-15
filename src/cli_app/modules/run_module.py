@@ -15,25 +15,15 @@ class RunModule(BaseModule):
 
                 # Parse the user input into arguments
                 parts = self.parse_input(user_input)
-                #print(parts)  # For debugging: print the parsed input
 
                 command = parts[0]
                 args = parts[1:]
 
-                # Check if the command is a number and map it to the corresponding command
+                # Map number input to command if applicable
                 if command.isdigit():
-                    command_number = int(command)
-                    command_found = False
-                    
-                    # Find the command by its number
-                    for item in self.app.context.last_menu:
-                        if item['number'] == command_number:
-                            command = item['command']
-                            command_found = True
-                            break
-                    
-                    if not command_found:
-                        print(f"No command found for number: {command_number}")
+                    command = self.get_command_by_number(int(command))
+                    if not command:
+                        print(f"No command found for number: {command}")
                         continue
 
                 # Execute the command if it's valid
@@ -43,6 +33,16 @@ class RunModule(BaseModule):
                     print(f"Unknown command: {command}. Type 'help' to see available commands.")
             except Exception as e:
                 print(f"An error occurred: {e}")
+
+    def get_command_by_number(self, command_number):
+        """
+        Find the command by its number from the last menu.
+        Returns the command if found, otherwise None.
+        """
+        for item in self.app.context.last_menu:
+            if item['number'] == command_number:
+                return item['command']
+        return None
 
     def parse_input(self, user_input):
         """
@@ -55,8 +55,8 @@ class RunModule(BaseModule):
 
         # Loop through each character in the input string
         for char in user_input:
-            if char == '"' or char == "'":
-                # If inside quotes, check if it's the same quote that started the group
+            if char in ('"', "'"):
+                # Handle quoted strings
                 if inside_quotes == char:
                     # End of the quoted string, push current argument
                     parts.append(''.join(current_arg))
