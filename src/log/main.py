@@ -5,6 +5,7 @@ PROJECTS = {
     'cv': lambda note: log('C:/Atari-Monk/cv/docs/log.md', note),
     'checkpoint': lambda note: log('C:/Atari-Monk/checkpoint/docs/log.md', note),
     'script': lambda note: log('C:/Atari-Monk/script/docs/log.md', note),
+    'blog': lambda note: log('C:/Atari-Monk/blog/docs/log.md', note),
 }
 
 def main():
