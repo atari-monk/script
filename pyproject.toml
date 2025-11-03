@@ -5,6 +5,7 @@ version = "0.0.1"
 [project.scripts]
 info = "info.main:main"
 log = "log.main:main"
+fstree = "tree.main:main"
 
 [build-system]
 requires = ["setuptools", "wheel"]
