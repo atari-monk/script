@@ -6,6 +6,7 @@ version = "0.0.1"
 info = "info.main:main"
 log = "log.main:main"
 fstree = "tree.main:main"
+zip = "zip.main:main"
 
 [build-system]
 requires = ["setuptools", "wheel"]

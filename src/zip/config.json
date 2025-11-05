@@ -1,0 +1,21 @@
+{
+    "cv": {
+        "rootPath": "C:\\Atari-Monk\\cv",
+        "outputZip": "C:\\Atari-Monk\\cv\\cv.zip",
+        "excludeFolders": [".git", "node_modules", "__pycache__", ".vscode"],
+        "excludeFiles": [
+            "server.py",
+            "zip.ps1",
+            "cv.zip",
+            "*.tmp",
+            "*.log",
+            ".DS_Store"
+        ]
+    },
+    "other-project": {
+        "rootPath": "C:\\Atari-Monk\\other-project",
+        "outputZip": "C:\\Atari-Monk\\other-project\\other-project.zip",
+        "excludeFolders": [".git", "node_modules", "__pycache__"],
+        "excludeFiles": ["*.log", "temp.*", "*.tmp"]
+    }
+}
