@@ -1,14 +1,15 @@
 import sys
+from typing import Dict, Callable
 from log.utils import log
 
-PROJECTS = {
-    'cv': lambda note: log('C:/Atari-Monk/cv/docs/log.md', note),
-    'checkpoint': lambda note: log('C:/Atari-Monk/checkpoint/docs/log.md', note),
-    'script': lambda note: log('C:/Atari-Monk/script/docs/log.md', note),
-    'blog': lambda note: log('C:/Atari-Monk/blog/docs/log.md', note),
+PROJECTS: Dict[str, Callable[[str], None]] = {
+    'cv': lambda note: log('C:/Atari-Monk/projects/cv/docs/log.md', note),
+    'checkpoint': lambda note: log('C:/Atari-Monk/projects/checkpoint/docs/log.md', note),
+    'script': lambda note: log('C:/Atari-Monk/projects/script/docs/log.md', note),
+    'blog': lambda note: log('C:/Atari-Monk/projects/blog/docs/log.md', note),
 }
 
-def main():
+def main() -> None:
     
     if len(sys.argv) < 3:
         print(f"Usage: log <project> <note>")
