@@ -6,6 +6,7 @@ PROJECTS = {
     'note': 'note with timestamp',
     'pymsg':'extract msgs form pylance',
     'fstree':'file tree to clipboard',
+    'checkgit':'check if there are uncommited changes in projs',
     'fslash':'convert path to forward slashes',
     'zip':'zip proj by config'
 }

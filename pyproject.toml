@@ -8,6 +8,7 @@ log = "log.main:main"
 note = "note.main:main"
 pymsg = "pymsg.main:main"
 fstree = "tree.main:main"
+checkgit = "utils.check_git_changes:main"
 fslash = "utils.forward_slash:main"
 zip = "zip.main:main"
 
