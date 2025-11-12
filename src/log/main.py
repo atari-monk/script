@@ -1,7 +1,8 @@
 import json
 import os
 from jsonschema import validate, ValidationError
-from typing import Any, Dict
+from typing import Any, Dict, List, DefaultDict
+from collections import defaultdict
 
 SCHEMA_FILE: str = "C:/Atari-Monk/projects/script/src/log/project_log_schema.json"
 LOG_FOLDER: str = "C:/Atari-Monk/projects/checkpoint/docs/logs"
@@ -14,7 +15,7 @@ def load_schema(schema_path: str) -> Dict[str, Any]:
 def validate_log(file_path: str, schema: Dict[str, Any]) -> int:
     """
     Validate a single JSON log file against the schema,
-    print a per-day task log, and return total duration in minutes.
+    print per-day task logs (chronologically), and return total duration in minutes.
     """
     total_duration = 0
     with open(file_path, "r") as f:
@@ -30,33 +31,41 @@ def validate_log(file_path: str, schema: Dict[str, Any]) -> int:
         print(f"  Message: {e.message}")
         return 0  # Skip summing if invalid
 
-    # Print per-day task log and sum durations
-    for day_entry in data:
-        day_total = 0
-        date = day_entry.get('Date', 'Unknown')
-        tag = day_entry.get('Tag', '')
-        print(f"\n📅 Date: {date} | Tag: {tag}")
+    # Group entries by Date
+    entries_by_date: DefaultDict[str, List[Dict[str, Any]]] = defaultdict(list)
+    for entry in data:
+        date = entry.get("Date", "Unknown")
+        entries_by_date[date].append(entry)
 
-        for idx, interval in enumerate(day_entry.get("Interval", []), start=1):
-            duration = interval.get("Duration", 0)
+    # Print per-day task logs
+    for date, entries in sorted(entries_by_date.items()):
+        day_total = 0
+        print(f"\n📅 Date: {date}")
+
+        # Sort entries by Start time
+        sorted_entries = sorted(entries, key=lambda e: e.get("Start", "00:00"))
+
+        for idx, entry in enumerate(sorted_entries, start=1):
+            tag = entry.get("Tag", "")
+            goal = entry.get("Goal", "")
+            notes = entry.get("Notes", [])
+            duration = entry.get("Duration", 0)
+
             try:
                 duration_int = int(duration)
-                day_total += duration_int
-                total_duration += duration_int
             except (ValueError, TypeError):
                 print(f"⚠️ Skipping invalid duration: {duration}")
                 duration_int = 0
 
-            goals = interval.get("Goals", [])
-            notes = interval.get("Notes", [])
+            day_total += duration_int
+            total_duration += duration_int
 
-            print(f"  Interval {idx}: {duration_int} min")
-            for g in goals:
-                print(f"    ✅ Todo: {g}")
+            print(f"  Entry {idx} | Tag: {tag} | {duration_int} min | Start: {entry.get('Start', '??:??')}")
+            print(f"    ✅ Goal: {goal}")
             for n in notes:
                 print(f"    📝 Note: {n}")
 
-        print(f"  ➤ Total for day: {day_total} minutes")
+        print(f"  ➤ Total for {date}: {day_total} minutes")
 
     return total_duration
 
