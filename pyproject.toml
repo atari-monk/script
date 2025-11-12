@@ -5,7 +5,10 @@ version = "0.0.1"
 [project.scripts]
 info = "info.main:main"
 log = "log.main:main"
+note = "note.main:main"
+pymsg = "pymsg.main:main"
 fstree = "tree.main:main"
+fslash = "utils.forward_slash:main"
 zip = "zip.main:main"
 
 [build-system]

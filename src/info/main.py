@@ -2,7 +2,12 @@ import argparse
 
 PROJECTS = {
     'info': 'prints out my utils',
-    'log': 'log project note with timestamp'
+    'log': 'validates proj logs',
+    'note': 'note with timestamp',
+    'pymsg':'extract msgs form pylance',
+    'fstree':'file tree to clipboard',
+    'fslash':'convert path to forward slashes',
+    'zip':'zip proj by config'
 }
 
 def main():
