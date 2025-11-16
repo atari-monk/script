@@ -1,13 +1,14 @@
 import argparse
 
 PROJECTS = {
-    'info': 'prints out my utils',
-    'log': 'validates proj logs',
-    'note': 'note with timestamp',
-    'pymsg':'extract msgs form pylance',
+    'log': 'validates projs log',
     'fstree':'file tree to clipboard',
     'checkgit':'check if there are uncommited changes in projs',
     'fslash':'convert path to forward slashes',
+    'info': 'prints out my utils',
+    'note': 'note with timestamp',
+    'pymsg':'extract msgs form pylance',
+    'snippet':'build prompt from snippets',
     'zip':'zip proj by config'
 }
 

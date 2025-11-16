@@ -1,5 +1,11 @@
+import sys
+from typing import Dict, Callable
 from datetime import datetime as dt
 import subprocess
+
+STORE: Dict[str, Callable[[str], None]] = {
+    'note': lambda note: log('C:/Atari-Monk/data/docs/note.txt', note),
+}
 
 def pad_two(number: int) -> str:
     return f"0{number}" if number < 10 else str(number)
@@ -30,3 +36,21 @@ def log(file_path: str, note: str, copy:bool = False):
         copy_to_clipboard(log)
         print('In clipboard!')
     append_to_file(file_path, log)
+
+def main() -> None:
+    
+    if len(sys.argv) < 3:
+        print(f"Usage: log <project> <note>")
+        print(f"Available projects: {list(STORE.keys())}")
+        return
+    
+    project = sys.argv[1]
+    note = sys.argv[2]
+    
+    if project in STORE:
+        STORE[project](note)
+    else:
+        print(f"Unknown project. Available: {list(STORE.keys())}")
+
+if __name__ == "__main__":
+    main()
