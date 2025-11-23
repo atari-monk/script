@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <button id="start">Start</button>
+        <a id="download" style="display: none">Download</a>
+
+        <script>
+            let recorder,
+                stream,
+                chunks = [];
+
+            document.getElementById("start").onclick = async () => {
+                try {
+                    stream = await navigator.mediaDevices.getDisplayMedia({
+                        video: {
+                            width: { ideal: 1920 },
+                            height: { ideal: 1080 },
+                            frameRate: { ideal: 60 },
+                        },
+                        audio: true,
+                    });
+
+                    // Remove mic if browser adds it
+                    stream.getAudioTracks().forEach((t) => {
+                        if (t.label.toLowerCase().includes("microphone")) {
+                            t.stop();
+                            stream.removeTrack(t);
+                        }
+                    });
+
+                    chunks = [];
+
+                    // Let browser pick codec; set safe high bitrate
+                    recorder = new MediaRecorder(stream, {
+                        videoBitsPerSecond: 5_000_000,
+                    });
+
+                    recorder.ondataavailable = (e) => chunks.push(e.data);
+
+                    recorder.onstop = () => {
+                        const blob = new Blob(chunks, { type: "video/webm" });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.getElementById("download");
+                        a.href = url;
+                        a.download = "recording.webm";
+                        a.style.display = "inline";
+                        a.textContent = "Download recording";
+                    };
+
+                    recorder.start();
+                    document.getElementById("start").disabled = true;
+
+                    // Auto-stop when share ends
+                    stream.getVideoTracks()[0].onended = () => {
+                        recorder.stop();
+                        stream.getTracks().forEach((t) => t.stop());
+                    };
+                } catch (e) {
+                    alert("Error: " + e.message);
+                }
+            };
+        </script>
+    </body>
+</html>
