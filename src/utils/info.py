@@ -5,6 +5,8 @@ PROJECTS = {
     'fstree':'file tree to clipboard',
     'checkgit':'check if there are uncommited changes in projs',
     'fslash':'convert path to forward slashes',
+    'foto':'organize photos',
+    'fotocheck':'check organized photos',
     'info': 'prints out my utils',
     'note': 'note with timestamp',
     'pymsg':'extract msgs form pylance',
