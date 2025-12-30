@@ -1,10 +1,13 @@
 {
-	"files": {
-		"vite-ts": [],
-		"vanilla-js": []
-	},
-	"folders": {
-		"vite-ts": ["node_modules", "dist", ".git"],
-		"vanilla-js": []
-	}
+  "ignore": {
+    "folders": [
+      "node_modules",
+      "dist",
+      ".git",
+      "__pycache__"
+    ],
+    "files": [
+      ".DS_Store"
+    ]
+  }
 }

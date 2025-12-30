@@ -2,6 +2,10 @@
 name = "script"
 version = "0.0.1"
 
+dependencies = [
+    "pyperclip"
+]
+
 [project.scripts]
 log = "log.main:main"
 fstree = "tree.main:main"
@@ -9,11 +13,11 @@ checkgit = "utils.check_git_changes:main"
 fslash = "utils.forward_slash:main"
 foto = "utils.foto_stats:main"
 fotocheck = "utils.foto_check:main"
-info = "utils.info:main"
+myinfo = "utils.info:main"
 note = "utils.note:main"
 pymsg = "utils.pymsg:main"
 snippet = "utils.snippet:main"
-zip = "zip.main:main"
+zip_tool = "zip.main:main"
 
 [build-system]
 requires = ["setuptools", "wheel"]

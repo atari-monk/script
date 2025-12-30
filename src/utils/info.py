@@ -7,11 +7,11 @@ PROJECTS = {
     'fslash':'convert path to forward slashes',
     'foto':'organize photos',
     'fotocheck':'check organized photos',
-    'info': 'prints out my utils',
+    'myinfo': 'prints out my utils',
     'note': 'note with timestamp',
     'pymsg':'extract msgs form pylance',
     'snippet':'build prompt from snippets',
-    'zip':'zip proj by config'
+    'zip_tool':'zip proj by config'
 }
 
 def main():
