@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import sys
-import pyperclip
+from .clipboard_utils import copy_to_clipboard, paste_from_clipboard
 from pathlib import Path
 from typing import List, Optional
 from datetime import datetime
@@ -130,7 +130,7 @@ def pop_snippets(prompt: Optional[str] = None) -> None:
 
     final_text: str = "\n\n".join(blocks)
 
-    pyperclip.copy(final_text)
+    copy_to_clipboard(final_text)
     print("Structured prompt copied to clipboard.")
 
 
@@ -182,7 +182,7 @@ def main() -> None:
     # No args: add clipboard snippet
     # ------------------------------------------------------------
     if len(argv) == 1:
-        content = pyperclip.paste()
+        content = paste_from_clipboard()
         add_snippet(content, None, None)
         return
 
@@ -260,7 +260,7 @@ def main() -> None:
                 return
             content = file_path.read_text(encoding="utf-8")
         else:
-            content = pyperclip.paste()
+            content = paste_from_clipboard()
 
         add_snippet(content, description, stype)
         return
