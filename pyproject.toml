@@ -4,7 +4,7 @@ version = "0.0.1"
 
 [project.scripts]
 log = "log.main:main"
-fstree = "tree.main:main"
+fstree = "utils.tree:main"
 checkgit = "utils.check_git_changes:main"
 fslash = "utils.forward_slash:main"
 foto = "utils.foto_stats:main"

@@ -2,9 +2,10 @@ import argparse
 import json
 import os
 from pathlib import Path
-import pyperclip
+from .clipboard_utils import copy_to_clipboard
 
-CONFIG_FILE = "config.json"
+
+CONFIG_FILE = "/home/atari-monk/atari-monk/project/script/src/utils/tree.json"
 
 # Default config (used if config.json is missing)
 config = {
@@ -117,7 +118,7 @@ def main():
     output = generate_tree(args.path, args.level)
 
     if args.clipboard:
-        pyperclip.copy(output)
+        copy_to_clipboard(output)
         print("Copied to clipboard")
     else:
         print(output)
