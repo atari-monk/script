@@ -4,7 +4,6 @@ import sys
 from .clipboard_utils import copy_to_clipboard, paste_from_clipboard
 from pathlib import Path
 from typing import List, Optional
-from datetime import datetime
 
 # ------------------------------------------------------------
 # Constants
@@ -37,13 +36,15 @@ def save_snippets(snippets: List[str]) -> None:
 def add_snippet(
     content: str,
     description: Optional[str] = None,
-    stype: Optional[str] = None
+    stype: Optional[str] = None,
+    source: Optional[str] = None
 ) -> None:
     snippets: List[str] = load_snippets()
 
-    timestamp: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    meta: List[str] = []
 
-    meta: List[str] = [f"Timestamp: {timestamp}"]
+    if source:
+        meta.append(f"Source: {source}")
 
     if description:
         meta.append(f"Description: {description}")
@@ -77,12 +78,21 @@ def print_snippets() -> None:
         lines: List[str] = snip.split("\n")
         metadata: str = lines[0] if lines else ""
 
-        # Extract content after metadata block
-        content_start: int = snip.find("---", snip.find("---") + 3) + 3
-        preview_block: str = snip[content_start:].strip() if content_start > 3 else snip
+        # Extract the source from metadata if present
+        source_info = ""
+        if "Source:" in metadata:
+            parts = [part.strip() for part in metadata.split("|")]
+            for part in parts:
+                if part.startswith("Source:"):
+                    source_info = part.replace("Source:", "").strip()
+                    break
+
+        # Safe content preview: skip metadata line
+        preview_block = "\n".join(lines[1:]).strip()
         preview: str = preview_block.replace("\r", "").replace("\n", " ")[:50]
 
-        print(f"[{i}] {metadata}")
+        print(f"[{i}] Source: {source_info}")
+        print(f"    {metadata}")
         print(f"    Preview: {preview}...\n")
 
 
@@ -172,7 +182,7 @@ def show_help() -> None:
 
 
 # ------------------------------------------------------------
-# CLI dispatcher (rewritten)
+# CLI dispatcher
 # ------------------------------------------------------------
 
 def main() -> None:
@@ -183,7 +193,7 @@ def main() -> None:
     # ------------------------------------------------------------
     if len(argv) == 1:
         content = paste_from_clipboard()
-        add_snippet(content, None, None)
+        add_snippet(content, None, None, source="clipboard")
         return
 
     command = argv[1]
@@ -254,15 +264,18 @@ def main() -> None:
         # Load snippet content
         if direct_content is not None:
             content = direct_content
+            source = "direct content"
         elif file_path is not None:
             if not file_path.exists():
                 print(f"Error: File does not exist: {file_path}")
                 return
             content = file_path.read_text(encoding="utf-8")
+            source = str(file_path)
         else:
             content = paste_from_clipboard()
+            source = "clipboard"
 
-        add_snippet(content, description, stype)
+        add_snippet(content, description, stype, source)
         return
 
     # ------------------------------------------------------------
